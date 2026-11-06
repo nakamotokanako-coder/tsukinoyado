@@ -32,6 +32,7 @@ function run(){var a=TK.readBirth('a-'),b=TK.readBirth('b-'),st=$('status');if(a
    '<div class="tbl"><table style="min-width:520px"><thead><tr><th>項目</th><th>点数</th><th>見ているもの</th></tr></thead><tbody>'+r.items.map(function(x){var c=x.v>=x.max*0.75?'g':x.v<=x.max*0.25?'b':'r';return '<tr><td><b>'+x.k+'</b></td><td class="num"><span class="pill '+c+'">'+(Math.round(x.v*10)/10)+' / '+x.max+'</span></td><td style="white-space:normal">'+NOTE[x.k]+'<br><span class="note">'+x.note+'</span></td></tr>';}).join('')+'</tbody></table></div>'+
    '<p class="note">'+(r.items[7].v===0?'ナーディが同じ組み合わせは、伝統的には注意点とされます。ただし、月星座の支配星が同じ、または友好的な場合などに打ち消されるという考え方もあります。':'')+'</p>'+
    theme(ma,mb,r,na,nb)+'<div class="grid"><a class="card tool" href="/nakshatra/'+na.slug+'/"><span class="k">あなたの星宿</span><b>'+na.name+'</b><p>性格・恋愛・仕事を読む</p></a><a class="card tool" href="/nakshatra/'+nb.slug+'/"><span class="k">お相手の星宿</span><b>'+nb.name+'</b><p>性格・恋愛・仕事を読む</p></a></div>';
+  $('res').insertAdjacentHTML('beforeend',TK.shareHTML('インド式の相性占いで、二人の相性は36点中'+(Math.round(r.total*10)/10)+'点でした。 #月の宿 #インド占星術',location.origin+'/aisho/'));
   st.textContent='相性を表示しています';return true;}
 TK.initPlace('a-');TK.initPlace('b-');
 $('f').addEventListener('submit',function(e){e.preventDefault();try{if(run())$('res').scrollIntoView({behavior:'smooth'});}catch(err){$('status').textContent='計算できませんでした。入力を確認してください。';}});

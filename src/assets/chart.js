@@ -11,8 +11,9 @@ function render(){var b=TK.readBirth('a-'),st=$('status');if(b.err){st.textConte
   TK.saveNak(moon.nak.i);
   var mr=b.unknown?TK.moonNakRange(b):null;
   $('readings').innerHTML='<div class="card ak"><span class="eyebrow">魂の星（アートマカラカ）</span><span class="big">'+ak+'</span><h3>'+AKT[ak][0]+'</h3><p class="note" style="color:inherit">'+AKT[ak][1]+'</p></div>'+
-   '<div class="card"><span class="eyebrow">心の星宿（月のナクシャトラ）</span><span class="big">'+moon.nak.name+'</span><h3>月は'+S[moon.sign]+'</h3><p class="note" style="color:inherit">'+(window.NKSUM||[])[moon.nak.i]||''+'</p><a href="/nakshatra/'+moon.nak.slug+'/">'+moon.nak.name+'のくわしい解説を読む</a>'+(mr?'<p class="warn">この日は月が「'+JY.NK[mr[0]]+'」から「'+JY.NK[mr[1]]+'」へ移る日です。時刻がわかると確定できます。</p>':'')+'</div>'+
+   '<div class="card"><span class="eyebrow">心の星宿（月のナクシャトラ）</span><span class="big">'+moon.nak.name+'</span><h3>月は'+S[moon.sign]+'</h3><p class="note" style="color:inherit">'+((window.NKSUM||[])[moon.nak.i]||'')+'</p><a href="/nakshatra/'+moon.nak.slug+'/">'+moon.nak.name+'のくわしい解説を読む</a>'+(mr?'<p class="warn">この日は月が「'+JY.NK[mr[0]]+'」から「'+JY.NK[mr[1]]+'」へ移る日です。時刻がわかると確定できます。</p>':'')+'</div>'+
    (b.unknown?'':'<div class="card"><span class="eyebrow">アセンダント（ラグナ）</span><span class="big">'+S[r.ascSign]+'</span><h3>生まれ持った性質</h3><p class="note" style="color:inherit">'+LGT[r.ascSign]+'</p></div>');
+  if($('shr'))$('shr').innerHTML=TK.shareHTML('私の魂の星は「'+ak+'」、心の星宿は「'+moon.nak.name+'」でした。 #月の宿 #インド占星術',location.origin+'/chart/');
   var k1=cells(r,1);$('d1').innerHTML='<figcaption><b>D1 出生図</b><span>'+who+'／'+b.label+'</span></figcaption>'+TK.grid(k1.c,b.unknown?-1:k1.a,'ラーシ<br>出生図');
   var t='<thead><tr><th>星</th><th>星座</th><th>度数</th><th>ハウス</th><th>星宿・パダ</th><th>状態</th><th>カーラカ</th></tr></thead><tbody>';
   if(!b.unknown)t+='<tr><td><b>アセンダント</b></td><td>'+S[r.ascSign]+'</td><td class="num">'+dm(r.asc%30)+'</td><td class="num">1室</td><td>'+r.ascNak.name+' '+r.ascNak.pada+'</td><td></td><td></td></tr>';

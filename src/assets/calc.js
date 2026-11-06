@@ -167,6 +167,16 @@ var JY = (function(){
     var aSees=d===0?'命':t===0?(d===9?'業':'胎'):ROLE[t],bSees=d===0?'命':u===0?(d===9?'胎':'業'):ROLE[u];
     return {type:type,aSees:aSees,bSees:bSees,sep:Math.min(d,27-d)};}
 
-  return {relation:relation,yogas:yogas,SIGNS:SIGNS,NK:NK,NKSLUG:NKSLUG,DL:DL,compute:compute,dasha:dasha,sadeSati:sadeSati,varga:varga,dignity:dignity,nak:nak,moonSid:moonSid,tara:tara,TARA:TARA,panchang:panchang,koota:koota,norm:norm};
+  /* ---- 暦・運行のための軽い関数 ---- */
+  function sidOf(body,ms){return sid(body,mk(ms));}
+  function elong(ms){var t=mk(ms);return norm(trop('Moon',t)-trop('Sun',t));}
+  function rahuSid(ms){var T=Tof(mk(ms));return norm(125.0445479-1934.1362891*T+0.0020754*T*T+T*T*T/467441-ayan(T));}
+  function signsAt(ms){var o={};PL.forEach(function(x){o[x[0]]=Math.floor(sid(x[1],mk(ms))/30);});var r=Math.floor(rahuSid(ms)/30);o['ラーフ']=r;o['ケートゥ']=(r+6)%12;return o;}
+  function sunrise(dayStartUtc,lat,lon){try{var r=Astronomy.SearchRiseSet(Astronomy.Body.Sun,new Astronomy.Observer(lat,lon,0),+1,mk(dayStartUtc),1);return r?r.date.getTime():null;}catch(e){return null;}}
+  /* 指定の星が次に星座を移る時刻（逆行の出入りも含む）。stepは日数 */
+  function nextIngress(name,ms,maxDays,step){var f=name==='ラーフ'?function(m){return Math.floor(rahuSid(m)/30);}:function(m){return Math.floor(sid(name==='木星'?'Jupiter':name==='土星'?'Saturn':name==='火星'?'Mars':name==='金星'?'Venus':name==='水星'?'Mercury':'Sun',mk(m))/30);};
+    var v=f(ms),D=864e5;step=step||2;for(var d=step;d<=maxDays;d+=step){if(f(ms+d*D)!==v){var lo=ms+(d-step)*D,hi=ms+d*D;while(hi-lo>36e5){var mid=(lo+hi)/2;if(f(mid)===v)lo=mid;else hi=mid;}return {ms:hi,to:f(hi)};}}return null;}
+
+  return {sidOf:sidOf,elong:elong,rahuSid:rahuSid,signsAt:signsAt,sunrise:sunrise,nextIngress:nextIngress,relation:relation,yogas:yogas,SIGNS:SIGNS,NK:NK,NKSLUG:NKSLUG,DL:DL,compute:compute,dasha:dasha,sadeSati:sadeSati,varga:varga,dignity:dignity,nak:nak,moonSid:moonSid,tara:tara,TARA:TARA,panchang:panchang,koota:koota,norm:norm};
 })();
 if(typeof module!=='undefined')module.exports=JY;

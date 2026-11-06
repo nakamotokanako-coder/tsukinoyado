@@ -30,6 +30,14 @@ var TARA_T=[
 var DT={ケートゥ:'手放しと内省の時期。執着を切り、精神性が深まります。',金星:'愛・豊かさ・美の時期。人間関係や楽しみが広がります。',太陽:'自立と名誉の時期。自分の軸を立て、表に出ていきます。',月:'心と人とのつながりの時期。家庭や感情が中心になります。',火星:'行動と挑戦の時期。エネルギーが高く、勝負に出られます。',ラーフ:'変化と拡大の時期。新しい世界や、予想外の展開が訪れます。',木星:'知恵と幸運の時期。学び、成長し、守られます。',土星:'忍耐と構築の時期。時間をかけて、確かな土台を築きます。',水星:'知性と発信の時期。学び、言葉、商いが動きます。'};
 function saveNak(i){try{localStorage.setItem('tsuki-nak',String(i));}catch(e){}}
 function loadNak(){try{var v=localStorage.getItem('tsuki-nak');return v===null?null:+v;}catch(e){return null;}}
+function shareHTML(text,url){url=url||location.href.split('#')[0];var e=encodeURIComponent,u=e(url),t=e(text);
+  return '<div class="share"><span class="share-l">シェアする</span>'+
+  '<a class="sh x" href="https://twitter.com/intent/tweet?text='+t+'&url='+u+'" target="_blank" rel="noopener">X</a>'+
+  '<a class="sh th" href="https://www.threads.net/intent/post?text='+e(text+' '+url)+'" target="_blank" rel="noopener">Threads</a>'+
+  '<a class="sh ln" href="https://social-plugins.line.me/lineit/share?url='+u+'&text='+t+'" target="_blank" rel="noopener">LINE</a>'+
+  '<a class="sh fb" href="https://www.facebook.com/sharer/sharer.php?u='+u+'" target="_blank" rel="noopener">Facebook</a>'+
+  '<a class="sh hb" href="https://b.hatena.ne.jp/entry/'+url.replace(/^https?:\/\//,'').replace(/^/,url.indexOf('https')===0?'s/':'')+'" target="_blank" rel="noopener">はてブ</a>'+
+  '<button type="button" class="sh cp" data-copy="'+(text+' '+url).replace(/"/g,'&quot;')+'">リンクをコピー</button></div>';}
 function ready(fn){if(window.Astronomy&&window.JY)fn();else setTimeout(function(){ready(fn);},80);}
-return {PLACES:PLACES,$:$,initPlace:initPlace,readBirth:readBirth,moonNakRange:moonNakRange,jst:jst,ym:ym,ymd:ymd,grid:grid,TARA_T:TARA_T,DT:DT,saveNak:saveNak,loadNak:loadNak,ready:ready};
+return {shareHTML:shareHTML,PLACES:PLACES,$:$,initPlace:initPlace,readBirth:readBirth,moonNakRange:moonNakRange,jst:jst,ym:ym,ymd:ymd,grid:grid,TARA_T:TARA_T,DT:DT,saveNak:saveNak,loadNak:loadNak,ready:ready};
 })();

@@ -117,3 +117,63 @@ button.ghost{background:transparent;color:var(--accent);border:1px solid var(--a
 .yd h3{font-family:var(--f-display);font-size:18px}.yd p{margin:0}
 .yd .c{font-size:13px;color:var(--muted)}
 .rar{font-size:13px;color:var(--accent);letter-spacing:.04em}.rar .mut{color:var(--line)}
+/* ---- シェア ---- */
+.share{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:4px 0}
+.share-l{font-size:12.5px;color:var(--muted);margin-right:4px}
+.sh{display:inline-flex;align-items:center;min-height:36px;padding:4px 14px;border-radius:99px;font-size:13px;font-weight:700;text-decoration:none;color:#fff;border:0;line-height:1.2}
+.sh.x{background:#111}.sh.th{background:#3b3b3b}.sh.ln{background:#06A545}.sh.fb{background:#1A6FE0}.sh.hb{background:#0A7FC0}
+.sh.cp{background:transparent;color:var(--ink);border:1px solid var(--line);font-size:13px;padding:4px 14px}
+/* ---- 生年月日だけ ---- */
+form.quick{grid-template-columns:minmax(0,260px) auto;align-items:end}
+@media (max-width:520px){form.quick{grid-template-columns:1fr}}
+.qbtn{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.btn{display:inline-flex;align-items:center;min-height:40px;padding:6px 16px;border-radius:6px;background:var(--accent);color:var(--surface);font-weight:700;text-decoration:none;font-size:14px}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.warnbox{border-color:var(--warn)}
+#qres{display:flex;flex-direction:column;gap:12px}
+/* ---- カレンダー ---- */
+.calbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.calbar button{padding:6px 14px}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cal .wh{text-align:center;font-size:12px;color:var(--muted);font-weight:700}.cal .su{color:var(--warn)}.cal .sa{color:var(--planet)}
+.cd{display:flex;flex-direction:column;align-items:flex-start;gap:0;min-height:76px;padding:5px 6px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:6px;font-weight:400;font-size:11px;text-align:left;line-height:1.35;position:relative}
+.cd .dn{font-weight:700;font-size:14px;font-family:var(--f-mono);display:flex;align-items:center;gap:4px}
+.cd .nk{color:var(--muted);font-size:10.5px;word-break:keep-all;overflow:hidden;max-width:100%}
+.cd .rl{position:absolute;top:4px;right:5px;font-weight:700;font-size:12px}
+.cd.pg{border:2px solid var(--good)}.cd.pg .rl{color:var(--good)}
+.cd.pb{border:2px solid var(--warn)}.cd.pb .rl{color:var(--warn)}
+.cd.lucky{background:var(--accent-soft)}
+.cd.today{box-shadow:0 0 0 2px var(--ink) inset}
+.cd.on{outline:3px solid var(--accent);outline-offset:1px}
+.cd .dots{display:flex;gap:3px;margin-top:auto}.cd .dots i{width:7px;height:7px;border-radius:50%;background:var(--muted)}.cd .dots i.g{background:var(--good)}
+.mo{display:inline-block;width:10px;height:10px;border-radius:50%;border:1.5px solid var(--ink)}.mo.f{background:#F2D16B;border-color:#C9A227}.mo.n{background:var(--ink)}
+.pill.s{color:var(--planet)}
+.clist{margin:0;padding-left:1.2em;columns:2;column-gap:28px}.clist li{break-inside:avoid}
+@media (max-width:560px){.cd{min-height:58px;padding:3px}.cd .nk{font-size:9px}.cd .dn{font-size:12.5px}.clist{columns:1}}
+/* ---- 運勢 ---- */
+.stars{color:var(--accent);letter-spacing:2px}
+.seg{display:flex;gap:6px}.seg button{padding:5px 14px}.seg button[aria-pressed="true"]{background:var(--accent);color:var(--surface)}
+/* ---- 星宿の関係 ---- */
+.rel{border-top:1px solid var(--line);padding:12px 0}
+.rel h3{display:flex;align-items:center;gap:10px;margin:0}
+.rt{display:inline-flex;align-items:center;justify-content:center;min-width:44px;padding:0 8px;height:26px;border-radius:6px;color:#fff;font-size:13px}
+.rt.t-命{background:var(--accent)}.rt.t-栄親{background:#3E9B6B}.rt.t-友衰{background:#4C86C6}.rt.t-安壊{background:#C9584A}.rt.t-危成{background:#D9913A}.rt.t-業胎{background:#8B6FC9}
+.chips.rl li{display:flex;flex-direction:column;line-height:1.4;padding:5px 12px;border-radius:8px}
+.chips.rl a{color:var(--ink);font-weight:700;text-decoration:none}
+.chips small{color:var(--muted);font-size:11.5px}
+/* ---- 円盤 ---- */
+.wctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.wctl button{padding:6px 14px}
+.wbox{max-width:520px;width:100%;margin:0 auto;touch-action:none}
+#wheel{width:100%;height:auto;display:block;user-select:none;cursor:grab}
+.ws{stroke:var(--surface);stroke-width:1.2;opacity:.82;cursor:pointer}.ws.on{opacity:1;stroke:var(--ink);stroke-width:2.5}
+.wt{fill:#fff;font-size:10.5px;font-weight:700;text-anchor:middle;dominant-baseline:middle;pointer-events:none;font-family:var(--f-body)}
+.wn{fill:#fff;font-size:10px;text-anchor:middle;dominant-baseline:middle;pointer-events:none;opacity:.9}
+.wz{fill:var(--muted);font-size:9.5px;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.wl{stroke:var(--line)}.wo{fill:none;stroke:var(--line)}
+.wp{fill:var(--surface);stroke:var(--planet);stroke-width:1.5}.wp.moon{fill:#F2D16B;stroke:#C9A227}
+.wpt{fill:var(--ink);font-size:9px;font-weight:700;text-anchor:middle;pointer-events:none}
+.wc{fill:var(--ink);font-family:var(--f-display);font-size:16px;font-weight:800;text-anchor:middle}
+.wc2{fill:var(--muted);font-size:10px;text-anchor:middle}
+.wm{fill:var(--ink)}
+.wleg{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;font-size:13px}.wleg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.wctl select{width:auto;flex:1;min-width:160px}
