@@ -116,3 +116,4 @@ button.ghost{background:transparent;color:var(--accent);border:1px solid var(--a
 .yd{display:flex;flex-direction:column;gap:6px;padding:16px 0;border-bottom:1px solid var(--line);scroll-margin-top:16px}
 .yd h3{font-family:var(--f-display);font-size:18px}.yd p{margin:0}
 .yd .c{font-size:13px;color:var(--muted)}
+.rar{font-size:13px;color:var(--accent);letter-spacing:.04em}.rar .mut{color:var(--line)}

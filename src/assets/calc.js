@@ -159,6 +159,14 @@ var JY = (function(){
     return out;
   }
 
-  return {yogas:yogas,SIGNS:SIGNS,NK:NK,NKSLUG:NKSLUG,DL:DL,compute:compute,dasha:dasha,sadeSati:sadeSati,varga:varga,dignity:dignity,nak:nak,moonSid:moonSid,tara:tara,TARA:TARA,panchang:panchang,koota:koota,norm:norm};
+  
+  /* ---- 星宿どうしの関係（宿曜の三九の秘法と同じ構造） ---- */
+  var ROLE=['命','栄','衰','安','危','成','壊','友','親'];
+  function relation(a,b){var d=(b-a+27)%27,t=d%9,u=(27-d)%27%9,type;
+    if(d===0)type='命';else if(t===0)type='業胎';else if(t===1||t===8)type='栄親';else if(t===2||t===7)type='友衰';else if(t===3||t===6)type='安壊';else type='危成';
+    var aSees=d===0?'命':t===0?(d===9?'業':'胎'):ROLE[t],bSees=d===0?'命':u===0?(d===9?'胎':'業'):ROLE[u];
+    return {type:type,aSees:aSees,bSees:bSees,sep:Math.min(d,27-d)};}
+
+  return {relation:relation,yogas:yogas,SIGNS:SIGNS,NK:NK,NKSLUG:NKSLUG,DL:DL,compute:compute,dasha:dasha,sadeSati:sadeSati,varga:varga,dignity:dignity,nak:nak,moonSid:moonSid,tara:tara,TARA:TARA,panchang:panchang,koota:koota,norm:norm};
 })();
 if(typeof module!=='undefined')module.exports=JY;
