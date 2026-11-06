@@ -33,9 +33,9 @@ function run(){var a=TK.readBirth('a-'),b=TK.readBirth('b-'),st=$('status');if(a
    '<p class="note">'+(r.items[7].v===0?'ナーディが同じ組み合わせは、伝統的には注意点とされます。ただし、月星座の支配星が同じ、または友好的な場合などに打ち消されるという考え方もあります。':'')+'</p>'+
    theme(ma,mb,r,na,nb)+'<div class="grid"><a class="card tool" href="/nakshatra/'+na.slug+'/"><span class="k">あなたの星宿</span><b>'+na.name+'</b><p>性格・恋愛・仕事を読む</p></a><a class="card tool" href="/nakshatra/'+nb.slug+'/"><span class="k">お相手の星宿</span><b>'+nb.name+'</b><p>性格・恋愛・仕事を読む</p></a></div>';
   var mA=JY.mangal(JY.compute(a.ms,a.lat,a.lon),!a.unknown),mB=JY.mangal(JY.compute(b.ms,b.lat,b.lon),!b.unknown),hA=mA.has&&!mA.cancel,hB=mB.has&&!mB.cancel,
-    mv=hA&&hB?['打ち消し合う組み合わせ','g','二人ともマンガル・ドーシャを持っているため、伝統的には互いに打ち消し合い、火星の勢いが釣り合う組み合わせとされます。']:
-      (hA||hB)?['一方だけにある組み合わせ','b',(hA?'あなた':'お相手')+'にだけマンガル・ドーシャがあります。火星の情熱や勢いが、関係の中で強く出やすい組み合わせです。ぶつかったときの冷まし方を二人で決めておくと安心です。伝統的には、ほかの項目の相性がよければ大きな問題ではないとする考え方もあります。']:
-      ['心配のない組み合わせ','g',(mA.has||mB.has)?'マンガル・ドーシャはありますが、火星が穏やかに働く位置にあるため、気にしなくてよい組み合わせです。':'二人ともマンガル・ドーシャはありません。'];
+    mv=hA&&hB?['よい組み合わせ（釣り合っている）','g','二人ともマンガル・ドーシャを持っています。インドでは、二人とも持っていれば火星の強さが同じくらいで釣り合うため、問題のない組み合わせとされます。片方だけが持っているより、むしろ望ましいと考えられています。']:
+      (hA||hB)?['少し注意の組み合わせ','b',(hA?'あなた':'お相手')+'にだけマンガル・ドーシャがあります。火星の情熱や勢いが、関係の中で強く出やすい組み合わせです。ぶつかったときの冷まし方を二人で決めておくと安心です。伝統的には、ほかの項目の相性がよければ大きな問題ではないとする考え方もあります。']:
+      ['よい組み合わせ','g',(mA.has||mB.has)?'マンガル・ドーシャはありますが、火星が穏やかに働く位置にあるため、気にしなくてよい組み合わせです。':'二人ともマンガル・ドーシャはありません。'];
   $('res').insertAdjacentHTML('beforeend','<div class="card"><span class="eyebrow">マンガル・ドーシャ（火星の配置）</span><h3><span class="pill '+mv[1]+'">'+mv[0]+'</span></h3><p style="margin:0">'+mv[2]+'</p><p class="note" style="color:inherit"><b>あなた：</b>'+CX.mangalText(mA)+'<br><b>お相手：</b>'+CX.mangalText(mB)+'</p><p class="note">インドで結婚の相性を見るとき、36点の相性とあわせて必ず確かめる配置です。'+((a.unknown||b.unknown)?'時刻がわからない人は、月と金星からだけ見ています。':'')+'</p></div>');
   $('res').insertAdjacentHTML('beforeend',TK.shareHTML('インド式の相性占いで、二人の相性は36点中'+(Math.round(r.total*10)/10)+'点でした。 #月の宿 #インド占星術',location.origin+'/aisho/'));
   st.textContent='相性を表示しています';return true;}
