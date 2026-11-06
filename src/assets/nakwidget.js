@@ -1,0 +1,2 @@
+(function(){TK.ready(function(){var el=document.getElementById('nk-today');if(!el)return;var i=+el.dataset.i,now=Date.now(),today=JY.nak(JY.moonSid(now)).i,t=JY.tara(i,today),T=TK.TARA_T[t],n=JY.TARA[t];
+ el.innerHTML='<span class="eyebrow">今日の'+JY.NK[i]+'の運勢</span><span class="big">'+n[0]+'（'+n[1]+'）の日</span><h3 class="t-'+T.r+'">'+T.tag+'</h3><p style="margin:0">'+T.all+'</p><p class="note" style="color:inherit"><b>恋愛</b>　'+T.love+'　<b>仕事</b>　'+T.work+'</p><p class="note">今の月の星宿：'+JY.NK[today]+'。<a href="/today/">27星宿すべての今日の運勢</a></p>';});})();
