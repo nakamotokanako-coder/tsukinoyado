@@ -1,6 +1,4 @@
-import fs from 'node:fs'; import path from 'node:path'; import {createRequire} from 'node:module';
-const require=createRequire(import.meta.url);
-const C=JSON.parse(fs.readFileSync('site.config.json','utf8'));
+import fs from 'node:fs'; import path from 'node:path'; const C=JSON.parse(fs.readFileSync('site.config.json','utf8'));
 const OUT='dist'; fs.rmSync(OUT,{recursive:true,force:true}); fs.mkdirSync(OUT+'/assets',{recursive:true});
 const rd=f=>fs.existsSync(f)?JSON.parse(fs.readFileSync(f,'utf8')):[];
 const NAKD=rd('content/nak_data.json'); const TXT=[...rd('content/nak_text_a.json'),...rd('content/nak_text_b.json')];
@@ -8,7 +6,7 @@ const NAK=NAKD.map(d=>({...d,...(TXT.find(t=>t.id===d.id)||{})}));
 const ARTS=rd('content/articles.json');
 const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 for(const f of fs.readdirSync('src/assets')) fs.copyFileSync('src/assets/'+f,OUT+'/assets/'+f);
-let astro; try{astro=require.resolve('astronomy-engine/astronomy.browser.min.js');}catch(e){astro='../pkg/package/astronomy.browser.min.js';}
+const astro='node_modules/astronomy-engine/astronomy.browser.min.js';
 fs.copyFileSync(astro,OUT+'/assets/astronomy.min.js');
 const V=Date.now().toString(36);
 const NAV=[['/today/','今日の運勢'],['/chart/','魂の星図'],['/aisho/','相性占い'],['/sadesati/','サディサティ'],['/nakshatra/','27星宿'],['/articles/','読みもの']];
