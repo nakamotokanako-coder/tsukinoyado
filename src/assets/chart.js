@@ -18,6 +18,10 @@ function render(){var b=TK.readBirth('a-'),st=$('status');if(b.err){st.textConte
   if(!b.unknown)t+='<tr><td><b>アセンダント</b></td><td>'+S[r.ascSign]+'</td><td class="num">'+dm(r.asc%30)+'</td><td class="num">1室</td><td>'+r.ascNak.name+' '+r.ascNak.pada+'</td><td></td><td></td></tr>';
   ORDER.forEach(function(k){var p=r.P[k];t+='<tr><td><b>'+k+'</b></td><td>'+S[p.sign]+'</td><td class="num">'+dm(p.deg)+'</td><td class="num">'+(b.unknown?'—':p.house+'室')+'</td><td>'+p.nak.name+' '+p.nak.pada+'</td><td>'+pill(p)+'</td><td class="num">'+(p.karaka||'')+'</td></tr>';});
   $('ptable').innerHTML=t+'</tbody>';
+  var YG=window.YOGA||{},ys=JY.yogas(r).filter(function(y){return !(b.unknown&&y.lagna);}),grp={};
+  ys.forEach(function(y){(grp[y.id]=grp[y.id]||[]).push(y.detail);});
+  $('yogas').innerHTML=Object.keys(grp).length?Object.keys(grp).map(function(id){var Y=YG[id]||{name:id,cat:'',m:''};return '<div class="card'+(Y.cat==='五大偉人ヨーガ'?' ak':'')+'"><span class="eyebrow">'+Y.cat+'</span><b style="font-size:16px">'+Y.name+'</b><p class="note" style="color:inherit">'+grp[id].join('／')+'</p><p class="note">'+Y.m+'</p><a href="/yoga/#'+id+'" style="font-size:13px">くわしく見る</a></div>';}).join(''):'<p class="note">主なヨーガは見つかりませんでした。ヨーガがないことは、悪い意味ではありません。</p>';
+  $('yoganote').innerHTML=b.unknown?'時刻がわからないため、アセンダントを使うヨーガ（五大偉人ヨーガ、ラージャ・ヨーガなど）は表示していません。':'ヨーガは成立していても、その星の強さや時期（ダシャー）によって表れ方が変わります。';
   var near='';if(!b.unknown){var e=null,l=null;for(var m=1;m<=10;m++){if(e===null&&JY.compute(b.ms-m*6e4,b.lat,b.lon).ascSign!==r.ascSign)e=m;if(l===null&&JY.compute(b.ms+m*6e4,b.lat,b.lon).ascSign!==r.ascSign)l=m;}
     if(e!==null||l!==null)near='<br><span class="warn">アセンダントが星座の境目近くにあります（出生時刻が'+(e!==null?e+'分早い':'')+(e!==null&&l!==null?'か、':'')+(l!==null?l+'分遅い':'')+'と変わります）。時刻の記録を確認してください。</span>';}
   $('ascnote').innerHTML='カーラカ：AK＝魂の星、AmK＝仕事、BK＝兄弟、MK＝母、PiK＝子ども、GK＝ライバル、DK＝配偶者。'+(b.unknown?'<br><span class="warn">時刻がわからないため、アセンダントとハウスは表示していません。月の位置は1日で約13度動くので、目安としてご覧ください。</span>':near);

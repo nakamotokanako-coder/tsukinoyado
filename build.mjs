@@ -4,13 +4,15 @@ const rd=f=>fs.existsSync(f)?JSON.parse(fs.readFileSync(f,'utf8')):[];
 const NAKD=rd('content/nak_data.json'); const TXT=[...rd('content/nak_text_a.json'),...rd('content/nak_text_b.json')];
 const NAK=NAKD.map(d=>({...d,...(TXT.find(t=>t.id===d.id)||{})}));
 const ARTS=rd('content/articles.json');
+const YOGA=rd('content/yoga.json');
+const YMAP=Object.fromEntries(YOGA.map(y=>[y.id,{name:y.name,cat:y.cat,m:y.meaning.split('。').filter(Boolean).slice(0,2).join('。')+'。'}]));
 const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 for(const f of fs.readdirSync('src/assets')) fs.copyFileSync('src/assets/'+f,OUT+'/assets/'+f);
 const astro='node_modules/astronomy-engine/astronomy.browser.min.js';
 fs.copyFileSync(astro,OUT+'/assets/astronomy.min.js');
 const V=Date.now().toString(36);
-const NAV=[['/today/','今日の運勢'],['/chart/','魂の星図'],['/aisho/','相性占い'],['/sadesati/','サディサティ'],['/nakshatra/','27星宿'],['/articles/','読みもの']];
-const TOOLS={chart:['/chart/','魂の星図','出生図・魂の星・ダシャー・16分割図'],aisho:['/aisho/','相性占い','36点で見るインド式の相性'],today:['/today/','今日の運勢','27星宿別・毎日更新'],sadesati:['/sadesati/','サディサティ判定','土星の7年半はいつ？'],panchang:['/today/','今日の暦','月の星宿・ティティ・ラーフ・カーラ']};
+const NAV=[['/jyotish/','はじめての方へ'],['/today/','今日の運勢'],['/chart/','魂の星図'],['/aisho/','相性占い'],['/group/','グループ相性'],['/nakshatra/','27星宿'],['/yoga/','ヨーガ'],['/articles/','読みもの']];
+const TOOLS={chart:['/chart/','魂の星図','出生図・魂の星・ダシャー・16分割図'],aisho:['/aisho/','相性占い','36点で見るインド式の相性'],today:['/today/','今日の運勢','27星宿別・毎日更新'],sadesati:['/sadesati/','サディサティ判定','土星の7年半はいつ？'],group:['/group/','グループ相性占い','友だち・家族・職場の相性を一覧で'],yoga:['/yoga/','ヨーガ事典','五大偉人ヨーガほか27のヨーガ'],panchang:['/today/','今日の暦','月の星宿・ティティ・ラーフ・カーラ']};
 const ad=n=>C.adsenseClient?`<div class="ad"><p class="ad-label">広告</p><ins class="adsbygoogle" style="display:block" data-ad-client="${C.adsenseClient}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>`:'';
 const pages=[];
 function page(p,{title,desc,body,scripts=[],inline='',ld=null,crumb=null}){
@@ -53,7 +55,7 @@ body:`<div class="hero"><span class="eyebrow">Jyotish · Vedic Astrology</span><
 <section><div class="sec-head"><h2>今日の運勢 <span id="today-date" class="note"></span></h2><p>生まれた星宿と、今日の月の星宿の巡り（ターラ）から読む毎日の運勢です。</p></div>
 <div class="card now" id="mine"></div><div class="grid" id="pick"></div><p class="note"><a href="/today/">27星宿すべての今日の運勢を見る →</a></p></section>
 ${ad('top')}
-<section><div class="sec-head"><h2>無料占い</h2><p>生年月日と時刻、出生地を入れるだけ。計算はすべてあなたの端末の中で行います。</p></div>${toolCards(['chart','aisho','today','sadesati'])}</section>
+<section><div class="sec-head"><h2>無料占い</h2><p>生年月日と時刻、出生地を入れるだけ。計算はすべてあなたの端末の中で行います。</p></div>${toolCards(['chart','aisho','group','today','sadesati','yoga'])}</section>
 <section><div class="sec-head"><h2>今日の暦（パンチャーンガ）</h2><p>インドの暦で見る、今日という日の性質。</p></div><div class="facts" id="pc"></div></section>
 <section><div class="sec-head"><h2>27星宿（ナクシャトラ）</h2><p>月の通り道を27に分けた「月の宿」。生まれたときの月の星宿が、あなたの心のかたちを表します。</p></div>${nakChips()}</section>
 ${ad('mid')}
@@ -74,11 +76,12 @@ ${ad('bottom')}${cta}`});
 
 /* ---------- 魂の星図 ---------- */
 page('/chart/',{title:'魂の星図｜インド占星術の無料ホロスコープ（出生図・分割図・ダシャー）',desc:'生年月日・時刻・出生地から、インド占星術の出生図（南インド式）、魂の星（アートマカラカ）、月の星宿、ヴィムショッタリ・ダシャー、サディサティ、分割図D9・D10・D60を無料で計算します。',scripts:['chart.js'],crumb:'魂の星図',
-inline:`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};`,
+inline:`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.YOGA=${JSON.stringify(YMAP)};`,
 body:`<div class="hero"><span class="eyebrow">Free Birth Chart</span><h1>魂の星図</h1><p class="lead">出生図、魂の目的を示す星、心の星宿、人生の時期、結婚・天職・過去世の分割図まで。生まれた時刻がわかると、より正確になります。</p></div>
 <form class="f" id="f" novalidate>${birthForm('a-','生まれたときのこと',{name:true})}<div class="actions"><button type="submit">星図を出す</button><span class="status" id="status"></span></div></form>
 <div id="result" style="display:flex;flex-direction:column;gap:36px">
 <section><div class="sec-head"><h2>あなたの核</h2><p>魂の目的・心・生まれ持った性質</p></div><div class="grid" id="readings"></div></section>
+<section><div class="sec-head"><h2>あなたのヨーガ</h2><p>星の組み合わせが生む、特別な配置。五大偉人ヨーガ、ラージャ・ヨーガなどを自動で見つけます。</p></div><div class="grid" id="yogas"></div><p class="note" id="yoganote"></p></section>
 ${ad('top')}
 <section><div class="sec-head"><h2>出生図（ラーシ・チャート）</h2><p>南インド式。星座の位置は固定で、色のついたマスがアセンダント（ラグナ）です。</p></div><figure class="chart l" id="d1"></figure><div class="tbl"><table id="ptable"></table></div><p class="note" id="ascnote"></p></section>
 <section><div class="sec-head"><h2>人生の時期</h2><p>ヴィムショッタリ・ダシャーと、土星の7年半（サディサティ）</p></div><div class="card now" id="now"></div><div class="timeline" id="dasha"></div><div class="card"><h3>サディサティ（土星の7年半）</h3><ul id="ss" style="margin:0;padding-left:1.2em"></ul></div></section>
@@ -136,6 +139,46 @@ body:`<div class="hero"><span class="eyebrow">Reading</span><h1>${esc(a.title)}<
 <article class="prose">${(a.sections||[]).map((s,i)=>`<h2>${esc(s.h2)}</h2>${(s.paras||[]).map(p=>`<p>${esc(p)}</p>`).join('')}${s.list&&s.list.length?`<ul>${s.list.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${i===1?ad('mid'):''}`).join('')}</article>
 <a class="card tool" href="${t[0]}"><span class="k">無料で試す</span><b>${t[1]}</b><p>${t[2]}</p></a>
 <section><div class="sec-head"><h2>ほかの読みもの</h2></div>${artList(ARTS.filter(x=>x.slug!==a.slug).slice(0,4))}</section>${cta}`});});
+
+
+/* ---------- ヨーガ事典 ---------- */
+const YCATS=[...new Set(YOGA.map(y=>y.cat))];
+page('/yoga/',{title:'ヨーガ事典｜五大偉人ヨーガからラージャ・ヨーガまで',desc:'インド占星術の「ヨーガ（星の特別な組み合わせ）」を解説。五大偉人ヨーガ（ルチャカ・バドラ・ハンサ・マーラヴィヤ・シャシャ）、ガジャケーサリ、ラージャ・ヨーガ、ダナ・ヨーガ、ニーチャ・バンガなどの成立条件と意味。',crumb:'ヨーガ事典',
+ld:{"@context":"https://schema.org","@type":"Article","headline":"ヨーガ事典","inLanguage":"ja"},
+body:`<div class="hero"><span class="eyebrow">Yoga</span><h1>ヨーガ事典</h1><p class="lead">インド占星術の「ヨーガ」は、体を動かすヨガではなく、星と星の「結びつき」のこと。特定の星が特定の場所に入ったり、組み合わさったりすると、その人の人生に特別な力が生まれると考えます。あなたのチャートにどのヨーガがあるかは、<a href="/chart/">魂の星図</a>で自動で調べられます。</p></div>
+<section><div class="sec-head"><h2>ヨーガの読み方</h2></div><div class="prose"><p>ヨーガは「成立しているかどうか」だけでなく、その星がどれだけ強いか、そしてその星の時期（ダシャー）がいつ巡ってくるかで、表れ方が大きく変わります。同じヨーガを持っていても、ダシャーが来るまでは眠っていることもあります。</p><p>反対に、ヨーガがないことは悪い意味ではありません。ヨーガはチャートの「目立つ特徴」を拾うための目印です。</p></div></section>
+<nav aria-label="ヨーガの分類"><ul class="chips">${YCATS.map(c=>`<li><a href="#cat-${YCATS.indexOf(c)}" style="text-decoration:none;color:inherit">${c}</a></li>`).join('')}</ul></nav>
+${ad('top')}
+${YCATS.map((c,ci)=>`<section id="cat-${ci}"><div class="sec-head"><h2>${c}</h2>${c==='五大偉人ヨーガ'?'<p>パンチャ・マハープルシャ・ヨーガ。火星・水星・木星・金星・土星の5つの星が、それぞれ最も力を発揮する場所にあるときに成立する、古典で特に重んじられるヨーガです。</p>':''}</div>${YOGA.filter(y=>y.cat===c).map(y=>`<div class="yd" id="${y.id}"><h3>${esc(y.name)}</h3><p class="c"><b>成立条件：</b>${esc(y.cond)}</p><p>${esc(y.meaning)}</p></div>`).join('')}</section>`).join('')}
+${ad('bottom')}
+<a class="card tool" href="/chart/"><span class="k">無料で調べる</span><b>あなたのヨーガを調べる</b><p>魂の星図で、生年月日からヨーガを自動判定します</p></a>${cta}`});
+
+/* ---------- はじめての方へ ---------- */
+const ORDER_ART=['what-is-jyotish','nakshatra','planets','rashi','houses','dasha','divisional-charts','atmakaraka','sade-sati','compatibility','tara','panchang'];
+page('/jyotish/',{title:'インド占星術（ジョーティッシュ）とは｜はじめての方へ',desc:'インド占星術（ジョーティッシュ）とは何か。西洋占星術との違い、27星宿と日本の宿曜とのつながり、このサイトでできること、学ぶ順番をまとめた入門ガイドです。',crumb:'はじめての方へ',
+ld:{"@context":"https://schema.org","@type":"Article","headline":"インド占星術（ジョーティッシュ）とは","inLanguage":"ja"},
+body:`<div class="hero"><span class="eyebrow">Beginner's Guide</span><h1>インド占星術（ジョーティッシュ）とは</h1><p class="lead">ジョーティッシュは、サンスクリット語で「光の学問」。数千年の伝統を持つインドの占星術で、今もインドでは、結婚や仕事、家を建てる日取りまで、暮らしの大切な場面で使われています。</p></div>
+<section class="prose"><h2>西洋占星術との3つの違い</h2>
+<p><b>1. 星座の基準が違う</b><br>西洋占星術は、季節（春分点）を基準に星座を決めます。インド占星術は、夜空の実際の星の位置を基準にします（サイデリアル方式）。この差は今、約24度。そのため、西洋で牡牛座の人が、インドでは牡羊座になることがよくあります。</p>
+<p><b>2. 太陽より「月」を重んじる</b><br>西洋の星占いは太陽の星座が主役ですが、インド占星術では、生まれたときの月がどこにあったかを最も大切にします。月の通り道を27に分けた「ナクシャトラ（星宿）」が、その人の心のかたちを表します。</p>
+<p><b>3. 「いつ」を読む技術がある</b><br>ヴィムショッタリ・ダシャーという時期の読み方で、人生をいくつもの時期に区切り、「いつ何が起きやすいか」を具体的に読みます。土星の7年半（サディサティ）のように、時期のサイクルを細かく見られるのが大きな特徴です。</p>
+<h2>日本の宿曜とのつながり</h2>
+<p>インドの星宿の体系は、仏教とともに中国へ伝わり、平安時代に空海が持ち帰った『宿曜経』として日本に根づきました。宿曜の27宿は、インドの27のナクシャトラがルーツです。今日の運勢の「命・栄・衰・安・危・成・壊・友・親」という巡りも、インドのターラ（星の巡り）と同じしくみです。インド占星術は、宿曜の「ふるさと」とも言えます。</p>
+<h2>このサイトの方式</h2>
+<p>パラーシャラ式（インド占星術の根本経典の流れ）、アヤナムシャ（星座のずれの補正値）はラーヒリー、ハウスはホールサインで計算しています。インドで最も広く使われている、標準的な方式です。</p></section>
+${ad('mid')}
+<section><div class="sec-head"><h2>まずはやってみる</h2><p>生年月日を入れるだけ。すべて無料です。</p></div>${toolCards(['chart','today','aisho','group','sadesati','yoga'])}</section>
+<section><div class="sec-head"><h2>この順番で読むとわかる</h2><p>はじめての方におすすめの読む順番です。</p></div><div class="list">${ORDER_ART.map((sl,i)=>{const a=ARTS.find(x=>x.slug===sl);return a?`<a href="/articles/${a.slug}/"><b>${i+1}. ${esc(a.title)}</b><span>${esc(a.description)}</span></a>`:'';}).join('')}</div></section>
+${cta}`});
+
+/* ---------- グループ相性 ---------- */
+page('/group/',{title:'グループ相性占い｜インド占星術で友だち・家族・職場の相性を一覧',desc:'最大10人の生年月日から、インド占星術の相性（アシュタクータ36点）を全員分まとめて計算。いちばん相性のいい二人、グループの潤滑油、グループの気質がわかります。',scripts:['group.js'],crumb:'グループ相性占い',
+body:`<div class="hero"><span class="eyebrow">Group Compatibility</span><h1>グループ相性占い</h1><p class="lead">友だち、家族、職場のチーム。最大10人の生年月日から、全員の組み合わせの相性をまとめて計算します。時刻がわからなくても大丈夫です。</p></div>
+<form class="f" id="f" novalidate><div id="rows" style="grid-column:1/-1;display:flex;flex-direction:column;gap:12px"></div><div class="actions"><button type="button" class="ghost" id="add">メンバーを追加</button><button type="submit">相性を見る</button><span class="status" id="status"></span></div><p class="note" style="grid-column:1/-1">入力した内容はこの端末の中だけで計算され、送信されません。</p></form>
+<section id="res"></section>
+${ad('mid')}
+<section><div class="sec-head"><h2>グループ相性の見方</h2></div><div class="prose"><p>表の数字は、二人ずつの相性点（36点満点）です。緑は24点以上、オレンジは18点未満。「グループの潤滑油」は、みんなとの相性の平均が一番高い人で、輪をつなぐ役割を担いやすい人です。</p><p>二人の相性をくわしく知りたいときは、<a href="/aisho/">相性占い</a>で8項目の内訳が見られます。</p></div></section>
+${cta}`});
 
 /* ---------- 固定ページ ---------- */
 page('/about/',{title:'運営者情報',desc:`${C.siteName}の運営者情報とサイトの方針。`,crumb:'運営者情報',body:`<div class="hero"><h1>運営者情報</h1></div><div class="prose">

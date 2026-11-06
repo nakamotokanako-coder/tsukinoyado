@@ -126,6 +126,39 @@ var JY = (function(){
     var total=R.reduce(function(s,x){return s+x.v;},0);
     return {items:R,total:total,mN:mN,fN:fN};
   }
-  return {SIGNS:SIGNS,NK:NK,NKSLUG:NKSLUG,DL:DL,compute:compute,dasha:dasha,sadeSati:sadeSati,varga:varga,dignity:dignity,nak:nak,moonSid:moonSid,tara:tara,TARA:TARA,panchang:panchang,koota:koota,norm:norm};
+  
+  /* ---- ヨーガ判定 ---- */
+  function yogas(r){
+    var P=r.P,A=r.ascSign,out=[],M=P['月'].sign,SU=P['太陽'].sign,SEV=['太陽','月','火星','水星','木星','金星','土星'],BEN=['木星','金星','水星'];
+    function rel(s,from){return (s-from+12)%12;} function kendra(s,from){return [0,3,6,9].indexOf(rel(s,from))>=0;}
+    function lordOf(h){return LORD[(A+h-1)%12];} function owns(p,h){return lordOf(h)===p;}
+    function add(id,detail,lagna){out.push({id:id,detail:detail,lagna:!!lagna});}
+    [['火星','ruchaka'],['水星','bhadra'],['木星','hamsa'],['金星','malavya'],['土星','shasha']].forEach(function(x){var p=P[x[0]];if((p.dig==='高揚'||p.dig==='自室')&&[1,4,7,10].indexOf(p.house)>=0)add(x[1],x[0]+'が'+SIGNS[p.sign]+'（'+p.dig+'）で'+p.house+'室',true);});
+    if(kendra(P['木星'].sign,M))add('gajakesari','木星が月から'+(rel(P['木星'].sign,M)+1)+'番目');
+    if(P['太陽'].sign===P['水星'].sign)add('budhaditya','太陽と水星が'+SIGNS[SU]);
+    if(P['月'].sign===P['火星'].sign)add('chandramangala','月と火星が'+SIGNS[M]);
+    BEN.forEach(function(b){if(P[b].house===10)add('amala',b+'がアセンダントから10室',true);else if(rel(P[b].sign,M)===9)add('amala',b+'が月から10番目');});
+    var adh=BEN.filter(function(b){return [5,6,7].indexOf(rel(P[b].sign,M))>=0;});if(adh.length>=2)add('adhi',adh.join('・')+'が月から6〜8番目'+(adh.length===3?'（完全形）':''));
+    var mo=SEV.filter(function(k){return k!=='太陽'&&k!=='月';}),s2=mo.filter(function(k){return rel(P[k].sign,M)===1;}),s12=mo.filter(function(k){return rel(P[k].sign,M)===11;});
+    if(s2.length&&s12.length)add('durudhara','月の前後に'+s12.concat(s2).join('・'));else if(s2.length)add('sunapha',s2.join('・')+'が月から2番目');else if(s12.length)add('anapha',s12.join('・')+'が月から12番目');
+    else{var canc=SEV.some(function(k){return k!=='月'&&kendra(P[k].sign,M);})||[1,4,7,10].indexOf(P['月'].house)>=0;if(!canc)add('kemadruma','月の前後に星がない');}
+    var so=SEV.filter(function(k){return k!=='太陽'&&k!=='月';}),v2=so.filter(function(k){return rel(P[k].sign,SU)===1;}),v12=so.filter(function(k){return rel(P[k].sign,SU)===11;});
+    if(v2.length&&v12.length)add('ubhayachari','太陽の前後に'+v12.concat(v2).join('・'));else if(v2.length)add('vesi',v2.join('・')+'が太陽から2番目');else if(v12.length)add('vasi',v12.join('・')+'が太陽から12番目');
+    function link(a,b){if(a===b)return '';if(P[a].sign===P[b].sign)return '同じ星座（'+SIGNS[P[a].sign]+'）';if(OWN[a].indexOf(P[b].sign)>=0&&OWN[b].indexOf(P[a].sign)>=0)return '星座を交換';return '';}
+    var seen={};
+    [1,4,7,10].forEach(function(k){[1,5,9].forEach(function(t){var a=lordOf(k),b=lordOf(t),l=link(a,b),key='r'+[a,b].sort().join();if(l&&!seen[key]){seen[key]=1;add('rajayoga',k+'室の支配星'+a+'と'+t+'室の支配星'+b+'が'+l,true);}});});
+    SEV.forEach(function(p){if(p==='太陽'||p==='月')return;var kk=[4,7,10].filter(function(h){return owns(p,h);}),tt=[5,9].filter(function(h){return owns(p,h);});if(kk.length&&tt.length)add('yogakaraka',p+'が'+kk.concat(tt).join('・')+'室を支配',true);});
+    [2,11].forEach(function(w){[1,5,9].forEach(function(t){var a=lordOf(w),b=lordOf(t),l=link(a,b),key='d'+[a,b].sort().join();if(l&&!seen[key]){seen[key]=1;add('dhana',w+'室の支配星'+a+'と'+t+'室の支配星'+b+'が'+l,true);}});});
+    for(var i=0;i<7;i++)for(var j=i+1;j<7;j++){var a=SEV[i],b=SEV[j];if(OWN[a].indexOf(P[b].sign)>=0&&OWN[b].indexOf(P[a].sign)>=0)add('parivartana',a+'と'+b+'が星座を交換（'+P[a].house+'室と'+P[b].house+'室）',true);}
+    [[6,'harsha'],[8,'sarala'],[12,'vimala']].forEach(function(x){var l=lordOf(x[0]);if([6,8,12].indexOf(P[l].house)>=0)add(x[1],x[0]+'室の支配星'+l+'が'+P[l].house+'室',true);});
+    SEV.forEach(function(p){var q=P[p];if(q.dig!=='減衰')return;var disp=LORD[q.sign],exl=LORD[EX[p]],why=[];
+      [disp,exl].forEach(function(h){if(!P[h]||h===p)return;if([1,4,7,10].indexOf(P[h].house)>=0)why.push(h+'がアセンダントからケンドラ');else if(kendra(P[h].sign,M))why.push(h+'が月からケンドラ');});
+      if(why.length)add('neechabhanga',p+'の減衰を、'+why.join('、')+'で打ち消し');});
+    var vg=SEV.concat(['ラーフ','ケートゥ']).filter(function(k){return P[k].sign===varga(P[k].lon,9);});if(vg.length)add('vargottama',vg.join('・')+'がD1とD9で同じ星座');
+    var ra=P['ラーフ'].lon,side=SEV.map(function(k){return norm(P[k].lon-ra)<180;});if(side.every(function(x){return x;})||side.every(function(x){return !x;}))add('kalasarpa','7つの星がラーフ・ケートゥ軸の片側');
+    return out;
+  }
+
+  return {yogas:yogas,SIGNS:SIGNS,NK:NK,NKSLUG:NKSLUG,DL:DL,compute:compute,dasha:dasha,sadeSati:sadeSati,varga:varga,dignity:dignity,nak:nak,moonSid:moonSid,tara:tara,TARA:TARA,panchang:panchang,koota:koota,norm:norm};
 })();
 if(typeof module!=='undefined')module.exports=JY;
