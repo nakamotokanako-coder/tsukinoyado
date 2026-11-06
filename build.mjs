@@ -182,7 +182,7 @@ ${ad('bottom')}
 <a class="card tool" href="/chart/"><span class="k">無料で調べる</span><b>あなたのヨーガを調べる</b><p>魂の星図で、生年月日からヨーガを自動判定します</p></a>${shareS('インド占星術のヨーガ事典。五大偉人ヨーガ、ラージャ・ヨーガなど27のヨーガの意味と珍しさ。','/yoga/')}${cta}`});
 
 /* ---------- はじめての方へ ---------- */
-const ORDER_ART=['what-is-jyotish','nakshatra','planets','rashi','houses','dasha','divisional-charts','atmakaraka','sade-sati','compatibility','tara','panchang'];
+const ORDER_ART=['what-is-jyotish','nakshatra','planets','rashi','houses','dasha','divisional-charts','atmakaraka','ashtakavarga','sade-sati','gochara','compatibility','mangal-dosha','tara','panchang','choghadiya','muhurta'];
 page('/jyotish/',{title:'インド占星術（ジョーティッシュ）とは｜はじめての方へ',desc:'インド占星術（ジョーティッシュ）とは何か。西洋占星術との違い、27星宿と日本の宿曜とのつながり、このサイトでできること、学ぶ順番をまとめた入門ガイドです。',crumb:'はじめての方へ',
 ld:{"@context":"https://schema.org","@type":"Article","headline":"インド占星術（ジョーティッシュ）とは","inLanguage":"ja"},
 body:`<div class="hero"><span class="eyebrow">Beginner's Guide</span><h1>インド占星術（ジョーティッシュ）とは</h1><p class="lead">ジョーティッシュは、サンスクリット語で「光の学問」。数千年の伝統を持つインドの占星術で、今もインドでは、結婚や仕事、家を建てる日取りまで、暮らしの大切な場面で使われています。</p></div>
