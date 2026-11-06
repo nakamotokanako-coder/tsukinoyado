@@ -19,6 +19,6 @@ var MT=['マンガル・ドーシャはありません。','マンガル・ド�
 function mangalText(m){if(!m.has)return MT[0];return (m.cancel?'マンガル・ドーシャがありますが、'+m.cancel+'。':MT[Math.min(3,m.level)])+'（'+m.from.map(function(x){return x.from+'から'+x.house+'番目';}).join('、')+'に火星）';}
 function mangal(r,b){var m=JY.mangal(r,!b.unknown);
   return '<div class="card"><span class="eyebrow">マンガル・ドーシャ（火星の配置）</span><h3>'+(m.has?(m.cancel?'あり（穏やかに働く）':m.level>=2?'あり':'あり（軽め）'):'なし')+'</h3><p class="note" style="color:inherit">'+mangalText(m)+'</p>'+
-   '<p class="note">インドで結婚の相性を見るとき、必ず確かめる配置です。火星がアセンダント・月・金星から1・2・4・7・8・12番目にあると成り立ち、多くの人が持つよくある配置です。火星の情熱や勢いが、パートナーとの関係で強く出やすいことを表します。お互いに持っている二人は打ち消し合うとされます。'+(b.unknown?'時刻がわからないため、月と金星からだけ見ています。':'')+'<a href="/aisho/">相性占いで二人分を見る</a></p></div>';}
+   '<p class="note">インドで結婚の相性を見るとき、必ず確かめる配置です。火星がアセンダント・月・金星から1・2・4・7・8・12番目にあると成り立ち、多くの人が持つよくある配置です。火星の情熱や勢いが、パートナーとの関係で強く出やすいことを表します。二人とも持っていれば釣り合って問題ないとするのが、いまのインドで一般的な見方です。'+(b.unknown?'時刻がわからないため、月と金星からだけ見ています。':'')+'<a href="/aisho/">相性占いで二人分を見る</a></p></div>';}
 return {strength:strength,mangal:mangal,mangalText:mangalText};
 })();
