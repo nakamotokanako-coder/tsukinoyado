@@ -3,7 +3,7 @@ var GN=['神','人','羅刹'],GANA=[0,1,2,1,0,1,0,0,2,2,1,1,0,2,0,2,0,2,2,1,1,0,
 function opts(){return TK.PLACES.map(function(p,i){return '<option value="'+i+'"'+(p[0]==='東京'?' selected':'')+'>'+p[0]+'</option>';}).join('');}
 function addRow(v){v=v||{};if($('rows').children.length>=10)return;var id='g'+(n++),d=document.createElement('div');d.className='grow';d.id=id;
  d.innerHTML='<label for="'+id+'n">名前<input id="'+id+'n" type="text" value="'+(v.n||'')+'" placeholder="例：Aさん"></label><label for="'+id+'d">生年月日<input id="'+id+'d" type="date" value="'+(v.d||'')+'"></label><label for="'+id+'t">時刻（わかれば）<input id="'+id+'t" type="time" value="'+(v.t||'')+'"></label><label for="'+id+'p">出生地<select id="'+id+'p">'+opts()+'</select></label><button type="button" class="x" aria-label="この人を削除">削除</button>';
- d.querySelector('button').addEventListener('click',function(){d.remove();save();});d.addEventListener('change',save);$('rows').appendChild(d);if(v.p!==undefined)$(id+'p').value=v.p;}
+ d.querySelector('button').addEventListener('click',function(){d.remove();save();});d.addEventListener('change',save);$('rows').appendChild(d);TK.enhanceDates(d);if(v.p!==undefined)$(id+'p').value=v.p;}
 function read(){return Array.prototype.map.call($('rows').children,function(d){var id=d.id;return {n:$(id+'n').value.trim(),d:$(id+'d').value,t:$(id+'t').value,p:$(id+'p').value};});}
 function save(){try{localStorage.setItem('tsuki-group',JSON.stringify(read()));}catch(e){}}
 function colr(v){return v>=24?'g':v<18?'b':'r';}

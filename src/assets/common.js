@@ -38,6 +38,22 @@ function shareHTML(text,url){url=url||location.href.split('#')[0];var e=encodeUR
   '<a class="sh fb" href="https://www.facebook.com/sharer/sharer.php?u='+u+'" target="_blank" rel="noopener">Facebook</a>'+
   '<a class="sh hb" href="https://b.hatena.ne.jp/entry/'+url.replace(/^https?:\/\//,'').replace(/^/,url.indexOf('https')===0?'s/':'')+'" target="_blank" rel="noopener">はてブ</a>'+
   '<button type="button" class="sh cp" data-copy="'+(text+' '+url).replace(/"/g,'&quot;')+'">リンクをコピー</button></div>';}
+/* 生年月日を「年・月・日」の3つの選択欄にする（カレンダー式は年月を選ぶと閉じてしまうため） */
+function enhanceDates(root){(root||document).querySelectorAll('input[type=date]').forEach(function(inp){
+  var id=inp.id,v=inp.value,a=v?v.split('-').map(Number):[null,null,null],w=document.createElement('span');w.className='dsel';
+  function sel(suf,lab,from,to,cur,desc){var o='<option value="">'+lab+'</option>',i;if(desc){for(i=to;i>=from;i--)o+='<option value="'+i+'"'+(i===cur?' selected':'')+'>'+i+'</option>';}else{for(i=from;i<=to;i++)o+='<option value="'+i+'"'+(i===cur?' selected':'')+'>'+i+'</option>';}
+    return '<select id="'+id+suf+'" aria-label="'+lab+'">'+o+'</select><span class="du">'+lab+'</span>';}
+  var thisY=new Date().getFullYear();
+  w.innerHTML=sel('-y','年',1900,thisY,a[0],true)+sel('-m','月',1,12,a[1])+sel('-d','日',1,31,a[2]);
+  inp.type='hidden';inp.parentNode.insertBefore(w,inp.nextSibling);
+  var lab=document.querySelector('label[for="'+id+'"]');if(lab)lab.setAttribute('for',id+'-y');
+  var Y=w.children[0],M=w.children[2],D=w.children[4];
+  function sync(){var y=+Y.value,m=+M.value,n=y&&m?new Date(y,m,0).getDate():31;
+    Array.prototype.forEach.call(D.options,function(o){if(o.value)o.disabled=+o.value>n;});if(+D.value>n)D.value=String(n);
+    var nv=Y.value&&M.value&&D.value?y+'-'+String(m).padStart(2,'0')+'-'+String(+D.value).padStart(2,'0'):'';
+    if(nv!==inp.value){inp.value=nv;inp.dispatchEvent(new Event('change',{bubbles:true}));}}
+  [Y,M,D].forEach(function(s){s.addEventListener('change',function(e){e.stopPropagation();sync();});});sync();});}
+enhanceDates();
 function ready(fn){if(window.Astronomy&&window.JY)fn();else setTimeout(function(){ready(fn);},80);}
-return {shareHTML:shareHTML,PLACES:PLACES,$:$,initPlace:initPlace,readBirth:readBirth,moonNakRange:moonNakRange,jst:jst,ym:ym,ymd:ymd,grid:grid,TARA_T:TARA_T,DT:DT,saveNak:saveNak,loadNak:loadNak,ready:ready};
+return {enhanceDates:enhanceDates,shareHTML:shareHTML,PLACES:PLACES,$:$,initPlace:initPlace,readBirth:readBirth,moonNakRange:moonNakRange,jst:jst,ym:ym,ymd:ymd,grid:grid,TARA_T:TARA_T,DT:DT,saveNak:saveNak,loadNak:loadNak,ready:ready};
 })();

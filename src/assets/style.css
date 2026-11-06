@@ -177,3 +177,9 @@ form.quick{grid-template-columns:minmax(0,260px) auto;align-items:end}
 .wm{fill:var(--ink)}
 .wleg{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;font-size:13px}.wleg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-1px}
 .wctl select{width:auto;flex:1;min-width:160px}
+.dsel{display:flex;align-items:center;gap:4px;margin-top:4px}
+.dsel select{width:auto;flex:1 1 0;min-width:0;margin:0}
+.dsel select:first-child{flex:1.5 1 0}
+.du{font-size:13px;color:var(--muted);flex:none}
+form.f label:has(.dsel),.grow label:has(.dsel){grid-column:1/-1}
+.dsel{max-width:380px}.dsel select{padding:9px 6px;font-size:16px}
