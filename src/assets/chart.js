@@ -28,7 +28,8 @@ function render(){var b=TK.readBirth('a-'),st=$('status');if(b.err){st.textConte
   var sc=ids.filter(function(id){return EXC.indexOf(id)<0;}).reduce(function(t,id){return t+PT[lv(id)];},0),below=ST.pct.filter(function(v){return v<sc;}).length,top=Math.max(1,100-below);
   var contrib=ids.filter(function(id){return EXC.indexOf(id)<0&&PT[lv(id)]>0;}).sort(function(x,y){return PT[lv(y)]-PT[lv(x)];}),
     lab=top<=10?'とても個性的な配置':top<=30?'個性的な配置':top<=60?'ほどよく個性のある配置':'よくある配置が中心';
-  $('ytop').innerHTML=ST.pct.length?'<span class="eyebrow">チャートの特殊度（ヨーガの珍しさ）</span><span class="big">'+lab+'</span>'+
+  $('ytop').hidden=!(ST.pct.length&&top<=30);
+  $('ytop').innerHTML=ST.pct.length&&top<=30?'<span class="eyebrow">チャートの特殊度（ヨーガの珍しさ）</span><span class="big">'+lab+'</span>'+
    '<p style="margin:0">100人いたら、上から<b>約'+top+'番目</b>（'+sc+'点）。</p>'+
    (contrib.length?'<p class="note" style="color:inherit"><b>点数のもとになったヨーガ：</b>'+contrib.map(function(id){var L=lv(id);return (YG[id]||{name:id}).name+'（'+LVN[L]+' +'+PT[L]+'点）';}).join('、')+'</p>':'<p class="note" style="color:inherit">持っているヨーガは、多くの人が持つ「よくある」ものだけでした。</p>')+
    '<p class="note">数え方：持っているヨーガを、珍しさで点数にしました（とても珍しい6点、珍しい3点、ときどき1点、よくある0点）。その合計を、ランダムに選んだ4,000人分のチャートと比べています。ヨーガの「数」ではなく「珍しさ」を見ているので、よくあるヨーガがたくさんあっても点数は上がりません。良い悪いの評価ではありません。</p>':'';
