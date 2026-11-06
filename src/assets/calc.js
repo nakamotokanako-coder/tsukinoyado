@@ -15,9 +15,24 @@ var JY = (function(){
   function sid(name,t){return norm(trop(name,t)-ayan(Tof(t)));}
   function mk(ms){return Astronomy.MakeTime(new Date(ms));}
   function dignity(p,s){ if(!(p in EX))return ''; if(s===EX[p])return '高揚'; if(s===(EX[p]+6)%12)return '減衰'; if(OWN[p].indexOf(s)>=0)return '自室'; return ''; }
-  function varga(l,D){ var s=Math.floor(l/30),d=l%30,odd=s%2===0;
-    if(D===1)return s; if(D===9)return ([0,9,6,3][s%4]+Math.floor(d/(10/3)))%12;
-    if(D===10)return ((odd?s:s+8)+Math.floor(d/3))%12; if(D===60)return (s+Math.floor(d*2))%12; }
+  function varga(l,D){ var s=Math.floor(l/30),d=l%30,odd=s%2===0,mod=s%3,f=Math.floor;
+    switch(D){
+    case 1:return s;
+    case 2:return odd?(d<15?4:3):(d<15?3:4);
+    case 3:return (s+[0,4,8][f(d/10)])%12;
+    case 4:return (s+[0,3,6,9][f(d/7.5)])%12;
+    case 7:return ((odd?s:s+6)+f(d/(30/7)))%12;
+    case 9:return ([0,9,6,3][s%4]+f(d/(10/3)))%12;
+    case 10:return ((odd?s:s+8)+f(d/3))%12;
+    case 12:return (s+f(d/2.5))%12;
+    case 16:return ([0,4,8][mod]+f(d/1.875))%12;
+    case 20:return ([0,8,4][mod]+f(d/1.5))%12;
+    case 24:return ((odd?4:3)+f(d/1.25))%12;
+    case 27:return ([0,3,6,9][s%4]+f(d/(30/27)))%12;
+    case 30:return odd?(d<5?0:d<10?10:d<18?8:d<25?2:6):(d<5?1:d<12?5:d<20?11:d<25?9:7);
+    case 40:return ((odd?0:6)+f(d/0.75))%12;
+    case 45:return ([0,4,8][mod]+f(d/(2/3)))%12;
+    case 60:return (s+f(d*2))%12; } }
   function nak(l){var i=Math.floor(l/(40/3));return {i:i,name:NK[i],slug:NKSLUG[i],pada:Math.floor((l%(40/3))/(10/3))+1};}
   function moonSid(ms){return sid('Moon',mk(ms));}
   function compute(ms,lat,lon){

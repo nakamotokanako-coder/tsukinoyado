@@ -10,7 +10,7 @@ const astro='node_modules/astronomy-engine/astronomy.browser.min.js';
 fs.copyFileSync(astro,OUT+'/assets/astronomy.min.js');
 const V=Date.now().toString(36);
 const NAV=[['/today/','今日の運勢'],['/chart/','魂の星図'],['/aisho/','相性占い'],['/sadesati/','サディサティ'],['/nakshatra/','27星宿'],['/articles/','読みもの']];
-const TOOLS={chart:['/chart/','魂の星図','出生図・魂の星・ダシャー・分割図'],aisho:['/aisho/','相性占い','36点で見るインド式の相性'],today:['/today/','今日の運勢','27星宿別・毎日更新'],sadesati:['/sadesati/','サディサティ判定','土星の7年半はいつ？'],panchang:['/today/','今日の暦','月の星宿・ティティ・ラーフ・カーラ']};
+const TOOLS={chart:['/chart/','魂の星図','出生図・魂の星・ダシャー・16分割図'],aisho:['/aisho/','相性占い','36点で見るインド式の相性'],today:['/today/','今日の運勢','27星宿別・毎日更新'],sadesati:['/sadesati/','サディサティ判定','土星の7年半はいつ？'],panchang:['/today/','今日の暦','月の星宿・ティティ・ラーフ・カーラ']};
 const ad=n=>C.adsenseClient?`<div class="ad"><p class="ad-label">広告</p><ins class="adsbygoogle" style="display:block" data-ad-client="${C.adsenseClient}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>`:'';
 const pages=[];
 function page(p,{title,desc,body,scripts=[],inline='',ld=null,crumb=null}){
@@ -83,7 +83,7 @@ ${ad('top')}
 <section><div class="sec-head"><h2>出生図（ラーシ・チャート）</h2><p>南インド式。星座の位置は固定で、色のついたマスがアセンダント（ラグナ）です。</p></div><figure class="chart l" id="d1"></figure><div class="tbl"><table id="ptable"></table></div><p class="note" id="ascnote"></p></section>
 <section><div class="sec-head"><h2>人生の時期</h2><p>ヴィムショッタリ・ダシャーと、土星の7年半（サディサティ）</p></div><div class="card now" id="now"></div><div class="timeline" id="dasha"></div><div class="card"><h3>サディサティ（土星の7年半）</h3><ul id="ss" style="margin:0;padding-left:1.2em"></ul></div></section>
 ${ad('mid')}
-<section><div class="sec-head"><h2>分割図</h2><p>人生のテーマごとに星を細かく見る図。D1で弱い星も、ここで強さを取り戻すことがあります。</p></div><div class="charts" id="vargas"></div><p class="note" id="vnote"></p></section>
+<section><div class="sec-head"><h2>分割図（16種類）</h2><p>パラーシャラが説いた16の分割図すべて。人生のテーマごとに星を細かく見る図で、D1で弱い星も、ここで強さを取り戻すことがあります。</p></div><div class="charts" id="vargas"></div><p class="note" id="vnote"></p></section>
 </div>
 <section><div class="sec-head"><h2>この星図の見方</h2></div><div class="prose"><p>インド占星術では、星座を実際の星の位置に合わせる「サイデリアル方式」を使うため、西洋占星術とは星座が約1つずれることがあります。くわしくは<a href="/articles/what-is-jyotish/">インド占星術とは</a>、<a href="/articles/divisional-charts/">分割図の読み方</a>、<a href="/articles/atmakaraka/">魂の星（アートマカラカ）とは</a>をどうぞ。</p></div></section>
 ${cta}`});
