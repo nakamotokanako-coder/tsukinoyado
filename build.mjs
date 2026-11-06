@@ -97,9 +97,9 @@ body:`<div class="hero"><span class="eyebrow">Free Birth Chart</span><h1>魂の�
 <div id="result" style="display:flex;flex-direction:column;gap:36px">
 <section><div class="sec-head"><h2>あなたの核</h2><p>魂の目的・心・生まれ持った性質</p></div><div class="grid" id="readings"></div><div id="shr"></div></section>
 <section><div class="sec-head"><h2>あなたのヨーガ</h2><p>星の組み合わせが生む、特別な配置。五大偉人ヨーガ、ラージャ・ヨーガなどを自動で見つけます。</p></div><div class="card now" id="ytop"></div><div class="grid" id="yogas"></div><p class="note" id="yoganote"></p></section>
-<section><div class="sec-head"><h2>星の強さ</h2><p>アシュタカヴァルガ。7つの星が、ほかの星からどれだけ応援を受けているかを点数にする、インド独自の方法です。</p></div><div id="stren" style="display:flex;flex-direction:column;gap:14px"></div></section>
+<section><div class="sec-head"><h2>星の強さ</h2><p>シャドバラとアシュタカヴァルガ。インド占星術で、星の強さを数字で見る2つの代表的な方法です。</p></div><div id="stren" style="display:flex;flex-direction:column;gap:14px"></div></section>
 ${ad('top')}
-<section><div class="sec-head"><h2>出生図（ラーシ・チャート）</h2><p>南インド式。星座の位置は固定で、色のついたマスがアセンダント（ラグナ）です。</p></div><figure class="chart l" id="d1"></figure><div class="tbl"><table id="ptable"></table></div><p class="note" id="ascnote"></p></section>
+<section><div class="sec-head"><h2>出生図（ラーシ・チャート）</h2><p id="stylenote"></p><div class="stylesw" role="group" aria-label="図の形"><span>図の形</span><button type="button" class="ghost" data-style="s">南インド式</button><button type="button" class="ghost" data-style="n">北インド式</button></div></div><figure class="chart l" id="d1"></figure><div class="tbl"><table id="ptable"></table></div><p class="note" id="ascnote"></p></section>
 <section><div class="sec-head"><h2>人生の時期</h2><p>ヴィムショッタリ・ダシャーと、土星の7年半（サディサティ）</p></div><div class="card now" id="now"></div><div class="timeline" id="dasha"></div><div class="card"><h3>サディサティ（土星の7年半）</h3><ul id="ss" style="margin:0;padding-left:1.2em"></ul></div></section>
 ${ad('mid')}
 <section><div class="sec-head"><h2>分割図（16種類）</h2><p>パラーシャラが説いた16の分割図すべて。人生のテーマごとに星を細かく見る図で、D1で弱い星も、ここで強さを取り戻すことがあります。</p></div><h3 style="margin:4px 0 0">まず読みたい3枚</h3><div class="grid" id="vread"></div>

@@ -15,7 +15,15 @@ function jst(ms,withDay){var d=new Date(ms+9*36e5);return (withDay?(d.getUTCMont
 function ym(ms){var d=new Date(ms+9*36e5);return d.getUTCFullYear()+'年'+(d.getUTCMonth()+1)+'月';}
 function ymd(ms){var d=new Date(ms+9*36e5);return d.getUTCFullYear()+'年'+(d.getUTCMonth()+1)+'月'+d.getUTCDate()+'日';}
 var SHORT=['牡羊','牡牛','双子','蟹','獅子','乙女','天秤','蠍','射手','山羊','水瓶','魚'],LAYOUT=[11,0,1,2,10,null,null,3,9,null,null,4,8,7,6,5];
-function grid(cells,ascSign,label){var h='<div class="si">';LAYOUT.forEach(function(s,i){if(s===null){if(i===5)h+='<div class="ctr">'+label+'</div>';return;}
+/* 北インド式（ダイヤ型）：ハウスが固定、星座の番号が回る */
+var NC=[[50,24],[25,9],[9,25],[25,50],[9,75],[25,91],[50,76],[75,91],[91,75],[75,50],[91,25],[75,9]];
+function getStyle(){try{return localStorage.getItem('tsuki-style')||'s';}catch(e){return 's';}}
+function setStyle(v){try{localStorage.setItem('tsuki-style',v);}catch(e){}}
+function north(cells,asc,label){var h='<div class="ni"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x=".5" y=".5" width="99" height="99"/><path d="M0 0L100 100M100 0L0 100M50 0L100 50L50 100L0 50Z"/></svg>';
+  for(var k=0;k<12;k++){var sg=(asc+k)%12,c=NC[k],tri=[1,2,4,5,7,8,10,11].indexOf(k)>=0;
+    h+='<div class="nh'+(tri?' t':'')+(k===0?' lag':'')+'" style="left:'+c[0]+'%;top:'+c[1]+'%"><span class="sg">'+(sg+1)+'</span><span class="pl">'+(cells[sg]||[]).join('')+'</span></div>';}
+  return h+'<span class="nlab">'+label.replace(/<br>/g,' ')+'</span></div>';}
+function grid(cells,ascSign,label){if(ascSign>=0&&getStyle()==='n')return north(cells,ascSign,label);var h='<div class="si">';LAYOUT.forEach(function(s,i){if(s===null){if(i===5)h+='<div class="ctr">'+label+'</div>';return;}
   h+='<div class="'+(s===ascSign?'lag':'')+'"><span class="sg">'+SHORT[s]+'</span><span class="pl">'+(cells[s]||[]).join('')+'</span></div>';});return h+'</div>';}
 var TARA_T=[
  {r:'n',tag:'自分を整える日',all:'意識が自分自身に向かう日です。新しいことを始めるより、心と体を整え、自分の軸を確かめるのに向いています。',love:'自分の本当の気持ちを、ゆっくり見つめてみて。',work:'無理な勝負は避けて、足元を固めましょう。'},
@@ -55,5 +63,5 @@ function enhanceDates(root){(root||document).querySelectorAll('input[type=date]'
   [Y,M,D].forEach(function(s){s.addEventListener('change',function(e){e.stopPropagation();sync();});});sync();});}
 enhanceDates();
 function ready(fn){if(window.Astronomy&&window.JY)fn();else setTimeout(function(){ready(fn);},80);}
-return {enhanceDates:enhanceDates,shareHTML:shareHTML,PLACES:PLACES,$:$,initPlace:initPlace,readBirth:readBirth,moonNakRange:moonNakRange,jst:jst,ym:ym,ymd:ymd,grid:grid,TARA_T:TARA_T,DT:DT,saveNak:saveNak,loadNak:loadNak,ready:ready};
+return {getStyle:getStyle,setStyle:setStyle,enhanceDates:enhanceDates,shareHTML:shareHTML,PLACES:PLACES,$:$,initPlace:initPlace,readBirth:readBirth,moonNakRange:moonNakRange,jst:jst,ym:ym,ymd:ymd,grid:grid,TARA_T:TARA_T,DT:DT,saveNak:saveNak,loadNak:loadNak,ready:ready};
 })();

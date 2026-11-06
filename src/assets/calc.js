@@ -205,6 +205,57 @@ var JY = (function(){
     for(i=0;i<16;i++){var d2=i<8,lord=d2?CHAL[(w+i)%7]:CHAL[(w+5+(i-8)*5)%7],s2=d2?t.rise+dl/8*i:t.set+nl/8*(i-8),c=CHO[lord];cho.push({lord:lord,name:c[0],mean:c[1],q:c[2],start:s2,end:s2+(d2?dl:nl)/8,day:d2});}
     return {rise:t.rise,set:t.set,next:t.next,hora:hora,cho:cho};}
 
-  return {timeSlots:timeSlots,ashtakavarga:ashtakavarga,mangal:mangal,sidOf:sidOf,elong:elong,rahuSid:rahuSid,signsAt:signsAt,sunrise:sunrise,nextIngress:nextIngress,relation:relation,yogas:yogas,SIGNS:SIGNS,NK:NK,NKSLUG:NKSLUG,DL:DL,compute:compute,dasha:dasha,sadeSati:sadeSati,varga:varga,dignity:dignity,nak:nak,moonSid:moonSid,tara:tara,TARA:TARA,panchang:panchang,koota:koota,norm:norm};
+  /* ---- シャドバラ（パラーシャラの6種の強さ）。単位はヴィルーパ（60で1ルーパ） ---- */
+  var SB7=['太陽','月','火星','水星','木星','金星','土星'],SBEN={太陽:'Sun',月:'Moon',火星:'Mars',水星:'Mercury',木星:'Jupiter',金星:'Venus',土星:'Saturn'};
+  var LORD=['火星','金星','水星','月','太陽','水星','金星','火星','木星','土星','土星','木星'];
+  var DEB={太陽:190,月:213,火星:118,水星:345,木星:275,金星:177,土星:20};
+  var NF={太陽:[['月','火星','木星'],['金星','土星']],月:[['太陽','水星'],[]],火星:[['太陽','月','木星'],['水星']],水星:[['太陽','金星'],['月']],木星:[['太陽','月','火星'],['水星','金星']],金星:[['水星','土星'],['太陽','月']],土星:[['水星','金星'],['太陽','月','火星']]};
+  var MT={太陽:[4,0,20],月:[1,3,30],火星:[0,0,12],水星:[5,15,20],木星:[8,0,10],金星:[6,0,15],土星:[10,0,20]};
+  var OWN={太陽:[4],月:[3],火星:[0,7],水星:[2,5],木星:[8,11],金星:[1,6],土星:[9,10]};
+  var NAIS={太陽:60,月:51.43,金星:42.85,木星:34.28,水星:25.7,火星:17.14,土星:8.57};
+  var REQ={太陽:390,月:360,火星:300,水星:420,木星:390,金星:330,土星:300};
+  var MEAN={火星:0.524,水星:0.9856,木星:0.0831,金星:0.9856,土星:0.0335};
+  function nat(a,b){var f=NF[a];return f[0].indexOf(b)>=0?1:f[1].indexOf(b)>=0?-1:0;}
+  function compound(r,a,b){var d=(r.P[b].sign-r.P[a].sign+12)%12+1,t=[2,3,4,10,11,12].indexOf(d)>=0?1:-1,s=nat(a,b)+t;return s;}/* 2大親友 1友 0中立 -1敵 -2大敵 */
+  function sputa(d){d=norm(d);if(d<30)return 0;if(d<60)return (d-30)/2;if(d<90)return d-60+15;if(d<120)return (120-d)/2+30;if(d<150)return 150-d;if(d<180)return (d-150)*2;if(d<300)return (300-d)/2;return 0;}
+  function special(k,d){d=norm(d);if(k==='火星'&&((d>=90&&d<120)||(d>=210&&d<240)))return 15;if(k==='木星'&&((d>=120&&d<150)||(d>=240&&d<270)))return 30;if(k==='土星'&&((d>=60&&d<90)||(d>=270&&d<300)))return 45;return 0;}
+  function shadbala(r,ms,lat,lon){var t=mk(ms),obs=new Astronomy.Observer(lat,lon,0),out={},el=elong(ms),waxing=el<180;
+    var ha=Astronomy.HourAngle(Astronomy.Body.Sun,t,obs),fromMid=Math.abs(ha-12)/12;/* 0=真夜中 1=正午 */
+    var ds=ms-((ms+9*36e5)%864e5),sl=timeSlotsAt(ms,lat,lon),day=sl&&ms>=sl.rise&&ms<sl.set;
+    var JD=ms/864e5+2440587.5,N=Math.floor(JD-588465.5),wdOf=function(n){var jd=588465.5+n;return (Math.floor(jd+1.5))%7;},WL=['太陽','月','火星','水星','木星','金星','土星'];
+    var abda=WL[wdOf(N-N%360)],masa=WL[wdOf(N-N%30)],vara=sl?WL[sl.wd]:WL[new Date(ms).getUTCDay()],hora=sl?sl.hora:null;
+    var tri=sl?(day?['水星','太陽','土星'][Math.min(2,Math.floor((ms-sl.rise)/((sl.set-sl.rise)/3)))]:['月','金星','火星'][Math.min(2,Math.floor((ms-sl.set)/((sl.next-sl.set)/3)))]):null;
+    var pk=(el>180?360-el:el)/3;
+    SB7.forEach(function(k){var p=r.P[k],L=p.lon,c={};
+      /* 1 位置の強さ */
+      var dd=Math.abs(norm(L-DEB[k]));if(dd>180)dd=360-dd;var uc=dd/3,sv=0;
+      [1,2,3,7,9,12,30].forEach(function(D){var s=D===1?p.sign:varga(L,D),v;
+        if(D===1&&s===MT[k][0]&&p.deg>=MT[k][1]&&p.deg<MT[k][2])v=45;else if(OWN[k].indexOf(s)>=0)v=30;
+        else{var lord=LORD[s],cp=lord===k?2:compound(r,k,lord);v=[1.875,3.75,7.5,15,22.5][cp+2];}sv+=v;});
+      var odd=function(s){return s%2===0;},fem=(k==='月'||k==='金星'),oj=((fem?!odd(p.sign):odd(p.sign))?15:0)+((fem?!odd(varga(L,9)):odd(varga(L,9)))?15:0);
+      var kb=[1,4,7,10].indexOf(p.house)>=0?60:[2,5,8,11].indexOf(p.house)>=0?30:15;
+      var dk=Math.floor(p.deg/10),dr=(['太陽','火星','木星'].indexOf(k)>=0&&dk===0)||(['水星','土星'].indexOf(k)>=0&&dk===1)||(fem&&dk===2)?15:0;
+      c.sthana=uc+sv+oj+kb+dr;
+      /* 2 方角の強さ */
+      var weak={太陽:r.asc+90,火星:r.asc+90,木星:r.asc+180,水星:r.asc+180,月:r.asc+270,金星:r.asc+270,土星:r.asc}[k],dg=Math.abs(norm(L-weak));if(dg>180)dg=360-dg;c.dig=dg/3;
+      /* 3 時間の強さ */
+      var no=k==='水星'?60:(['月','火星','土星'].indexOf(k)>=0?60*(1-fromMid):60*fromMid);
+      var ben=['木星','金星','水星'].indexOf(k)>=0||(k==='月'),pb=ben?pk:60-pk;if(k==='月')pb*=2;
+      var tb=(k==='木星'||tri===k)?60:0,avm=(abda===k?15:0)+(masa===k?30:0)+(vara===k?45:0)+(hora===k?60:0);
+      var eq=Astronomy.Equator(Astronomy.Body[SBEN[k]],t,obs,true,true),dec=eq.dec,ay=(k==='月'||k==='土星')?(24-dec)*60/48:k==='水星'?(24+Math.abs(dec))*60/48:(24+dec)*60/48;if(k==='太陽')ay*=2;
+      c.kala=no+pb+tb+avm+ay;
+      /* 4 動きの強さ */
+      if(k==='太陽')c.chesta=ay/2;else if(k==='月')c.chesta=pk;else{var sp=norm(sid(SBEN[k],t.AddDays(0.5))-sid(SBEN[k],t.AddDays(-0.5))+180)-180,m=MEAN[k],q=sp/m;
+        c.chesta=sp<0?60:q<0.1?15:q<0.5?15:q<0.9?30:q<=1.1?7.5:q<1.5?45:30;}
+      /* 5 生まれつきの強さ */
+      c.nais=NAIS[k];
+      /* 6 アスペクトの強さ */
+      var dr2=0;SB7.forEach(function(o){if(o===k)return;var d=r.P[k].lon-r.P[o].lon,v=sputa(d)+special(o,d),good=['木星','金星','水星'].indexOf(o)>=0||(o==='月'&&waxing);dr2+=good?v:-v;});c.drik=dr2/4;
+      var tot=c.sthana+c.dig+c.kala+c.chesta+c.nais+c.drik;out[k]={c:c,total:tot,rupa:tot/60,ratio:tot/REQ[k]};});
+    return out;}
+  function timeSlotsAt(ms,lat,lon){var d=new Date(ms+9*36e5),ds=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())-9*36e5,wd=d.getUTCDay(),T=timeSlots(ds,wd,lat,lon);
+    if(T&&ms<T.rise){ds-=864e5;wd=(wd+6)%7;T=timeSlots(ds,wd,lat,lon);}if(!T)return null;var h=T.hora.filter(function(x){return x.start<=ms&&ms<x.end;})[0];return {rise:T.rise,set:T.set,next:T.next,wd:wd,hora:h?h.lord:null};}
+
+  return {shadbala:shadbala,timeSlots:timeSlots,ashtakavarga:ashtakavarga,mangal:mangal,sidOf:sidOf,elong:elong,rahuSid:rahuSid,signsAt:signsAt,sunrise:sunrise,nextIngress:nextIngress,relation:relation,yogas:yogas,SIGNS:SIGNS,NK:NK,NKSLUG:NKSLUG,DL:DL,compute:compute,dasha:dasha,sadeSati:sadeSati,varga:varga,dignity:dignity,nak:nak,moonSid:moonSid,tara:tara,TARA:TARA,panchang:panchang,koota:koota,norm:norm};
 })();
 if(typeof module!=='undefined')module.exports=JY;

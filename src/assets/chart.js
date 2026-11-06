@@ -54,3 +54,7 @@ TK.initPlace('a-');
 $('f').addEventListener('submit',function(e){e.preventDefault();try{if(render())$('result').scrollIntoView({behavior:'smooth'});}catch(err){$('status').textContent='計算できませんでした。入力を確認してください。';}});
 TK.ready(function(){try{render();$('status').textContent='サンプル表示中（1990年5月15日 10:30 東京生まれ）';}catch(e){}});
 })();
+/* 南インド式・北インド式の切り替え */
+TK.ready(function(){var NOTE={s:'南インド式。星座の位置は固定で、色のついたマスがアセンダント（ラグナ）です。',n:'北インド式。上の中央のひし形が1室（アセンダント）で、そこから反時計回りに2室、3室…と続きます。数字は星座の番号（1＝牡羊座〜12＝魚座）です。時刻がわからない場合は南インド式で表示します。'};
+ function sync(){var v=TK.getStyle();var n=document.getElementById('stylenote');if(n)n.textContent=NOTE[v];document.querySelectorAll('[data-style]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.style===v?'true':'false');});}
+ document.querySelectorAll('[data-style]').forEach(function(b){b.addEventListener('click',function(){TK.setStyle(b.dataset.style);sync();var f=document.getElementById('f');if(document.getElementById('d1').innerHTML&&f){if(f.requestSubmit)f.requestSubmit();else f.dispatchEvent(new Event('submit',{cancelable:true}));}});});sync();});
