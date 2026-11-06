@@ -183,3 +183,12 @@ form.quick{grid-template-columns:minmax(0,260px) auto;align-items:end}
 .du{font-size:13px;color:var(--muted);flex:none}
 form.f label:has(.dsel),.grow label:has(.dsel){grid-column:1/-1}
 .dsel{max-width:380px}.dsel select{padding:9px 6px;font-size:16px}
+/* ---- 星の強さ ---- */
+.bars{display:flex;flex-direction:column;gap:6px}
+.sbar{display:grid;grid-template-columns:3.2em 1fr 1.4em 6.8em;align-items:center;gap:8px}
+.track{display:block;height:10px;border-radius:99px;background:var(--line);overflow:hidden}.track.sm{height:7px;min-width:50px}
+.track i{display:block;height:100%;background:var(--muted);border-radius:99px}.track i.g{background:var(--good)}.track i.b{background:var(--warn)}
+tr.cur td{background:var(--accent-soft);font-weight:700}
+details.card summary{cursor:pointer}
+.mlist{display:flex;flex-direction:column;gap:6px}.mrow{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;padding:10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.mrow span:last-child{flex-basis:100%;font-size:13.5px;color:var(--muted)}.mrow.top{border-color:var(--good);border-width:2px}

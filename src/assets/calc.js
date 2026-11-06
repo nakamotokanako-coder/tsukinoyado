@@ -177,6 +177,34 @@ var JY = (function(){
   function nextIngress(name,ms,maxDays,step){var f=name==='ラーフ'?function(m){return Math.floor(rahuSid(m)/30);}:function(m){return Math.floor(sid(name==='木星'?'Jupiter':name==='土星'?'Saturn':name==='火星'?'Mars':name==='金星'?'Venus':name==='水星'?'Mercury':'Sun',mk(m))/30);};
     var v=f(ms),D=864e5;step=step||2;for(var d=step;d<=maxDays;d+=step){if(f(ms+d*D)!==v){var lo=ms+(d-step)*D,hi=ms+d*D;while(hi-lo>36e5){var mid=(lo+hi)/2;if(f(mid)===v)lo=mid;else hi=mid;}return {ms:hi,to:f(hi)};}}return null;}
 
-  return {sidOf:sidOf,elong:elong,rahuSid:rahuSid,signsAt:signsAt,sunrise:sunrise,nextIngress:nextIngress,relation:relation,yogas:yogas,SIGNS:SIGNS,NK:NK,NKSLUG:NKSLUG,DL:DL,compute:compute,dasha:dasha,sadeSati:sadeSati,varga:varga,dignity:dignity,nak:nak,moonSid:moonSid,tara:tara,TARA:TARA,panchang:panchang,koota:koota,norm:norm};
+  /* ---- アシュタカヴァルガ（パラーシャラの表） 参照順：太陽,月,火星,水星,木星,金星,土星,ラグナ ---- */
+  var BAV={
+   太陽:[[1,2,4,7,8,9,10,11],[3,6,10,11],[1,2,4,7,8,9,10,11],[3,5,6,9,10,11,12],[5,6,9,11],[6,7,12],[1,2,4,7,8,9,10,11],[3,4,6,10,11,12]],
+   月:[[3,6,7,8,10,11],[1,3,6,7,10,11],[2,3,5,6,9,10,11],[1,3,4,5,7,8,10,11],[1,4,7,8,10,11,12],[3,4,5,7,9,10,11],[3,5,6,11],[3,6,10,11]],
+   火星:[[3,5,6,10,11],[3,6,11],[1,2,4,7,8,10,11],[3,5,6,11],[6,10,11,12],[6,8,11,12],[1,4,7,8,9,10,11],[1,3,6,10,11]],
+   水星:[[5,6,9,11,12],[2,4,6,8,10,11],[1,2,4,7,8,9,10,11],[1,3,5,6,9,10,11,12],[6,8,11,12],[1,2,3,4,5,8,9,11],[1,2,4,7,8,9,10,11],[1,2,4,6,8,10,11]],
+   木星:[[1,2,3,4,7,8,9,10,11],[2,5,7,9,11],[1,2,4,7,8,10,11],[1,2,4,5,6,9,10,11],[1,2,3,4,7,8,10,11],[2,5,6,9,10,11],[3,5,6,12],[1,2,4,5,6,7,9,10,11]],
+   金星:[[8,11,12],[1,2,3,4,5,8,9,11,12],[3,5,6,9,11,12],[3,5,6,9,11],[5,8,9,10,11],[1,2,3,4,5,8,9,10,11],[3,4,5,8,9,10,11],[1,2,3,4,5,8,9,11]],
+   土星:[[1,2,4,7,8,10,11],[3,6,11],[3,5,6,10,11,12],[6,8,9,10,11,12],[5,6,11,12],[6,11,12],[3,5,6,11],[1,3,4,6,10,11]]};
+  function ashtakavarga(r){var refs=PL.map(function(x){return r.P[x[0]].sign;}).concat([r.ascSign]),bav={},sav=[0,0,0,0,0,0,0,0,0,0,0,0];
+    Object.keys(BAV).forEach(function(p){var row=[0,0,0,0,0,0,0,0,0,0,0,0];BAV[p].forEach(function(hs,k){hs.forEach(function(h){row[(refs[k]+h-1)%12]++;});});bav[p]=row;row.forEach(function(v,i){sav[i]+=v;});});
+    return {bav:bav,sav:sav};}
+  /* ---- マンガル・ドーシャ ---- */
+  function mangal(r,useLagna){var M=r.P['火星'].sign,out=[],H=[1,2,4,7,8,12];
+    [['アセンダント',useLagna?r.ascSign:null],['月',r.P['月'].sign],['金星',r.P['金星'].sign]].forEach(function(x){if(x[1]===null)return;var h=(M-x[1]+12)%12+1;if(H.indexOf(h)>=0)out.push({from:x[0],house:h});});
+    var cancel=[0,7,9].indexOf(M)>=0?'火星が'+SIGNS[M]+'（'+(M===9?'高揚':'自分の星座')+'）にあり、力が穏やかに働くとされます':'';
+    return {has:out.length>0,from:out,cancel:cancel,level:out.length===0?0:cancel?1:out.length};}
+
+  /* ---- ホーラーとチョーガディヤ ---- */
+  var CHAL=['太陽','金星','水星','月','土星','木星','火星'],WKL=[0,3,6,2,5,1,4];/* 曜日→CHALの位置 */
+  var CHO={太陽:['ウドヴェーガ','不安',0],金星:['チャラ','動き',1],水星:['ラーバ','利益',2],月:['アムリタ','甘露',2],土星:['カーラ','停滞',0],木星:['シュバ','吉祥',2],火星:['ローガ','病',0]};
+  function setRise(dayStartUtc,lat,lon){var o=new Astronomy.Observer(lat,lon,0),r=Astronomy.SearchRiseSet(Astronomy.Body.Sun,o,+1,mk(dayStartUtc),1),s=r?Astronomy.SearchRiseSet(Astronomy.Body.Sun,o,-1,r,1):null,n=s?Astronomy.SearchRiseSet(Astronomy.Body.Sun,o,+1,s,1):null;
+    return r&&s&&n?{rise:r.date.getTime(),set:s.date.getTime(),next:n.date.getTime()}:null;}
+  function timeSlots(dayStartUtc,wd,lat,lon){var t=setRise(dayStartUtc,lat,lon);if(!t)return null;var w=WKL[wd],hora=[],cho=[],i,dl=(t.set-t.rise),nl=(t.next-t.set);
+    for(i=0;i<24;i++){var day=i<12,st=day?t.rise+dl/12*i:t.set+nl/12*(i-12);hora.push({lord:CHAL[(w+i)%7],start:st,end:st+(day?dl:nl)/12,day:day});}
+    for(i=0;i<16;i++){var d2=i<8,lord=d2?CHAL[(w+i)%7]:CHAL[(w+5+(i-8)*5)%7],s2=d2?t.rise+dl/8*i:t.set+nl/8*(i-8),c=CHO[lord];cho.push({lord:lord,name:c[0],mean:c[1],q:c[2],start:s2,end:s2+(d2?dl:nl)/8,day:d2});}
+    return {rise:t.rise,set:t.set,next:t.next,hora:hora,cho:cho};}
+
+  return {timeSlots:timeSlots,ashtakavarga:ashtakavarga,mangal:mangal,sidOf:sidOf,elong:elong,rahuSid:rahuSid,signsAt:signsAt,sunrise:sunrise,nextIngress:nextIngress,relation:relation,yogas:yogas,SIGNS:SIGNS,NK:NK,NKSLUG:NKSLUG,DL:DL,compute:compute,dasha:dasha,sadeSati:sadeSati,varga:varga,dignity:dignity,nak:nak,moonSid:moonSid,tara:tara,TARA:TARA,panchang:panchang,koota:koota,norm:norm};
 })();
 if(typeof module!=='undefined')module.exports=JY;

@@ -20,7 +20,7 @@ const astro='node_modules/astronomy-engine/astronomy.browser.min.js';
 fs.copyFileSync(astro,OUT+'/assets/astronomy.min.js');
 const V=Date.now().toString(36);
 const NAV=[['/jyotish/','はじめての方へ'],['/today/','今日の運勢'],['/fortune/','今月の運勢'],['/calendar/','吉日カレンダー'],['/chart/','魂の星図'],['/aisho/','相性占い'],['/group/','グループ相性'],['/nakshatra/','27星宿'],['/yoga/','ヨーガ'],['/articles/','読みもの']];
-const TOOLS={chart:['/chart/','魂の星図','出生図・魂の星・ダシャー・16分割図'],aisho:['/aisho/','相性占い','36点で見るインド式の相性'],today:['/today/','今日の運勢','27星宿別・毎日更新'],sadesati:['/sadesati/','サディサティ判定','土星の7年半はいつ？'],group:['/group/','グループ相性占い','友だち・家族・職場の相性を一覧で'],yoga:['/yoga/','ヨーガ事典','五大偉人ヨーガほか27のヨーガ'],panchang:['/today/','今日の暦','月の星宿・ティティ・ラーフ・カーラ'],fortune:['/fortune/','今月・今年の運勢','月の星座12種別・星の運行で自動更新'],calendar:['/calendar/','吉日カレンダー','グル・プシュヤ、満月、あなたの好調日'],wheel:['/wheel/','星宿の円盤','回して見る、27星宿の関係'],famous:['/famous/','有名人の星宿','あの人と同じ星宿？']};
+const TOOLS={chart:['/chart/','魂の星図','出生図・魂の星・ダシャー・16分割図'],aisho:['/aisho/','相性占い','36点で見るインド式の相性'],today:['/today/','今日の運勢','27星宿別・毎日更新'],sadesati:['/sadesati/','サディサティ判定','土星の7年半はいつ？'],group:['/group/','グループ相性占い','友だち・家族・職場の相性を一覧で'],yoga:['/yoga/','ヨーガ事典','五大偉人ヨーガほか27のヨーガ'],panchang:['/today/','今日の暦','月の星宿・ティティ・ラーフ・カーラ'],fortune:['/fortune/','今月・今年の運勢','月の星座12種別・星の運行で自動更新'],calendar:['/calendar/','吉日カレンダー','グル・プシュヤ、満月、あなたの好調日'],wheel:['/wheel/','星宿の円盤','回して見る、27星宿の関係'],famous:['/famous/','有名人の星宿','あの人と同じ星宿？'],muhurta:['/muhurta/','吉日選び','入籍・引っ越し・開業によい日を探す']};
 const ad=n=>C.adsenseClient?`<div class="ad"><p class="ad-label">広告</p><ins class="adsbygoogle" style="display:block" data-ad-client="${C.adsenseClient}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>`:'';
 const pages=[];
 const shareS=(text,p)=>{const url=C.siteUrl+p,e=encodeURIComponent,u=e(url),t=e(text);return `<div class="share"><span class="share-l">シェアする</span><a class="sh x" href="https://twitter.com/intent/tweet?text=${t}&url=${u}" target="_blank" rel="noopener">X</a><a class="sh th" href="https://www.threads.net/intent/post?text=${e(text+' '+url)}" target="_blank" rel="noopener">Threads</a><a class="sh ln" href="https://social-plugins.line.me/lineit/share?url=${u}&text=${t}" target="_blank" rel="noopener">LINE</a><a class="sh fb" href="https://www.facebook.com/sharer/sharer.php?u=${u}" target="_blank" rel="noopener">Facebook</a><a class="sh hb" href="https://b.hatena.ne.jp/entry/s/${url.replace(/^https?:\/\//,'')}" target="_blank" rel="noopener">はてブ</a><button type="button" class="sh cp" data-copy="${esc(text+' '+url)}">リンクをコピー</button></div>`;};
@@ -66,9 +66,9 @@ page('/',{title:'トップ',desc:'インド占星術（ジョーティッシュ�
 body:`<div class="hero"><span class="eyebrow">Jyotish · Vedic Astrology</span><h1>月の宿に、<br>あなたの星を訪ねる。</h1><p class="lead">インド占星術（ジョーティッシュ）は、生まれた瞬間の月が宿っていた「星宿」から、人の性質と人生の時期を読む占星術です。日本の宿曜のルーツでもあるこの智慧を、すべて無料でどうぞ。</p></div>
 ${quickForm}
 <section><div class="sec-head"><h2>今日の運勢 <span id="today-date" class="note"></span></h2><p>生まれた星宿と、今日の月の星宿の巡り（ターラ）から読む毎日の運勢です。</p></div>
-<div class="card now" id="mine"></div><div class="grid" id="pick"></div><p class="note"><a href="/today/">27星宿すべての今日の運勢を見る →</a></p></section>
+<div class="card now" id="mine"></div><div class="grid" id="pick"></div><div class="card" id="nowslot"></div><p class="note"><a href="/today/">27星宿すべての今日の運勢を見る →</a></p></section>
 ${ad('top')}
-<section><div class="sec-head"><h2>無料占い</h2><p>生年月日と時刻、出生地を入れるだけ。計算はすべてあなたの端末の中で行います。</p></div>${toolCards(['chart','aisho','fortune','calendar','group','sadesati','wheel','famous','yoga'])}</section>
+<section><div class="sec-head"><h2>無料占い</h2><p>生年月日と時刻、出生地を入れるだけ。計算はすべてあなたの端末の中で行います。</p></div>${toolCards(['chart','aisho','fortune','calendar','muhurta','group','sadesati','wheel','famous','yoga'])}</section>
 <section><div class="sec-head"><h2>今日の暦（パンチャーンガ）</h2><p>インドの暦で見る、今日という日の性質。</p></div><div class="facts" id="pc"></div></section>
 <section><div class="sec-head"><h2>27星宿（ナクシャトラ）</h2><p>月の通り道を27に分けた「月の宿」。生まれたときの月の星宿が、あなたの心のかたちを表します。</p></div>${nakChips()}</section>
 ${ad('mid')}
@@ -81,6 +81,8 @@ body:`<div class="hero"><span class="eyebrow">Daily Tara</span><h1>今日の運�
 <div class="card now" id="mine"></div><div class="grid" id="pick"></div>
 ${ad('top')}
 <section><div class="sec-head"><h2>27星宿別の今日の運勢</h2><p>星宿名を押すと、くわしい性格と今日のアドバイスが見られます。</p></div><div class="tara" id="tara"></div></section>
+<section id="cho-sec"><div class="sec-head"><h2 id="cho-h">今日の吉凶の時間帯（チョーガディヤ）</h2><p>日の出から日の入りまでと、日の入りから次の日の出までを、それぞれ8つに分けた時間帯です。インドでは、出かける時刻や物事を始める時刻を選ぶのに、毎日使われています。時刻は東京の値です。</p></div><div id="cho" style="display:flex;flex-direction:column;gap:14px"></div>
+<p class="note"><span class="pill g">アムリタ・シュバ・ラーバ</span>はよい時間、<span class="pill">チャラ</span>は移動によい時間、<span class="pill b">ウドヴェーガ・カーラ・ローガ</span>は大事な始めごとを避ける時間です。ホーラーは、昼と夜をそれぞれ12に分け、7つの星が順番に受け持つ時間です。</p></section>
 <section><div class="sec-head"><h2>今日の暦（パンチャーンガ）</h2><p>時刻は東京の値です。</p></div><div class="facts" id="pc"></div></section>
 <section><div class="sec-head"><h2>9つのターラの意味</h2><p>星宿は9つごとに同じ性質の巡りを繰り返します。日本の宿曜の「三九の秘法」と同じ構造です。</p></div>
 <div class="tbl"><table style="min-width:420px"><thead><tr><th>順番</th><th>ターラ</th><th>宿曜</th><th>この日の性質</th></tr></thead><tbody>${TARA_ROWS.map(r=>`<tr><td class="num">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div>
@@ -88,13 +90,14 @@ ${ad('top')}
 ${ad('bottom')}${cta}`});
 
 /* ---------- 魂の星図 ---------- */
-page('/chart/',{title:'魂の星図｜インド占星術の無料ホロスコープ（出生図・分割図・ダシャー）',desc:'生年月日・時刻・出生地から、インド占星術の出生図（南インド式）、魂の星（アートマカラカ）、月の星宿、ヴィムショッタリ・ダシャー、サディサティ、分割図D9・D10・D60を無料で計算します。',scripts:['varga-read.js','chart.js'],crumb:'魂の星図',
+page('/chart/',{title:'魂の星図｜インド占星術の無料ホロスコープ（出生図・分割図・ダシャー）',desc:'生年月日・時刻・出生地から、インド占星術の出生図（南インド式）、魂の星（アートマカラカ）、月の星宿、ヴィムショッタリ・ダシャー、サディサティ、分割図D9・D10・D60を無料で計算します。',scripts:['varga-read.js','chart-extra.js','chart.js'],crumb:'魂の星図',
 inline:`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.YOGA=${JSON.stringify(YMAP)};window.YSTAT=${JSON.stringify(YST)};`,
 body:`<div class="hero"><span class="eyebrow">Free Birth Chart</span><h1>魂の星図</h1><p class="lead">出生図、魂の目的を示す星、心の星宿、人生の時期、結婚・天職・過去世の分割図まで。生まれた時刻がわかると、より正確になります。</p></div>
 <form class="f" id="f" novalidate>${birthForm('a-','生まれたときのこと',{name:true})}<div class="actions"><button type="submit">星図を出す</button><span class="status" id="status"></span></div></form>
 <div id="result" style="display:flex;flex-direction:column;gap:36px">
 <section><div class="sec-head"><h2>あなたの核</h2><p>魂の目的・心・生まれ持った性質</p></div><div class="grid" id="readings"></div><div id="shr"></div></section>
 <section><div class="sec-head"><h2>あなたのヨーガ</h2><p>星の組み合わせが生む、特別な配置。五大偉人ヨーガ、ラージャ・ヨーガなどを自動で見つけます。</p></div><div class="card now" id="ytop"></div><div class="grid" id="yogas"></div><p class="note" id="yoganote"></p></section>
+<section><div class="sec-head"><h2>星の強さ</h2><p>アシュタカヴァルガ。7つの星が、ほかの星からどれだけ応援を受けているかを点数にする、インド独自の方法です。</p></div><div id="stren" style="display:flex;flex-direction:column;gap:14px"></div></section>
 ${ad('top')}
 <section><div class="sec-head"><h2>出生図（ラーシ・チャート）</h2><p>南インド式。星座の位置は固定で、色のついたマスがアセンダント（ラグナ）です。</p></div><figure class="chart l" id="d1"></figure><div class="tbl"><table id="ptable"></table></div><p class="note" id="ascnote"></p></section>
 <section><div class="sec-head"><h2>人生の時期</h2><p>ヴィムショッタリ・ダシャーと、土星の7年半（サディサティ）</p></div><div class="card now" id="now"></div><div class="timeline" id="dasha"></div><div class="card"><h3>サディサティ（土星の7年半）</h3><ul id="ss" style="margin:0;padding-left:1.2em"></ul></div></section>
@@ -107,7 +110,7 @@ ${ad('mid')}
 ${cta}`});
 
 /* ---------- 相性 ---------- */
-page('/aisho/',{title:'相性占い｜インド式アシュタクータ（36点満点）',desc:'二人の生年月日から、インド占星術の伝統的な相性占い「アシュタクータ」を36点満点で無料計算。ヴァルナ、ヨーニ、ガナ、ナーディなど8項目の意味も解説します。',scripts:['aisho.js'],crumb:'相性占い',
+page('/aisho/',{title:'相性占い｜インド式アシュタクータ（36点満点）',desc:'二人の生年月日から、インド占星術の伝統的な相性占い「アシュタクータ」を36点満点で無料計算。ヴァルナ、ヨーニ、ガナ、ナーディなど8項目の意味も解説します。',scripts:['chart-extra.js','aisho.js'],crumb:'相性占い',
 body:`<div class="hero"><span class="eyebrow">Ashtakoota</span><h1>相性占い</h1><p class="lead">インドで結婚相手を選ぶときに使われてきた「アシュタクータ」は、二人の月の星宿と星座から、8つの項目で相性を点数にします。36点満点で、18点以上がひとつの目安です。</p></div>
 <form class="f" id="f" novalidate>${birthForm('a-','あなた',{gender:true,def:{g:'f'}})}${birthForm('b-','お相手',{gender:true,def:{bd:'1988-09-05',bt:'07:15',g:'m'}})}<div class="actions"><button type="submit">相性を見る</button><span class="status" id="status"></span></div></form>
 <section id="res"></section>
@@ -212,6 +215,7 @@ body:`<div class="hero"><span class="eyebrow">Auspicious Days</span><h1>吉日�
 <div id="cal"></div>
 <p class="note">色の見方：<span class="pill g">吉日</span>は暦の吉日、<span class="pill s">暦の節目</span>は満月・新月など。あなたの星宿を選ぶと、好調日は緑、注意日はオレンジの枠になります。星宿は日の出（東京）の時点のものです。星宿がわからない方は<a href="/">生年月日だけで調べる</a>へ。</p>
 <div id="det"></div><div id="mylist"></div>
+<p class="note">入籍・引っ越し・開業など、目的に合う日を探すなら<a href="/muhurta/">吉日選び（ムフールタ）</a>へ。</p>
 <section><div class="sec-head"><h2>今月の吉日と暦の節目</h2></div><div class="card" id="list"></div></section>
 <div id="shr"></div>
 ${ad('mid')}
@@ -267,6 +271,19 @@ ${CATS.map((c,k)=>`<section id="c${k}"><div class="sec-head"><h2>${c}</h2></div>
 <section id="bynak"><div class="sec-head"><h2>星宿別の有名人</h2></div><div class="list">${NAK.map((n,i)=>{const L=FAM.filter(f=>f.n===i||f.n2===i);return L.length?`<a href="/nakshatra/${n.slug}/"><b>${n.name}（${n.sukuyo}）</b><span>${L.map(f=>esc(f.name)).join('、')}</span></a>`:'';}).join('')}</div></section>
 ${shareS('有名人の月の星宿を、インド占星術で調べました。あなたと同じ星宿は？','/famous/')}
 <a class="card tool" href="/"><span class="k">無料で調べる</span><b>あなたの星宿を調べる</b><p>生年月日だけでわかります</p></a>${cta}`});
+
+/* ---------- 吉日選び ---------- */
+page('/muhurta/',{title:'吉日選び（ムフールタ）｜入籍・引っ越し・開業によい日',desc:'インド占星術のムフールタ（吉日選び）で、入籍・結婚式、引っ越し、開業・契約、旅行、大きな買いもの、習いごとによい日を、これから最大6か月分探せます。あなたの星宿にとってよい日もわかります。',scripts:['muhurta.js'],crumb:'吉日選び',
+body:`<div class="hero"><span class="eyebrow">Muhurta</span><h1>吉日選び（ムフールタ）</h1><p class="lead">インドでは、結婚、引っ越し、開業など人生の大切な始まりを、星を見て選んだ「ムフールタ（よい時）」に行います。目的を選ぶと、これからの吉日を探します。</p></div>
+<form class="f" id="mf" novalidate><label for="mp">目的<select id="mp"></select></label><label for="mn">あなたの星宿（わかれば）<select id="mn"></select></label><label for="mr">探す期間<select id="mr"><option value="1">1か月</option><option value="3" selected>3か月</option><option value="6">6か月</option></select></label><div class="actions"><button type="submit">吉日を探す</button></div><p class="note" style="grid-column:1/-1">星宿がわからない方は<a href="/">生年月日だけで調べる</a>へ。</p></form>
+<section id="mres" style="display:flex;flex-direction:column;gap:12px"></section>
+${ad('mid')}
+<section><div class="sec-head"><h2>このページの吉日の選び方</h2></div><div class="prose">
+<p>ムフールタでは、その日の月の星宿、ティティ（月齢日）、曜日の3つを組み合わせて、目的に合う日を選びます。このページでは、次の条件をすべて満たす日を出しています。</p>
+<ul><li>月の星宿が、目的ごとに伝統的に選ばれる星宿であること</li><li>ティティが吉日（2・3・5・7・10・11・12・13日目）であること。4・9・14日目（リクタ）と新月・満月は避けます</li><li>火曜日・土曜日を避けること（旅行は日曜日も可）</li><li>あなたの星宿を選んだ場合は、あなたから見て「命・衰・危・壊」にあたる日を除くこと</li></ul>
+<p>「特におすすめ」は、満ちていく月の日、あなたにとって「栄・成・親」の日、グル・プシュヤなどが重なる日です。</p>
+<p>本格的なムフールタでは、その日の中でもよい時間帯（ラグナ）まで選び、本人の出生図の時期も重ねます。このページは日を選ぶための簡易版です。当日の時間帯は<a href="/today/">今日の吉凶の時間帯（チョーガディヤ）</a>で見られます。</p></div></section>
+${cta}`});
 
 /* ---------- 固定ページ ---------- */
 page('/about/',{title:'運営者情報',desc:`${C.siteName}の運営者情報とサイトの方針。`,crumb:'運営者情報',body:`<div class="hero"><h1>運営者情報</h1></div><div class="prose">
