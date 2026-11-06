@@ -26,7 +26,12 @@ function render(){var b=TK.readBirth('a-'),st=$('status');if(b.err){st.textConte
   var ids=Object.keys(grp).sort(function(x,y){return lv(y)-lv(x);});
   $('yogas').innerHTML=ids.length?ids.map(function(id){var Y=YG[id]||{name:id,cat:'',m:''},L=lv(id),f=ST.freq[id];return '<div class="card'+(L>=4?' ak':'')+'"><span class="eyebrow">'+Y.cat+'</span><b style="font-size:16px">'+Y.name+'</b><span class="rar r'+L+'">'+'★★★★'.slice(0,L)+'<span class="mut">'+'★★★★'.slice(L)+'</span> '+LVN[L]+(f!==undefined?'（約'+Math.max(1,Math.round(f*100))+'%の人が持つ）':'')+'</span><p class="note" style="color:inherit">'+grp[id].join('／')+'</p><p class="note">'+Y.m+'</p><a href="/yoga/#'+id+'" style="font-size:13px">くわしく見る</a></div>';}).join(''):'<p class="note">主なヨーガは見つかりませんでした。ヨーガがないことは、悪い意味ではありません。</p>';
   var sc=ids.filter(function(id){return EXC.indexOf(id)<0;}).reduce(function(t,id){return t+PT[lv(id)];},0),below=ST.pct.filter(function(v){return v<sc;}).length,top=Math.max(1,100-below);
-  $('ytop').innerHTML=ST.pct.length?'<span class="eyebrow">チャートの特殊度</span><span class="big">上位 '+top+'%</span><p class="note" style="color:inherit">持っているヨーガの珍しさを点数にして、4,000人分のチャートと比べた結果です（よくある0点・ときどき1点・珍しい3点・とても珍しい6点。'+sc+'点）。良い悪いではなく、「どれだけ個性的な配置か」の目安です。</p>':'';
+  var contrib=ids.filter(function(id){return EXC.indexOf(id)<0&&PT[lv(id)]>0;}).sort(function(x,y){return PT[lv(y)]-PT[lv(x)];}),
+    lab=top<=10?'とても個性的な配置':top<=30?'個性的な配置':top<=60?'ほどよく個性のある配置':'よくある配置が中心';
+  $('ytop').innerHTML=ST.pct.length?'<span class="eyebrow">チャートの特殊度（ヨーガの珍しさ）</span><span class="big">'+lab+'</span>'+
+   '<p style="margin:0">100人いたら、上から<b>約'+top+'番目</b>（'+sc+'点）。</p>'+
+   (contrib.length?'<p class="note" style="color:inherit"><b>点数のもとになったヨーガ：</b>'+contrib.map(function(id){var L=lv(id);return (YG[id]||{name:id}).name+'（'+LVN[L]+' +'+PT[L]+'点）';}).join('、')+'</p>':'<p class="note" style="color:inherit">持っているヨーガは、多くの人が持つ「よくある」ものだけでした。</p>')+
+   '<p class="note">数え方：持っているヨーガを、珍しさで点数にしました（とても珍しい6点、珍しい3点、ときどき1点、よくある0点）。その合計を、ランダムに選んだ4,000人分のチャートと比べています。ヨーガの「数」ではなく「珍しさ」を見ているので、よくあるヨーガがたくさんあっても点数は上がりません。良い悪いの評価ではありません。</p>':'';
   $('yoganote').innerHTML=b.unknown?'時刻がわからないため、アセンダントを使うヨーガ（五大偉人ヨーガ、ラージャ・ヨーガなど）は表示していません。':'ヨーガは成立していても、その星の強さや時期（ダシャー）によって表れ方が変わります。';
   var near='';if(!b.unknown){var e=null,l=null;for(var m=1;m<=10;m++){if(e===null&&JY.compute(b.ms-m*6e4,b.lat,b.lon).ascSign!==r.ascSign)e=m;if(l===null&&JY.compute(b.ms+m*6e4,b.lat,b.lon).ascSign!==r.ascSign)l=m;}
     if(e!==null||l!==null)near='<br><span class="warn">アセンダントが星座の境目近くにあります（出生時刻が'+(e!==null?e+'分早い':'')+(e!==null&&l!==null?'か、':'')+(l!==null?l+'分遅い':'')+'と変わります）。時刻の記録を確認してください。</span>';}
