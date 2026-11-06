@@ -206,3 +206,4 @@ details.card summary{cursor:pointer}
 .stylesw{display:flex;gap:6px;align-items:center;font-size:13px}.stylesw button{padding:5px 12px}.stylesw button[aria-pressed="true"]{background:var(--accent);color:var(--surface)}
 .sbar .pill{font-size:11px;padding:1px 6px;justify-self:start;white-space:nowrap}
 #stren details table{font-size:12px}#stren details td,#stren details th{padding:6px 5px}
+.hm{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--accent-soft)}.hm .eyebrow{flex-basis:100%;margin:0}.hm b{font-size:20px;font-family:var(--f-display)}

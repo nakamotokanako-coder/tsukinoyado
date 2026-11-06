@@ -1,14 +1,15 @@
 /* 生年月日だけで月の星宿を調べる（日本時間） */
 (function(){var $=TK.$,SL='aries taurus gemini cancer leo virgo libra scorpio sagittarius capricorn aquarius pisces'.split(' ');
-var SU=window.NKSU||[],SM=window.NKSUM||[];
+var SU=window.NKSU||[],SM=window.NKSUM||[],HM=null;
 function find(ds,fn){var v0=fn(ds),lo=ds,hi=ds+864e5-6e4;if(fn(hi)===v0)return null;while(hi-lo>6e4){var m=(lo+hi)/2;if(fn(m)===v0)lo=m;else hi=m;}return hi;}
-function card(i,sign,extra){var slug=JY.NKSLUG[i];
-  return '<div class="card now"><span class="eyebrow">あなたの月の星宿</span><span class="big">'+JY.NK[i]+'</span><h3>宿曜では「'+(SU[i]||'')+'」・月の星座は'+JY.SIGNS[sign]+'</h3>'+
+function card(i,sign,extra){var slug=JY.NKSLUG[i],hm=HM;
+  return '<div class="card now"><span class="eyebrow">あなたの月の星宿</span><span class="big">'+JY.NK[i]+'</span><h3>月の星座は'+JY.SIGNS[sign]+'</h3>'+
   '<p style="margin:0">'+(SM[i]||'')+'</p>'+(extra||'')+
+  '<div class="hm"><span class="eyebrow">日本の宿曜占星術の本命宿</span><b>'+hm.name+'</b><span class="note">旧暦'+(hm.kyu.leap?'閏':'')+hm.kyu.m+'月'+hm.kyu.d+'日生まれ</span>'+(JY.SKY[(i+25)%27]===hm.name?'':'<p class="note" style="margin:4px 0 0">宿曜は旧暦の日付から宿を出し、インド占星術は実際の月の位置から出すため、違う宿になることがあります。どちらも、それぞれの占術での正しい答えです。</p>')+'</div>'+
   '<div class="qbtn"><a class="btn" href="/nakshatra/'+slug+'/">'+JY.NK[i]+'の性格を読む</a><a class="btn ghost" href="/fortune/'+SL[sign]+'/">'+JY.SIGNS[sign]+'の今月の運勢</a><a class="btn ghost" href="/calendar/">吉日カレンダー</a></div>'+
-  TK.shareHTML('インド占星術で調べたら、私の月の星宿は「'+JY.NK[i]+'」（宿曜の'+(SU[i]||'')+'）でした。 #月の宿 #インド占星術',location.origin+'/')+'</div>';}
+  TK.shareHTML('インド占星術で調べたら、私の月の星宿は「'+JY.NK[i]+'」、宿曜の本命宿は「'+hm.name+'」でした。 #月の宿 #インド占星術',location.origin+'/')+'</div>';}
 function run(e){if(e)e.preventDefault();var v=$('qbd').value,out=$('qres');if(!v){out.innerHTML='<p class="warn">生年月日を入れてください。</p>';return;}
-  var a=v.split('-').map(Number),ds=Date.UTC(a[0],a[1]-1,a[2])-9*36e5,
+  var a=v.split('-').map(Number),ds=Date.UTC(a[0],a[1]-1,a[2])-9*36e5;HM=JY.honmei(a[0],a[1],a[2]);var 
       nk=function(m){return Math.floor(JY.moonSid(m)/(40/3));},sg=function(m){return Math.floor(JY.moonSid(m)/30);};
   var sw=find(ds,nk);
   if(sw===null){var i=nk(ds),s0=sg(ds),s1=sg(ds+864e5-6e4);TK.saveNak(i);

@@ -9,7 +9,7 @@ const FAMOUS=rd('content/famous.json');
 const VMX={Astronomy:createRequire(import.meta.url)('astronomy-engine'),console,Date,Math};vm.createContext(VMX);
 vm.runInContext(fs.readFileSync('src/assets/calc.js','utf8')+';this.JY=JY;',VMX);vm.runInContext(fs.readFileSync('src/assets/fortune-data.js','utf8')+';this.FD=FD;',VMX);
 const JY=VMX.JY,FD=VMX.FD;
-const FAM=FAMOUS.map(f=>{const [y,m,d]=f.date.split('-').map(Number),ds=Date.UTC(y,m-1,d)-f.tz*36e5,a=JY.nak(JY.moonSid(ds)).i,b=JY.nak(JY.moonSid(ds+864e5-6e4)).i;return {...f,y,m,d,n:a,n2:a===b?null:b};});
+const FAM=FAMOUS.map(f=>{const [y,m,d]=f.date.split('-').map(Number),ds=Date.UTC(y,m-1,d)-f.tz*36e5,a=JY.nak(JY.moonSid(ds)).i,b=JY.nak(JY.moonSid(ds+864e5-6e4)).i;return {...f,y,m,d,n:a,n2:a===b?null:b,hm:JY.honmei(y,m,d).name};});
 const YOGA=rd('content/yoga.json');
 const YST=fs.existsSync('content/yoga_stats.json')?JSON.parse(fs.readFileSync('content/yoga_stats.json','utf8')):{freq:{},pct:[]};
 const YLV=id=>{const f=YST.freq[id];return f===undefined?2:f<0.10?4:f<0.25?3:f<0.45?2:1;};const YLN=['','よくある','ときどき','珍しい','とても珍しい'];
@@ -138,13 +138,14 @@ ${nakChips()}${ad('mid')}
 const RTYPES=[['命','同じ星宿','分身のように似た二人。強い共感で結ばれ、同じ弱点も分かち合います。'],['栄親','栄・親','互いを引き立て、豊かにし合う、穏やかで発展的な関係。一緒にいるほど運が育ちます。'],['友衰','友・衰','気楽で心地よい友情の関係。なれ合いになると、どちらかが疲れやすい面も。'],['安壊','安・壊','強く惹かれ合い、互いを大きく動かす関係。「安」の側は安らぎを、「壊」の側は変化をもたらします。'],['危成','危・成','違いから学び合う関係。最初はすれ違っても、互いを成長させます。'],['業胎','業・胎','前世からの約束を感じさせる、宿命的な縁。']];
 const relTable=i=>{const rows=RTYPES.map(([t,lab,desc])=>{const L=[];for(let j=0;j<27;j++){if(t==='命'&&j!==i)continue;const r=JY.relation(i,j);if(r.type!==t)continue;L.push(`<li><a href="/nakshatra/${NAK[j].slug}/">${NAK[j].name}</a>${t==='命'?'':`<small>相手は${r.aSees}・あなたは${r.bSees}</small>`}</li>`);}
   return `<div class="rel"><h3><span class="rt t-${t}">${t}</span>${lab}</h3><p class="note" style="margin:2px 0 8px">${desc}</p><ul class="chips rl">${L.join('')}</ul></div>`;}).join('');
-  return `<section><div class="sec-head"><h2>${NAK[i].name}と、ほかの星宿との関係</h2><p>宿曜の「三九の秘法」と同じしくみで、星宿どうしの距離から関係を読みます。「相手は栄」は、${NAK[i].name}のあなたから見て相手が「栄」にあたるという意味です。<a href="/wheel/">円盤で見る →</a></p></div>${rows}</section>`;};
+  return `<section><div class="sec-head"><h2>${NAK[i].name}と、ほかの星宿との関係</h2><p>インドの星宿を、宿曜の「三九の秘法」と同じ数え方で並べた関係です（インドでは、この9つの巡りを「ターラ」として相性や吉日選びに使います）。宿曜の本命宿どうしの相性を見るときは、<a href="/aisho/">相性占い</a>で旧暦から出した本命宿で見られます。「相手は栄」は、${NAK[i].name}のあなたから見て相手が「栄」にあたるという意味です。<a href="/wheel/">円盤で見る →</a></p></div>${rows}</section>`;};
 const famousOf=i=>{const L=FAM.filter(f=>f.n===i||f.n2===i);if(!L.length)return '';return `<section><div class="sec-head"><h2>${NAK[i].name}の有名人</h2><p>生年月日から計算した月の星宿です。<a href="/famous/">有名人の星宿一覧 →</a></p></div><ul class="chips">${L.map(f=>`<li>${esc(f.name)}${f.n2!==null?'<small>（切り替わりの日）</small>':''}</li>`).join('')}</ul></section>`;};
 NAK.forEach((n,i)=>{const prev=NAK[(i+26)%27],next=NAK[(i+1)%27],P=a=>(a||[]).map(x=>`<p>${esc(x)}</p>`).join('');
 page(`/nakshatra/${n.slug}/`,{title:`${n.name}（${n.sukuyo}）の性格・恋愛・仕事`,desc:`インド占星術の27星宿「${n.name}」（宿曜の${n.sukuyo}）。${(n.summary||'').slice(0,70)}`,scripts:['nakwidget.js'],crumb:`<a href="/nakshatra/">27星宿</a> › ${n.name}`,
 ld:{"@context":"https://schema.org","@type":"Article","headline":`${n.name}（${n.sukuyo}）の性格・恋愛・仕事`,"inLanguage":"ja"},
 body:`<div class="hero"><span class="eyebrow">Nakshatra ${n.id} / 27</span><h1>${n.name}</h1><p class="lead"><b>${esc(n.catch)}</b></p><p class="lead">${esc(n.summary)}</p></div>
-<div class="facts"><div><span>宿曜での対応</span><b>${n.sukuyo}</b></div><div><span>範囲（サイデリアル）</span><b>${n.span}</b></div><div><span>支配星</span><b>${n.lord}</b></div><div><span>神格</span><b>${n.deity}</b></div><div><span>シンボル</span><b>${n.symbol}</b></div><div><span>ガナ（気質）</span><b>${n.gana}</b></div><div><span>ヨーニ（動物）</span><b>${n.yoni}</b></div></div>
+<div class="facts"><div><span>宿曜で同じ星にあたる宿</span><b>${n.sukuyo}</b></div><div><span>範囲（サイデリアル）</span><b>${n.span}</b></div><div><span>支配星</span><b>${n.lord}</b></div><div><span>神格</span><b>${n.deity}</b></div><div><span>シンボル</span><b>${n.symbol}</b></div><div><span>ガナ（気質）</span><b>${n.gana}</b></div><div><span>ヨーニ（動物）</span><b>${n.yoni}</b></div></div>
+<p class="note">「宿曜で同じ星にあたる宿」は、星としての対応です。日本の宿曜占星術でのあなたの本命宿は旧暦の生年月日から出すため、インドの月の星宿とは違う宿になることがあります。両方とも<a href="/">生年月日だけで調べる</a>でわかります。</p>
 <div class="card now" id="nk-today" data-i="${i}"></div>
 <section class="prose"><h2>性格</h2>${P(n.personality)}</section>
 ${ad('mid')}
@@ -265,9 +266,9 @@ ${cta}`});
 const CATS=[...new Set(FAM.map(f=>f.cat))];
 page('/famous/',{title:'有名人の星宿｜インド占星術で見る有名人の月のナクシャトラ',desc:`大谷翔平、宇多田ヒカル、スティーブ・ジョブズなど、有名人${FAM.length}人の月の星宿（ナクシャトラ）と宿曜の宿を、生年月日から計算しました。あなたと同じ星宿の有名人は？`,crumb:'有名人の星宿',
 body:`<div class="hero"><span class="eyebrow">Famous People</span><h1>有名人の星宿</h1><p class="lead">有名人${FAM.length}人の、生まれたときの月の星宿を生年月日から計算しました。あなたと同じ星宿の人はいますか？</p></div>
-<p class="note">生まれた時刻は公表されていないため、生まれた日の月の星宿を出しています。その日のうちに月が次の星宿へ移った人は、二つの星宿を並べています。生年月日は公開されている情報（Wikipedia）にもとづきます。海外の方は、生まれた国の時間で計算しています。</p>
+<p class="note">生まれた時刻は公表されていないため、生まれた日の月の星宿を出しています。その日のうちに月が次の星宿へ移った人は、二つの星宿を並べています。生年月日は公開されている情報（Wikipedia）にもとづきます。宿曜の本命宿は、日本の宿曜占星術と同じく旧暦の日付から出しているため、インドの月の星宿とは違う宿になることがあります。海外の方は、生まれた国の時間で計算しています。</p>
 <nav aria-label="分類"><ul class="chips">${CATS.map((c,k)=>`<li><a href="#c${k}" style="text-decoration:none;color:inherit">${c}</a></li>`).join('')}<li><a href="#bynak" style="text-decoration:none;color:inherit">星宿別</a></li></ul></nav>
-${CATS.map((c,k)=>`<section id="c${k}"><div class="sec-head"><h2>${c}</h2></div><div class="tbl"><table style="min-width:460px"><thead><tr><th>名前</th><th>生年月日</th><th>月の星宿</th><th>宿曜</th></tr></thead><tbody>${FAM.filter(f=>f.cat===c).map(f=>`<tr><td><b>${esc(f.name)}</b></td><td class="num">${f.y}年${f.m}月${f.d}日</td><td><a href="/nakshatra/${NAK[f.n].slug}/">${NAK[f.n].name}</a>${f.n2!==null?` か <a href="/nakshatra/${NAK[f.n2].slug}/">${NAK[f.n2].name}</a>`:''}</td><td>${NAK[f.n].sukuyo}${f.n2!==null?'／'+NAK[f.n2].sukuyo:''}</td></tr>`).join('')}</tbody></table></div></section>${k===1?ad('mid'):''}`).join('')}
+${CATS.map((c,k)=>`<section id="c${k}"><div class="sec-head"><h2>${c}</h2></div><div class="tbl"><table style="min-width:460px"><thead><tr><th>名前</th><th>生年月日</th><th>月の星宿（インド）</th><th>本命宿（宿曜）</th></tr></thead><tbody>${FAM.filter(f=>f.cat===c).map(f=>`<tr><td><b>${esc(f.name)}</b></td><td class="num">${f.y}年${f.m}月${f.d}日</td><td><a href="/nakshatra/${NAK[f.n].slug}/">${NAK[f.n].name}</a>${f.n2!==null?` か <a href="/nakshatra/${NAK[f.n2].slug}/">${NAK[f.n2].name}</a>`:''}</td><td>${f.hm}</td></tr>`).join('')}</tbody></table></div></section>${k===1?ad('mid'):''}`).join('')}
 <section id="bynak"><div class="sec-head"><h2>星宿別の有名人</h2></div><div class="list">${NAK.map((n,i)=>{const L=FAM.filter(f=>f.n===i||f.n2===i);return L.length?`<a href="/nakshatra/${n.slug}/"><b>${n.name}（${n.sukuyo}）</b><span>${L.map(f=>esc(f.name)).join('、')}</span></a>`:'';}).join('')}</div></section>
 ${shareS('有名人の月の星宿を、インド占星術で調べました。あなたと同じ星宿は？','/famous/')}
 <a class="card tool" href="/"><span class="k">無料で調べる</span><b>あなたの星宿を調べる</b><p>生年月日だけでわかります</p></a>${cta}`});

@@ -256,6 +256,24 @@ var JY = (function(){
   function timeSlotsAt(ms,lat,lon){var d=new Date(ms+9*36e5),ds=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())-9*36e5,wd=d.getUTCDay(),T=timeSlots(ds,wd,lat,lon);
     if(T&&ms<T.rise){ds-=864e5;wd=(wd+6)%7;T=timeSlots(ds,wd,lat,lon);}if(!T)return null;var h=T.hora.filter(function(x){return x.start<=ms&&ms<x.end;})[0];return {rise:T.rise,set:T.set,next:T.next,wd:wd,hora:h?h.lord:null};}
 
-  return {shadbala:shadbala,timeSlots:timeSlots,ashtakavarga:ashtakavarga,mangal:mangal,sidOf:sidOf,elong:elong,rahuSid:rahuSid,signsAt:signsAt,sunrise:sunrise,nextIngress:nextIngress,relation:relation,yogas:yogas,SIGNS:SIGNS,NK:NK,NKSLUG:NKSLUG,DL:DL,compute:compute,dasha:dasha,sadeSati:sadeSati,varga:varga,dignity:dignity,nak:nak,moonSid:moonSid,tara:tara,TARA:TARA,panchang:panchang,koota:koota,norm:norm};
+  /* ---- 旧暦（天保暦の方式：朔の日が1日、中気を含む月で月名を決める）と宿曜の本命宿 ---- */
+  var SKY=['昴宿','畢宿','觜宿','参宿','井宿','鬼宿','柳宿','星宿','張宿','翼宿','軫宿','角宿','亢宿','氐宿','房宿','心宿','尾宿','箕宿','斗宿','女宿','虚宿','危宿','室宿','壁宿','奎宿','婁宿','胃宿'];
+  var SKM=[22,24,26,1,3,5,8,11,13,15,18,20];/* 旧暦1〜12月の1日の宿 */
+  function jday(ms){return Math.floor((ms+9*36e5)/864e5);}/* 日本時間の通し日 */
+  function newMoonOnOrBefore(ms){var r=Astronomy.SearchMoonPhase(0,mk(ms-31*864e5),35);while(true){var n=Astronomy.SearchMoonPhase(0,r.AddDays(1),35);if(jday(n.date.getTime())>jday(ms))return r.date.getTime();r=n;}}
+  function sunTrop(ms){return trop('Sun',mk(ms));}
+  function kyureki(y,m,d){var ms=Date.UTC(y,m-1,d,3),J=jday(ms),D=864e5;
+    function sol(from){var r=Astronomy.SearchSunLongitude(270,mk(from),190)||Astronomy.SearchSunLongitude(270,mk(from+185*D),200);return r.date.getTime();}
+    var S=[sol(ms-385*D)];S.push(sol(S[0]+D));S.push(sol(S[1]+D));
+    var a=null;for(var q=0;q<2;q++){var st=newMoonOnOrBefore(S[q]);if(jday(st)<=J)a={st:st,ws:S[q]};}
+    var wsN=sol(a.ws+D),endN=jday(newMoonOnOrBefore(wsN)),starts=[jday(a.st)],t=a.st;
+    while(true){var n=Astronomy.SearchMoonPhase(0,mk(t+D),35).date.getTime();if(jday(n)>=endN)break;starts.push(jday(n));t=n;}starts.push(endN);
+    var cnt=starts.length-1,leapI=-1;
+    if(cnt===13){for(var i=1;i<cnt;i++){var la=sunTrop(starts[i]*D-9*36e5),lb=sunTrop(starts[i+1]*D-9*36e5);if(Math.floor(norm(la)/30)===Math.floor(norm(lb)/30)){leapI=i;break;}}}
+    var num=11,res=null;for(var k=0;k<cnt;k++){var leap=(k===leapI);if(k>0&&!leap)num=num%12+1;if(J>=starts[k]&&J<starts[k+1])res={m:num,d:J-starts[k]+1,leap:leap};}
+    return res||{m:1,d:1,leap:false};}
+  function honmei(y,m,d){var k=kyureki(y,m,d),i=(SKM[k.m-1]+k.d-1)%27;return {i:i,name:SKY[i],kyu:k};}
+
+  return {SKY:SKY,kyureki:kyureki,honmei:honmei,shadbala:shadbala,timeSlots:timeSlots,ashtakavarga:ashtakavarga,mangal:mangal,sidOf:sidOf,elong:elong,rahuSid:rahuSid,signsAt:signsAt,sunrise:sunrise,nextIngress:nextIngress,relation:relation,yogas:yogas,SIGNS:SIGNS,NK:NK,NKSLUG:NKSLUG,DL:DL,compute:compute,dasha:dasha,sadeSati:sadeSati,varga:varga,dignity:dignity,nak:nak,moonSid:moonSid,tara:tara,TARA:TARA,panchang:panchang,koota:koota,norm:norm};
 })();
 if(typeof module!=='undefined')module.exports=JY;
