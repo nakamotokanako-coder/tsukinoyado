@@ -39,7 +39,7 @@ export default async function handler(req, res) {
     const amt = (cap.amount || pu.amount || {});
     if (o.status !== 'COMPLETED' || amt.currency_code !== shop.currency || Number(amt.value) !== Number(p.price)) return res.status(402).json({ ok: false, error: 'payment not verified' });
     const f = b.form || {};
-    const rows = [['商品', p.name], ['金額', p.price + '円'], ['PayPal注文番号', b.orderID], ['お名前', clip(f.name, 60)], ['メール', clip(f.email, 120)], ['生年月日', clip(f.bd, 20)], ['出生時刻', f.unk ? '不明' : clip(f.bt, 10)], ['出生地', clip(f.place, 80)], ['ご相談内容', clip(f.msg, 3000)]];
+    const rows = [['商品', p.name + (p.options && f.theme ? '（' + clip(f.theme, 20) + '）' : '')], ['金額', p.price + '円'], ['PayPal注文番号', b.orderID], ['お名前', clip(f.name, 60)], ['メール', clip(f.email, 120)], ['生年月日', clip(f.bd, 20)], ['出生時刻', f.unk ? '不明' : clip(f.bt, 10)], ['出生地', clip(f.place, 80)], ['ご相談内容', clip(f.msg, 3000)]];
     const table = '<table cellpadding="6" style="border-collapse:collapse">' + rows.map(x => '<tr><th align="left" style="border-bottom:1px solid #ddd">' + x[0] + '</th><td style="border-bottom:1px solid #ddd;white-space:pre-wrap">' + esc(x[1]) + '</td></tr>').join('') + '</table>';
     await mail(process.env.ORDER_TO, '【鑑定書のご注文】' + p.name + '／' + clip(f.name, 30), '<p>鑑定書のご注文がありました（支払い確認済み）。</p>' + table, f.email);
     if (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email || '')) {

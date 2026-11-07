@@ -605,6 +605,7 @@ ${SH.soldout?'<p class="shop-wait"><b>ただいま売り切れです。</b>次�
 ${SH.soldout?'':`<section class="shop-form-sec" id="order"><div class="sec-head"><h2>ご注文フォーム</h2><p>出生情報とご相談内容を入力してから、PayPalでお支払いください。お支払いが完了すると、注文内容が鑑定士に届きます。</p></div>
 <form class="f cform" id="sf" novalidate><fieldset><legend>ご注文の内容</legend>
 ${SH.products.length>1?`<label for="s-p">商品<select id="s-p">${SH.products.map(p=>`<option value="${p.id}">${esc(p.name)}（${yen(p.price)}）</option>`).join('')}</select></label>`:`<input type="hidden" id="s-p" value="${SH.products[0].id}">`}
+${SH.products.some(p=>p.options)?`<label for="s-theme">ミニ鑑定書のテーマ<select id="s-theme">${(SH.products.find(p=>p.options)||{options:[]}).options.map(o=>`<option>${o}</option>`).join('')}</select></label>`:''}
 <label for="s-name">お名前（ニックネーム可）<input id="s-name" type="text" autocomplete="name" required></label>
 <label for="s-email">メールアドレス（鑑定書のお届け先）<input id="s-email" type="email" autocomplete="email" required></label>
 <label for="s-bd">生年月日<input id="s-bd" type="date" value="" min="1900-01-01" max="2099-12-31"></label>

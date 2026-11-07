@@ -1,7 +1,7 @@
 /* 鑑定書の注文：入力チェック → PayPalで支払い → /api/order で支払い確認と注文メール */
 (function(){var $=TK.$,S=window.SHOP||{};
 function prod(){var id=$('s-p').value;return (S.products||[]).filter(function(p){return p.id===id;})[0];}
-function form(){return {name:$('s-name').value.trim(),email:$('s-email').value.trim(),bd:$('s-bd').value,bt:$('s-bt').value,unk:$('s-unk').checked,place:$('s-place').value.trim(),msg:$('s-msg').value.trim()};}
+function form(){return {name:$('s-name').value.trim(),email:$('s-email').value.trim(),bd:$('s-bd').value,bt:$('s-bt').value,unk:$('s-unk').checked,place:$('s-place').value.trim(),msg:$('s-msg').value.trim(),theme:$('s-theme')?$('s-theme').value:''};}
 function check(){var f=form(),e=[];if(!f.name)e.push('お名前');if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email))e.push('メールアドレス');if(!f.bd)e.push('生年月日');if(!f.bt&&!f.unk)e.push('出生時刻（わからない場合はチェック）');if(!f.place)e.push('出生地');if(!f.msg)e.push('ご相談の内容');if(!$('s-ok').checked)e.push('同意のチェック');return e;}
 function sum(){var p=prod(),f=form();$('ssum').innerHTML=p?'<b>'+p.name+'</b>　'+(p.price?Number(p.price).toLocaleString('ja-JP')+'円（税込）':'料金は準備中')+(f.name?'<br>お名前：'+f.name.replace(/</g,'&lt;'):''):'';}
 var wait=!S.clientId||!(S.products||[]).some(function(p){return p.price;});
