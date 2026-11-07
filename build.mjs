@@ -20,7 +20,7 @@ const astro='node_modules/astronomy-engine/astronomy.browser.min.js';
 fs.copyFileSync(astro,OUT+'/assets/astronomy.min.js');
 const V=Date.now().toString(36);
 const NAV=[['/jyotish/','はじめての方へ'],['/today/','今日の運勢'],['/fortune/','今月の運勢'],['/calendar/','吉日カレンダー'],['/chart/','魂の星図'],['/aisho/','相性占い'],['/group/','グループ相性'],['/nakshatra/','27星宿'],['/yoga/','ヨーガ'],['/articles/','読みもの']];
-const TOOLS={chart:['/chart/','魂の星図','出生図・魂の星・ダシャー・16分割図'],aisho:['/aisho/','相性占い','36点で見るインド式の相性'],today:['/today/','今日の運勢','27星宿別・毎日更新'],sadesati:['/sadesati/','サディサティ判定','土星の7年半はいつ？'],group:['/group/','グループ相性占い','友だち・家族・職場の相性を一覧で'],yoga:['/yoga/','ヨーガ事典','五大偉人ヨーガほか27のヨーガ'],panchang:['/today/','今日の暦','月の星宿・ティティ・ラーフ・カーラ'],fortune:['/fortune/','今月・今年の運勢','月の星座12種別・星の運行で自動更新'],calendar:['/calendar/','吉日カレンダー','グル・プシュヤ、満月、あなたの好調日'],wheel:['/wheel/','星宿の円盤','回して見る、27星宿の関係'],famous:['/famous/','有名人の星宿','あの人と同じ星宿？'],seirei:['/seirei/','宝石の精たち','9つの星と27星宿を守る精'],muhurta:['/muhurta/','吉日選び','入籍・引っ越し・開業によい日を探す']};
+const TOOLS={chart:['/chart/','魂の星図','出生図・魂の星・ダシャー・16分割図'],aisho:['/aisho/','相性占い','36点で見るインド式の相性'],today:['/today/','今日の運勢','27星宿別・毎日更新'],sadesati:['/sadesati/','サディサティ判定','土星の7年半はいつ？'],group:['/group/','グループ相性占い','友だち・家族・職場の相性を一覧で'],yoga:['/yoga/','ヨーガ事典','五大偉人ヨーガほか27のヨーガ'],panchang:['/today/','今日の暦','月の星宿・ティティ・ラーフ・カーラ'],fortune:['/fortune/','今月・今年の運勢','月の星座12種別・星の運行で自動更新'],calendar:['/calendar/','吉日カレンダー','グル・プシュヤ、満月、あなたの好調日'],wheel:['/wheel/','星宿の円盤','回して見る、27星宿の関係'],famous:['/famous/','有名人の星宿','あの人と同じ星宿？'],seirei:['/seirei/','ナヴァラトナ','9つの宝石の精と、守る27星宿'],muhurta:['/muhurta/','吉日選び','入籍・引っ越し・開業によい日を探す']};
 const ad=n=>C.adsenseClient?`<div class="ad"><p class="ad-label">広告</p><ins class="adsbygoogle" style="display:block" data-ad-client="${C.adsenseClient}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>`:'';
 const pages=[];
 const shareS=(text,p)=>{const url=C.siteUrl+p,e=encodeURIComponent,u=e(url),t=e(text);return `<div class="share"><span class="share-l">シェアする</span><a class="sh x" href="https://twitter.com/intent/tweet?text=${t}&url=${u}" target="_blank" rel="noopener">X</a><a class="sh th" href="https://www.threads.net/intent/post?text=${e(text+' '+url)}" target="_blank" rel="noopener">Threads</a><a class="sh ln" href="https://social-plugins.line.me/lineit/share?url=${u}&text=${t}" target="_blank" rel="noopener">LINE</a><a class="sh fb" href="https://www.facebook.com/sharer/sharer.php?u=${u}" target="_blank" rel="noopener">Facebook</a><a class="sh hb" href="https://b.hatena.ne.jp/entry/s/${url.replace(/^https?:\/\//,'')}" target="_blank" rel="noopener">はてブ</a><button type="button" class="sh cp" data-copy="${esc(text+' '+url)}">リンクをコピー</button></div>`;};
@@ -64,8 +64,8 @@ const TARA_ROWS=[['1','ジャンマ','命','自分を整える'],['2','サンパ
 /* ---------- トップ ---------- */
 page('/',{title:'トップ',desc:'インド占星術（ジョーティッシュ）の無料占いサイト。生年月日だけでわかる27星宿、今日の運勢、今月の運勢、吉日カレンダー、魂の星図、相性占いを無料で。',scripts:['seirei.js','today.js','quick.js'],inline:NKINL(),
 body:`<div class="hero"><span class="eyebrow">Jyotish · Vedic Astrology</span><h1>月の宿に、<br>あなたの星を訪ねる。</h1><p class="lead">インド占星術（ジョーティッシュ）は、生まれた瞬間の月が宿っていた「星宿」から、人の性質と人生の時期を読む占星術です。インドで数千年受け継がれてきたこの智慧を、すべて無料でどうぞ。</p></div>
-<div class="sr-line" aria-label="宝石の精たち">${SR.L.map(x=>`<a href="/seirei/#${x.id}"><img src="${SR.img(x.id,true)}" alt="${x.gem}の精 ${x.name}" width="96" height="96"><span>${x.name}</span></a>`).join('')}</div>
-<p class="note" style="text-align:center;margin-top:-6px">9つの星の宝石の精が、あなたの星宿を守っています。<a href="/seirei/">宝石の精たち →</a></p>
+<div class="sr-line" aria-label="ナヴァラトナ 9つの宝石の精">${SR.L.map(x=>`<a href="/seirei/#${x.id}"><img src="${SR.img(x.id,true)}" alt="${x.gem}の精 ${x.name}" width="96" height="96"><span>${x.name}</span></a>`).join('')}</div>
+<p class="note" style="text-align:center;margin-top:-6px"><b>ナヴァラトナ　9つの宝石の精</b>が、あなたの星宿を守っています。<a href="/seirei/">紹介を見る →</a></p>
 ${quickForm}
 <section><div class="sec-head"><h2>今日の運勢 <span id="today-date" class="note"></span></h2><p>生まれた星宿と、今日の月の星宿の巡り（ターラ）から読む毎日の運勢です。</p></div>
 <div class="card now" id="mine"></div><div class="grid" id="pick"></div><div class="card" id="nowslot"></div><p class="note"><a href="/today/">27星宿すべての今日の運勢を見る →</a></p></section>
@@ -290,15 +290,15 @@ ${cta}`});
 
 /* ---------- 宝石の精 ---------- */
 const NKBY=pl=>NAK.filter((n,i)=>JY.DL[i%9]===pl);
-page('/seirei/',{title:'宝石の精たち｜9つの星と27星宿を守る精',desc:'インド占星術の9つの星（ナヴァグラハ）には、それぞれ決まった宝石があります。ルビーの精マニ、真珠の精モティなど、27星宿を守る9人の宝石の精を紹介します。',crumb:'宝石の精たち',og:'/assets/og.png',
-body:`<div class="hero"><span class="eyebrow">Gem Spirits</span><h1>宝石の精たち</h1><p class="lead">インド占星術の9つの星には、それぞれ決まった宝石があります（ナヴァラトナ）。月の宿では、その宝石から生まれた9人の精が、27の星宿を3つずつ守っています。あなたの星宿を守るのは、どの精でしょう？</p></div>
+page('/seirei/',{title:'ナヴァラトナ　9つの宝石の精｜27星宿を守る精',desc:'インド占星術の9つの星（ナヴァグラハ）には、それぞれ決まった宝石があります。ルビーの精マニ、真珠の精モティなど、27星宿を守る9人の宝石の精を紹介します。',crumb:'ナヴァラトナ',og:'/assets/og.png',
+body:`<div class="hero"><span class="eyebrow">Navaratna · Gem Spirits</span><h1>ナヴァラトナ<br><small style="font-size:.55em">9つの宝石の精</small></h1><p class="lead">インド占星術の9つの星には、それぞれ決まった宝石があります（ナヴァラトナ）。月の宿では、その宝石から生まれた9人の精が、27の星宿を3つずつ守っています。あなたの星宿を守るのは、どの精でしょう？</p></div>
 ${quickForm}
 <div class="sr-grid">${SR.L.map(x=>`<div class="card" id="${x.id}"><img src="${SR.img(x.id)}" alt="${x.gem}の精 ${x.name}" width="180" height="180" loading="lazy"><span class="eyebrow">${x.gem}の精・${x.pl}</span><b class="sname">${x.name}</b><b style="font-size:15px">${x.catch}</b><p class="note" style="color:inherit;margin:0">${x.char}</p><p class="note" style="margin:0">ちょっと苦手なこと：${x.weak}</p><p style="margin:0">「${x.word}」</p><p class="note" style="margin:4px 0 0">頭の上のしるし：${x.mark}</p><div class="nk">${NKBY(x.pl).map(n=>`<a class="pill" href="/nakshatra/${n.slug}/">${n.name}</a>`).join('')}</div></div>`).join('')}</div>
 ${ad('mid')}
 <section><div class="sec-head"><h2>五大偉人ヨーガの「王の姿」</h2><p>火星・水星・木星・金星・土星の精は、五大偉人ヨーガを持つ人のもとで、特別な姿になります。<a href="/chart/">魂の星図</a>でヨーガを調べると、あなたの精の王の姿があらわれます。</p></div>
 <div class="sr-grid">${[['nila','シャシャ・ヨーガ'],['prava','ルチャカ・ヨーガ'],['panna','バドラ・ヨーガ']].map(([id,y])=>{const x=SR.L.find(z=>z.id===id);return `<div class="card"><img src="${SR.img(id+'_k')}" alt="${x.name}の王の姿" width="180" height="180" loading="lazy"><span class="eyebrow">${y}</span><b class="sname">${x.pl}の王・${x.name}</b></div>`;}).join('')}</div></section>
 <section><div class="sec-head"><h2>9つの星と宝石</h2></div><div class="prose"><p>インドでは古くから、9つの星（ナヴァグラハ）にそれぞれの宝石を結びつけてきました。太陽はルビー、月は真珠、火星は赤珊瑚、水星はエメラルド、木星はイエローサファイア、金星はダイヤモンド、土星はブルーサファイア、ラーフはヘソナイト、ケートゥはキャッツアイです。この9つの宝石をまとめて「ナヴァラトナ（9つの宝石）」と呼びます。</p><p>27の星宿には、それぞれ支配星があり、9つの星が3つずつ受け持っています。宝石の精は、その支配星の宝石から生まれた存在です。月の宿では、宝石を「身につけて開運するもの」ではなく、それぞれの星の性質を表す色と形として楽しんでいます。</p></div></section>
-${shareS('インド占星術の9つの星を守る、宝石の精たち。あなたの星宿の精は？','/seirei/')}${cta}`,scripts:['seirei.js','quick.js'],inline:NKINL()});
+${shareS('ナヴァラトナ　9つの宝石の精。インド占星術の9つの星から生まれた精たち。あなたの星宿を守るのは？','/seirei/')}${cta}`,scripts:['seirei.js','quick.js'],inline:NKINL()});
 
 /* ---------- 固定ページ ---------- */
 page('/about/',{title:'運営者情報',desc:`${C.siteName}の運営者情報とサイトの方針。`,crumb:'運営者情報',body:`<div class="hero"><h1>運営者情報</h1></div><div class="prose">

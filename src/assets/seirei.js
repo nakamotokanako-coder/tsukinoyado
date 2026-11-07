@@ -25,7 +25,7 @@ var KING={ruchaka:'prava',bhadra:'panna',hamsa:'pushpa',malavya:'hira',shasha:'n
 function img(id,small){return '/assets/seirei/'+id+(small?'-s':'')+'.webp';}
 function king(yid){var id=KING[yid];return id&&KIMG[id]?id+'_k':null;}
 function card(pl,opt){opt=opt||{};var s=BY[pl];if(!s)return '';
-  return '<div class="card seirei"><img src="'+img(opt.k||s.id,true)+'" alt="'+s.gem+'の精 '+s.name+'" width="128" height="128" loading="lazy"><div><span class="eyebrow">'+(opt.label||'あなたを守る宝石の精')+'</span><b class="sname">'+s.name+'</b><span class="note">'+s.gem+'の精・'+s.pl+'</span><p class="note" style="color:inherit;margin:4px 0 0">'+(opt.text||s.catch+'。'+s.char)+'</p><a href="/seirei/#'+s.id+'" class="note">宝石の精たち →</a></div></div>';}
+  return '<div class="card seirei"><img src="'+img(opt.k||s.id,true)+'" alt="'+s.gem+'の精 '+s.name+'" width="128" height="128" loading="lazy"><div><span class="eyebrow">'+(opt.label||'あなたを守る宝石の精')+'</span><b class="sname">'+s.name+'</b><span class="note">'+s.gem+'の精・'+s.pl+'</span><p class="note" style="color:inherit;margin:4px 0 0">'+(opt.text||s.catch+'。'+s.char)+'</p><a href="/seirei/#'+s.id+'" class="note">ナヴァラトナ →</a></div></div>';}
 return {L:L,BY:BY,KING:KING,img:img,king:king,card:card};
 })();
 if(typeof module!=='undefined')module.exports=SR;
