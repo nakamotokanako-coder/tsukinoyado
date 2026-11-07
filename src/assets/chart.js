@@ -38,6 +38,20 @@ function render(b,mode){
     '<div class="rc-actions sc-act"><button type="button" class="ghost" data-act="save">画像を保存</button><button type="button" class="ghost" data-act="share">シェアする</button><button type="button" data-goto="t-ess">くわしく読む</button></div><p class="note rc-msg" aria-live="polite"></p>'+
     '<div class="rc-sharebox" hidden>'+TK.shareHTML('インド占星術で魂の星図をひらきました。心の星宿は「'+moon.nak.name+'」、守ってくれる宝石の精霊は「'+(sp?sp.name:'')+'」でした。 #ナヴァラトナ #インド占星術',location.origin+'/chart/')+'</div>';
 
+  /* 星図のまとめ：部品を組み合わせて、その人だけの文章にする */
+  (function(){var D=window.SUMD;if(!D)return;var N=D.nakshatra[nk],now=Date.now(),cmd=null,cad=null,LL2=['火星','金星','水星','月','太陽','水星','金星','火星','木星','土星','土星','木星'];
+    JY.dasha(b.ms,moon.lon).forEach(function(x){if(x.start<=now&&now<x.end){cmd=x;x.subs.forEach(function(y){if(y.start<=now&&now<y.end)cad=y;});}});
+    var strong=null;if(!b.unknown){try{var SB=JY.shadbala(r,b.ms,b.lat,b.lon);strong=['太陽','月','火星','水星','木星','金星','土星'].sort(function(x,y){return SB[y].ratio-SB[x].ratio;})[0];}catch(e){}}
+    var who=mode==='sample'?'この星図の人は':'あなたは';
+    var rows=[[who,(b.unknown?'':'外では、'+D.asc[S[r.ascSign]].outer+'人。')+'心の奥には、'+N.heart+'があります。'+N.gift+'が、持ち味です。',(b.unknown?'':'アセンダント '+S[r.ascSign]+'・')+'心の星宿 '+moon.nak.name],
+      ['人生のテーマは',AKT[ak][0]+'こと。','魂の星 '+ak]];
+    if(strong)rows.push(['才能の柱',D.strong[strong].talent,'いちばん力を発揮しやすい星 '+strong]);
+    if(cmd&&cad)rows.push(['いまは',D.dasha[cmd.lord].maha+'の時期。'+D.dasha[cad.lord].antar+'が動く小期です。',cmd.lord+'期／'+cad.lord+'の小期（'+TK.ym(cad.start)+'〜'+TK.ym(cad.end)+'）']);
+    rows.push(['気をつけたいこと',N.care,'心の星宿 '+moon.nak.name]);
+    var msg=cmd?D.now[ak+'×'+cmd.lord]:null;
+    $('summary').innerHTML='<span class="eyebrow">'+(mode==='sample'?'サンプルの星図のまとめ':'あなたの星図のまとめ')+'</span><h2 class="sum-h">'+(mode==='sample'?'この星図を、ひとことで':'あなたの星を、ひとことで')+'</h2><dl class="sum-dl">'+rows.map(function(x){return '<div><dt>'+x[0]+'</dt><dd><p>'+x[1]+'</p><small>'+x[2]+'</small></dd></div>';}).join('')+'</dl>'+
+      (msg?'<div class="sum-now"><b>今のあなたへ</b><p>'+msg+'</p><small>魂の星（'+ak+'）× 今の大期（'+cmd.lord+'期）から</small></div>':'')+
+      '<p class="note sum-n">それぞれの根拠は、下の章でくわしく読めます。</p>';})();
   /* ① わたしの本質：一冊の鑑定書のように。心に残る一文 → 本文 → 補足（開閉） */
   var NL=(window.NKLEAD||[])[nk]||CT,NP=(window.NKPOEM||[])[nk]||[],LB=(window.NKLAB||[])[nk]||'',akp=r.P[ak],akt=AKT[ak];
   function poem(a){return '<div class="rd-poem">'+a.map(function(t){return '<p>'+esc(t)+'</p>';}).join('')+'</div>';}

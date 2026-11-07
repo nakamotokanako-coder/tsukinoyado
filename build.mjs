@@ -117,7 +117,7 @@ ${ad('bottom')}${cta}`});
 
 /* ---------- 魂の星図 ---------- */
 page('/chart/',{og:'/assets/og/chart.jpg',title:'魂の星図｜インド占星術の無料鑑定（魂の星・ヨーガ・人生の時期）',desc:'生年月日・時刻・出生地から、インド占星術の出生図、魂の星（アートマカラカ）、心の星宿と宝石の精霊、ヨーガ、星の強さ、ヴィムショッタリ・ダシャー、16の分割図を無料で計算します。',scripts:['seirei.js','ak.js','varga-read.js','chart-extra.js','chart.js'],crumb:'魂の星図',
-inline:`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.NKCATCH=${JSON.stringify(NAK.map(n=>n.catch||''))};window.NKLAB=${JSON.stringify(NAK.map(n=>n.label))};window.NKLEAD=${JSON.stringify(NAK.map(n=>n.lead))};window.NKPOEM=${JSON.stringify(NAK.map(n=>n.poem))};window.NKSLUGS=1;window.YOGA=${JSON.stringify(YMAP)};window.YSTAT=${JSON.stringify(YST)};window.YDETL=${JSON.stringify(Object.keys(YDT))};`,
+inline:`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.NKCATCH=${JSON.stringify(NAK.map(n=>n.catch||''))};window.NKLAB=${JSON.stringify(NAK.map(n=>n.label))};window.NKLEAD=${JSON.stringify(NAK.map(n=>n.lead))};window.NKPOEM=${JSON.stringify(NAK.map(n=>n.poem))};window.NKSLUGS=1;window.YOGA=${JSON.stringify(YMAP)};window.YSTAT=${JSON.stringify(YST)};window.SUMD=${JSON.stringify(rd('content/summary.json'))};window.YDETL=${JSON.stringify(Object.keys(YDT))};`,
 body:`<div id="inwrap" class="inwrap">
 <div class="chero"><figure class="chero-im"><img src="/assets/land/chart-hero.webp" srcset="/assets/land/chart-hero-s.webp 800w, /assets/land/chart-hero.webp 1600w" sizes="(max-width:800px) 100vw, 960px" alt="" width="1600" height="900"></figure>
 <div class="chero-t"><span class="eyebrow">Free Birth Chart</span><h1>魂の星図</h1><p class="chero-c">あなたの星を読む、美しい一冊</p><p class="chero-s">宝石の精霊たちが、あなたの本質と人生のテーマを読み解きます</p></div></div>
@@ -137,6 +137,7 @@ body:`<div id="inwrap" class="inwrap">
 <div id="result" class="result" hidden tabindex="-1">
 <div class="rbanner" id="rbanner"></div>
 <div id="scard"></div>
+<section id="summary" class="sumry" aria-label="あなたの星図のまとめ"></section>
 <div class="tabs" role="tablist" aria-label="星図の内容">
 <button role="tab" id="t-ess" aria-controls="p-ess" aria-selected="true"><small>01</small>わたしの本質</button><button role="tab" id="t-tal" aria-controls="p-tal" aria-selected="false" tabindex="-1"><small>02</small>才能と強み</button><button role="tab" id="t-tim" aria-controls="p-tim" aria-selected="false" tabindex="-1"><small>03</small>今の人生の時期</button><button role="tab" id="t-thm" aria-controls="p-thm" aria-selected="false" tabindex="-1"><small>04</small>テーマ別に読む</button><button role="tab" id="t-dat" aria-controls="p-dat" aria-selected="false" tabindex="-1"><small>05</small>星図とデータ</button></div>
 <section class="panel" role="tabpanel" id="p-ess" aria-labelledby="t-ess"><div class="cdoor plain" id="d-ess"><div class="cdoor-t"><span class="cdoor-n">Chapter 01</span><h2>わたしの本質</h2><p class="cdoor-m" id="m-ess"></p></div></div><div id="essence" class="stack"></div><button type="button" class="cnext" data-goto="t-tal">次の章へ：才能と強みを読む →</button></section>
