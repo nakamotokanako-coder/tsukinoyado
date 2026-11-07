@@ -93,7 +93,7 @@ ${shareS('インド占星術の無料占いサイト「ナヴァラトナ」。�
 
 /* ---------- 今日の運勢 ---------- */
 page('/today/',{title:'今日の運勢（27星宿別）と今日の吉凶の時間帯',desc:'インド占星術の27星宿（ナクシャトラ）別に、今日の運勢を毎日自動で更新。いまの時間帯（チョーガディヤ）、次によい時間、今日の暦もひと目でわかります。',scripts:['today-page.js'],crumb:'今日の運勢',
-body:`<div class="th"><span class="eyebrow">Daily Tara</span><h1>今日の運勢</h1><p class="th-d"><span id="tdate"></span>　日本時間</p><p class="th-s">生まれた星宿と今日の月の巡りから読む、あなたの一日と、行動によい時間。</p></div>
+body:`<div class="phd"><span class="eyebrow">Daily Tara</span><h1>今日の運勢</h1><p class="th-d"><span id="tdate"></span>　日本時間</p><p class="th-s">生まれた星宿と今日の月の巡りから読む、あなたの一日と、行動によい時間。</p></div>
 <div id="tlive" class="sr-only" aria-live="polite"></div>
 <section class="tc-wrap" id="tcard-wrap" tabindex="-1" aria-label="あなたの今日の運勢"><div id="tcard" class="tc"></div></section>
 <section class="tn-wrap" aria-label="いまの時間帯"><div id="tnow" class="tn"></div>
@@ -201,7 +201,7 @@ body:`<div id="hin" class="inwrap">
 
 /* ---------- 相性 ---------- */
 page('/aisho/',{title:'相性占い｜インド式アシュタクータ（36点満点）',desc:'二人の生年月日から、インド占星術の伝統的な相性占い「アシュタクータ」を36点満点で無料計算。ヴァルナ、ヨーニ、ガナ、ナーディなど8項目の意味も解説します。',scripts:['chart-extra.js','aisho.js'],crumb:'相性占い',
-body:`<div class="th"><span class="eyebrow">Ashtakoota</span><h1>相性占い</h1><p class="th-s">インドで結婚相手を選ぶときに使われてきた「アシュタクータ」。二人の月の星宿と星座から、8つの項目で相性を36点満点で見ます。</p></div>
+body:`<div class="phd"><span class="eyebrow">Ashtakoota</span><h1>相性占い</h1><p class="th-s">インドで結婚相手を選ぶときに使われてきた「アシュタクータ」。二人の月の星宿と星座から、8つの項目で相性を36点満点で見ます。</p></div>
 <form class="f" id="f" novalidate>${birthForm('a-','あなた',{gender:true,def:{g:'f'},blank:true})}${birthForm('b-','お相手',{gender:true,def:{g:'m'},blank:true})}<div class="actions"><button type="submit" class="big-btn">相性を見る</button><button type="button" class="ghost" id="asample">サンプルを見る</button></div><p class="status" id="status" role="status"></p><p class="note">入力した生年月日は、この端末の中だけで計算に使い、どこにも送信・保存しません。</p></form>
 <section id="res" aria-live="polite"></section>
 ${ad('mid')}
@@ -277,7 +277,7 @@ const ADISP={
 const AMIN=a=>{const t=JSON.stringify({l:a.lead,s:a.sections}).replace(/<[^>]+>|["{}\[\],:a-zA-Z_\\]/g,'');return Math.max(1,Math.round(t.length/500));};
 const ACARD=a=>{const D=ADISP[a.slug],c=ACAT.find(x=>x[0]===D[0]);return `<li data-cat="${D[0]}"><a class="acard ac-${D[0]}" href="/articles/${a.slug}/"><span class="ac-cat">${c[1]}</span><b class="ac-t">${esc(D[1])}</b>${D[3]?`<span class="ac-term">${esc(D[3])}</span>`:''}<span class="ac-d">${esc(D[2])}</span><span class="ac-go">記事を読む<span aria-hidden="true"> →</span><small>約${AMIN(a)}分</small></span></a></li>`;};
 page('/articles/',{title:'読みもの｜はじめてのインド占星術',desc:'インド占星術（ジョーティッシュ）の基本をやさしく解説。27星宿、9つの星、12星座、ハウス、ダシャー、サディサティ、分割図、相性、暦まで。',crumb:'読みもの',scripts:['articles.js'],
-body:`<div class="th"><span class="eyebrow">Reading</span><h1>読みもの</h1><p class="th-s">星宿、相性、人生の時期。<br>気になるテーマから、インド占星術をひとつずつ。</p></div>
+body:`<div class="phd"><span class="eyebrow">Reading</span><h1>読みもの</h1><p class="th-s">星宿、相性、人生の時期。<br>気になるテーマから、インド占星術をひとつずつ。</p></div>
 <section class="afirst"><h2 class="af-h">はじめてなら、この3本</h2><ol class="af-list">${['what-is-jyotish','nakshatra','planets'].map((s,i)=>{const a=ARTS.find(x=>x.slug===s),D=ADISP[s];return `<li><a href="/articles/${s}/"><span class="af-n">${String(i+1).padStart(2,'0')}</span><b>${esc(D[1])}</b><span class="ac-d">${esc(D[2])}</span><span class="ac-go">読む<span aria-hidden="true"> →</span></span></a></li>`;}).join('')}</ol></section>
 <section class="aall"><div class="sec-head"><h2>テーマから探す</h2></div>
 <div class="afil" role="group" aria-label="カテゴリーで絞り込む"><button type="button" class="ghost" data-cat="all" aria-pressed="true">すべて</button>${ACAT.map(c=>`<button type="button" class="ghost" data-cat="${c[0]}" aria-pressed="false">${c[1]}</button>`).join('')}</div>
@@ -506,7 +506,7 @@ ${cta}`});});
 
 /* ---------- 星宿の円盤 ---------- */
 page('/wheel/',{title:'星宿の円盤｜あなたの星宿から見た27星宿の巡り（ターラ）',desc:'あなたの星宿から、今日の月はどんな巡りにある？27星宿（ナクシャトラ）の円盤を回して、9つのターラ（星の巡り）を色とラベルで見られます。',scripts:['wheel.js'],crumb:'星宿の円盤',
-body:`<div class="th"><span class="eyebrow">Nakshatra Wheel</span><h1>星宿の円盤</h1><p class="th-s">あなたの星宿から、今日の月はどんな巡りにある？<br>円盤を回して、27星宿とのつながりを見てみましょう</p></div>
+body:`<div class="phd"><span class="eyebrow">Nakshatra Wheel</span><h1>星宿の円盤</h1><p class="th-s">あなたの星宿から、今日の月はどんな巡りにある？<br>円盤を回して、27星宿とのつながりを見てみましょう</p></div>
 <p class="wsteps"><span>① 自分の星宿を選ぶ</span><span>→</span><span>② 今日の月を見る／気になる星宿を選ぶ</span></p>
 <div class="wform"><label for="wme">自分の星宿<small>数え始める基準</small><select id="wme"></select></label><label for="wtg">調べる星宿<small>巡りを知りたい星宿</small><select id="wtg"></select></label></div>
 <p class="note wnote" id="wnote" hidden>自分の星宿がまだ選ばれていないため、<b>お試し表示</b>（今日の月の星宿を基準）です。わからない方は<a href="/#quick">生年月日で星宿を調べる</a>。</p>

@@ -741,7 +741,7 @@ body{line-break:strict}
 .sp-all small,.sp-rel small{word-break:keep-all;text-align:center;line-height:1.3}.sp-all a{width:100px}
 /* 今日の運勢ページ */
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.th{padding:18px 0 6px}.th h1{margin:2px 0 0}.th-d{margin:2px 0 0;font-family:var(--f-display);font-weight:700;font-size:17px}.th-s{margin:4px 0 0;color:var(--muted);font-size:14px}
+.phd{padding:18px 0 6px}.phd h1{margin:2px 0 0}.th-d{margin:2px 0 0;font-family:var(--f-display);font-weight:700;font-size:17px}.th-s{margin:4px 0 0;color:var(--muted);font-size:14px}
 .tc-wrap{scroll-margin-top:12px;border-radius:18px;outline:none}
 .tc-wrap.flash .tc{animation:tcf 1.2s ease}
 @keyframes tcf{0%{box-shadow:0 0 0 4px color-mix(in srgb,var(--gold) 60%,transparent)}100%{box-shadow:0 1px 2px rgba(43,31,69,.05)}}
@@ -864,3 +864,18 @@ body{line-break:strict}
 .qback-top img{width:64px;height:64px;object-fit:contain}.qb-b{display:flex;flex-direction:column;flex:1 1 160px;min-width:0}.qb-n{font-family:var(--f-display);font-size:19px;word-break:keep-all}
 .qb-a{display:flex;flex-wrap:wrap;gap:6px;flex:1 1 100%}.qb-a>*{min-height:42px;padding:6px 14px;font-size:14px}
 @media (min-width:760px){.qb-a{flex:0 1 auto}}
+/* 吉日選び */
+.mhead{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:14px;padding:14px 16px}
+.mcond{margin:6px 0 0;display:grid;gap:4px}.mcond>div{display:grid;grid-template-columns:6.5em 1fr;gap:8px;font-size:14px}.mcond dt{color:var(--muted);font-weight:700}.mcond dd{margin:0}
+.mcount{margin:10px 0 0;font-size:16px}.mcount b{font-family:var(--f-display);font-size:22px}
+.mstale{margin:8px 0 0;background:#FBEADF;border-radius:8px;padding:8px 10px;font-size:13.5px}
+#mres.stale .mlist2{opacity:.55}
+.mtools{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}.mtools button{min-height:44px}
+.mlist2{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.mc{display:flex;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}.mc.top{border-left:4px solid var(--good)}
+.mck{display:flex;align-items:flex-start;padding-top:6px}.mck input{width:22px;height:22px;accent-color:var(--accent)}
+.mc-b{flex:1;min-width:0}.mc-h{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.mc-d{font-family:var(--f-display);font-size:22px}.mc-d small{font-family:var(--f-body);font-size:13px;font-weight:400;color:var(--muted);margin-left:2px}
+.mc-why{margin:6px 0 0;padding-left:1.2em;font-size:14px;display:grid;gap:2px}
+.mc-det{margin-top:6px;font-size:13px}.mc-det summary{cursor:pointer;color:var(--accent)}.mc-det p{margin:4px 0 0}
+.mc-cp{margin-top:8px;min-height:38px;padding:4px 12px;font-size:13px}
