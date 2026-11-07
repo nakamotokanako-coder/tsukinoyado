@@ -79,7 +79,7 @@ function jaParts(v,head){var out=[],cur='',KA=/[ァ-ヴー・]/;
     if(head&&'「『（'.indexOf(c)>=0&&cur&&!/[「『（\s]$/.test(cur)){out.push(cur);cur='';}
     cur+=c;if(k+1>=v.length)break;
     var brk='、。！？'.indexOf(c)>=0&&'」』）'.indexOf(nx)<0&&!/\s/.test(nx);
-    if(head&&!brk){if('」』）'.indexOf(c)>=0&&'、。！？」』）'.indexOf(nx)<0&&v.slice(k+1,k+3)!=='とは'&&!/[をはがにでと]/.test(nx))brk=true;else if(c==='―'&&nx!=='―')brk=true;else if('のとでにはを'.indexOf(c)>=0&&/[一-龠々]/.test(nx)&&cur.length>=6&&v.length-k>4)brk=true;else if(/[ぁ-ゖ]/.test(c)&&KA.test(nx)&&/^[ァ-ヴー・]{5,}/.test(v.slice(k+1)))brk=true;}
+    if(head&&!brk){if('」』）'.indexOf(c)>=0&&'、。！？」』）・'.indexOf(nx)<0&&v.slice(k+1,k+3)!=='とは'&&!/[をはがにでと]/.test(nx))brk=true;else if(c==='―'&&nx!=='―')brk=true;else if('のとでにはを'.indexOf(c)>=0&&/[一-龠々]/.test(nx)&&cur.length>=6&&v.length-k>4)brk=true;else if(/[ぁ-ゖ]/.test(c)&&KA.test(nx)&&/^[ァ-ヴー・]{5,}/.test(v.slice(k+1)))brk=true;}
     if(brk){out.push(cur);cur='';}}
   if(cur)out.push(cur);return out;}
 function jaSeg(root){var SEL='h1,h2,h3,h4,.sname,.k-name,.yd-h,.nkh-c,.rc-catch,.rc-akt,.yz-h,.nkl-word,.sr-say,.sr-catch,.ac-t,.af-list b';
