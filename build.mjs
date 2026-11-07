@@ -206,9 +206,36 @@ ${cta}`});});
 /* ---------- 読みもの ---------- */
 page('/articles/',{title:'読みもの｜はじめてのインド占星術',desc:'インド占星術（ジョーティッシュ）の基本をやさしく解説。27星宿、9つの星、12星座、ハウス、ダシャー、サディサティ、分割図、相性、暦まで。',crumb:'読みもの',
 body:`<div class="hero"><span class="eyebrow">Reading</span><h1>読みもの</h1><p class="lead">はじめての方にもわかるように、インド占星術のしくみを一つずつ解説します。</p></div>${artList(ARTS)}${ad('bottom')}`});
+
+/* 魂の星（アートマカラカ）の記事：専用レイアウト */
+const AK_SYM={太陽:'☉',月:'☽',火星:'♂',水星:'☿',木星:'♃',金星:'♀',土星:'♄'};
+const AK_Q={太陽:'人の評価とは関係なく、「これでいい」と思えるのは、どんな選択ですか？',月:'あなた自身は、今どんな気持ちですか？',火星:'その力を、何を守るために使いたいですか？',水星:'本当に伝えたいことは、何ですか？',木星:'最近、誰から、どんなことを学びましたか？',金星:'あなたが本当に望んでいる喜びは、どんなものですか？',土星:'今、少し手放してもいい荷物はありますか？'};
+const AK_EX=[['太陽','獅子座',12],['月','魚座',27],['火星','双子座',3],['水星','乙女座',19],['木星','射手座',8],['金星','天秤座',22],['土星','水瓶座',15]];
+function akBody(a,t){const S=a.sections,intro=S[0],about=S[1],how=S[2],stars=S[3],deep=S[4],last=S[5];
+ const P=x=>`<p>${esc(x)}</p>`;
+ const orbit=`<svg class="ak-orb" viewBox="0 0 240 240" aria-hidden="true"><defs><radialGradient id="akg"><stop offset="0" stop-color="#FFF4D6"/><stop offset=".55" stop-color="#F3E3B6" stop-opacity=".55"/><stop offset="1" stop-color="#F3E3B6" stop-opacity="0"/></radialGradient></defs><circle cx="120" cy="120" r="112" fill="url(#akg)"/><ellipse cx="120" cy="120" rx="104" ry="104" class="o1"/><ellipse cx="120" cy="120" rx="74" ry="74" class="o2"/><ellipse cx="120" cy="120" rx="104" ry="40" class="o3" transform="rotate(-24 120 120)"/>${Object.keys(AK_SYM).map((k,i)=>{const an=(i/7)*Math.PI*2-Math.PI/2,x=120+104*Math.cos(an),y=120+104*Math.sin(an);return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="13" class="pd"/><text x="${x.toFixed(1)}" y="${(y+5).toFixed(1)}" class="pt">${AK_SYM[k]}</text>`;}).join('')}<path d="M120 84 C123 108 132 117 156 120 C132 123 123 132 120 156 C117 132 108 123 84 120 C108 117 117 108 120 84 Z" class="st"/></svg>`;
+ const ctaB=`<a class="btn ak-cta" href="/chart/">自分の魂の星を無料で調べる</a><p class="note ak-ctan">生年月日・出生時刻・出生地から確認できます（無料・登録なし）</p>`;
+ const mx=Math.max(...AK_EX.map(x=>x[2]));
+ return `<div class="ak-hero"><span class="eyebrow">Atmakaraka · 魂の星</span>${orbit}<h1 class="ka">あなたの魂は、<wbr>何を学びにきたのか。</h1><p class="ak-sub">魂の星「アートマカラカ」とは？<br>7つの星から、人生のテーマを読み解く。</p>${ctaB}
+<nav class="ak-jump" aria-label="この記事の内容"><a href="#ak-stars">7つの星の意味 ↓</a><a href="#ak-how">求め方 ↓</a><a href="#ak-deep">もっと詳しく ↓</a></nav></div>
+<section class="prose guide ak-intro"><p class="poem">${esc(a.lead)}</p><p class="poem">${intro.poem.map(esc).join('<br>')}</p>${intro.paras.map(P).join('')}</section>
+<section id="ak-stars" class="ak-sec"><div class="sec-head"><h2 class="ka">7つの星が語る、<wbr>あなたのテーマ</h2><p>${esc(stars.paras[1])}気になる星を開いて読んでみてください。</p></div>
+<div class="ak-cards">${stars.blocks.map(k=>{const [pl,ttl]=k.h3.split('｜');return `<details class="ak-card" id="ak-${k.img}"><summary><span class="ak-sym" aria-hidden="true">${AK_SYM[pl]}</span><span class="ak-ht"><b>${pl}の人</b><span>${esc(ttl)}</span></span><span class="ak-pm" aria-hidden="true"></span></summary><div class="ak-body"><img src="/assets/seirei/${k.img}-s.webp" alt="" width="72" height="72" loading="lazy"><dl><dt>魂のテーマ</dt><dd>${esc(k.paras[0])}</dd><dt>日常では</dt><dd>${esc(k.paras[1])}</dd><dt>育てたいこと</dt><dd>${esc(k.paras[2].replace(/^育てたいのは、/,''))}</dd></dl><p class="ak-q">${esc(AK_Q[pl])}</p></div></details>`;}).join('')}</div>
+<p class="note">${esc(stars.paras[0])}</p></section>
+${ad('mid')}
+<section id="ak-how" class="ak-sec"><div class="sec-head"><span class="eyebrow">How to find</span><h2 class="ka">度数がいちばん大きい星を<wbr>探す</h2><p>太陽〜土星の7つの星について、「入っている星座の中で何度にいるか（0〜30度）」を比べます。どの星座かは関係ありません。たとえば、この組み合わせなら月です。</p></div>
+<div class="tbl ak-tbl"><table><thead><tr><th>星</th><th>星座</th><th>星座内の度数</th><th>判定</th></tr></thead><tbody>${AK_EX.map(([k,z,d])=>`<tr${d===mx?' class="win"':''}><td><b>${AK_SYM[k]} ${k}</b></td><td>${z}</td><td><span class="dbar"><i style="width:${(d/30*100).toFixed(0)}%"></i></span><span class="num">${d}°</span></td><td>${d===mx?'魂の星 ✦':''}</td></tr>`).join('')}</tbody></table></div>
+<p class="note">二つの星の度数が近いときは、分や秒まで比べます。このサイトでは、7つの星で数える方法を採用しています。</p></section>
+<details class="card ak-deep" id="ak-deep"><summary><b>さらに深く読みたい方へ</b><span class="ak-pm" aria-hidden="true"></span></summary><div class="prose">
+<h3>アートマカラカとは――人によって変わる「魂の星」</h3>${about.paras.map(P).join('')}
+<h3>ラーフを含める流派</h3>${P(how.paras[2])}
+<h3>${esc(deep.h2.replace('さらに深く読むために――',''))}</h3>${deep.paras.map(P).join('')}</div></details>
+<section class="ak-end"><h2 class="ka">あなたの魂の星を<wbr>調べてみましょう</h2>${last.paras.map(P).join('')}${ctaB}</section>
+${shareS(a.title,'/articles/'+a.slug+'/')}
+<section><div class="sec-head"><h2>ほかの読みもの</h2></div>${artList(ARTS.filter(x=>x.slug!==a.slug).slice(0,4))}</section>${cta}`;}
 ARTS.forEach(a=>{const t=TOOLS[a.related_tool]||TOOLS.chart;
 page(`/articles/${a.slug}/`,{title:a.title,desc:a.description,crumb:`<a href="/articles/">読みもの</a>`,ld:{"@context":"https://schema.org","@type":"Article","headline":a.title,"description":a.description,"inLanguage":"ja"},
-body:`<div class="hero"><span class="eyebrow">Reading</span><h1>${esc(a.title)}</h1><p class="lead">${esc(a.lead)}</p></div>
+body:a.slug==='atmakaraka'?akBody(a,t):`<div class="hero"><span class="eyebrow">Reading</span><h1>${esc(a.title)}</h1><p class="lead">${esc(a.lead)}</p></div>
 <article class="prose guide">${(a.sections||[]).map((s,i)=>`<h2 class="ka">${esc(s.h2)}</h2>${s.poem?`<p class="poem">${s.poem.map(esc).join('<br>')}</p>`:''}${(s.paras||[]).map(p=>`<p>${esc(p)}</p>`).join('')}${s.list&&s.list.length?`<ul>${s.list.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${(s.blocks||[]).map(k=>`<div class="ablk${k.img?' wimg':''}">${k.img?`<img src="/assets/seirei/${k.img}-s.webp" alt="" width="72" height="72" loading="lazy">`:''}<h3 class="ka">${esc(k.h3)}</h3>${k.paras.map(p=>`<p>${esc(p)}</p>`).join('')}</div>`).join('')}${s.button?`<p><a class="btn" href="${s.button[1]}">${esc(s.button[0])}</a></p>`:''}${i===1?ad('mid'):''}`).join('')}</article>
 ${shareS(a.title,'/articles/'+a.slug+'/')}
 <a class="card tool" href="${t[0]}"><span class="k">無料で試す</span><b>${t[1]}</b><p>${t[2]}</p></a>

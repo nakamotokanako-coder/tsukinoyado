@@ -453,3 +453,46 @@ h1,h2,h3,.lead.gl,.poem{font-feature-settings:"palt" 1}
 .ablk.wimg{position:relative;padding-right:92px;min-height:100px}
 .ablk.wimg img{position:absolute;top:12px;right:12px;width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(60,40,20,.15))}
 @media (max-width:420px){.ablk.wimg{padding-right:18px}.ablk.wimg img{position:static;align-self:flex-start;width:64px;height:64px}}
+/* 魂の星の記事 */
+.ak-hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:8px 0 4px}
+.ak-orb{width:min(62vw,230px);height:auto}
+.ak-orb .o1,.ak-orb .o2,.ak-orb .o3{fill:none;stroke:#C9A85C;stroke-width:1}.ak-orb .o2{stroke-dasharray:2 4}.ak-orb .o3{stroke-opacity:.5}
+.ak-orb .pd{fill:var(--surface);stroke:#C9A85C}.ak-orb .pt{font-size:14px;text-anchor:middle;fill:var(--accent);font-family:serif}
+.ak-orb .st{fill:#B48A2E}
+.ak-hero h1{font-size:clamp(26px,7vw,38px);line-height:1.45}
+.ak-sub{margin:0;color:var(--muted);font-size:15px;line-height:1.9}
+.ak-cta{width:100%;max-width:420px;justify-content:center;min-height:54px;font-size:16.5px;border-radius:12px}
+.ak-ctan{margin-top:-4px}
+.ak-jump{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:4px}
+.ak-jump a{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:8px 16px;font-size:14px;color:var(--ink);text-decoration:none;font-weight:700}
+.ak-intro{max-width:none}
+.ak-sec{gap:14px;scroll-margin-top:12px}
+.ak-cards{display:flex;flex-direction:column;gap:10px}
+.ak-card{background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.ak-card[open]{border-color:var(--gold)}
+.ak-card summary,.ak-deep summary{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;list-style:none}
+.ak-card summary::-webkit-details-marker,.ak-deep summary::-webkit-details-marker{display:none}
+.ak-sym{flex:none;width:40px;text-align:center;font-size:28px;color:var(--gold);font-family:serif;line-height:1}
+.ak-ht{display:flex;flex-direction:column;flex:1;min-width:0}
+.ak-ht b{font-family:var(--f-display);font-size:19px;line-height:1.4}
+.ak-ht span{font-size:14.5px;color:var(--muted);line-height:1.5}
+.ak-pm{flex:none;width:16px;height:16px;position:relative;margin-left:auto}
+.ak-pm::before,.ak-pm::after{content:"";position:absolute;left:0;right:0;top:7px;border-top:1.5px solid var(--gold)}
+.ak-pm::after{transform:rotate(90deg);transition:transform .2s}
+details[open]>summary .ak-pm::after{transform:rotate(0)}
+.ak-body{position:relative;padding:0 18px 18px 72px}
+.ak-body img{position:absolute;right:14px;top:-6px;width:64px;height:64px;object-fit:contain;opacity:.95}
+.ak-body dl{margin:0;display:flex;flex-direction:column;gap:4px;padding-right:56px}
+.ak-body dt{font-size:12.5px;font-weight:700;color:var(--gold);letter-spacing:.08em;margin-top:8px}
+.ak-body dd{margin:0;line-height:1.9}
+.ak-q{margin:14px 0 0;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-family:var(--f-display);font-size:15.5px;line-height:1.8;color:var(--ink)}
+@media (max-width:480px){.ak-body{padding:0 16px 16px}.ak-body dl{padding-right:0}.ak-body img{top:-58px;right:44px;width:44px;height:44px}}
+.ak-tbl table{min-width:0}
+.ak-tbl tr.win td{background:var(--accent-soft);font-weight:700}
+.dbar{display:inline-block;width:70px;height:6px;border-radius:99px;background:var(--line);vertical-align:middle;margin-right:8px;overflow:hidden}.dbar i{display:block;height:100%;background:var(--muted)}
+.ak-tbl tr.win .dbar i{background:var(--gold)}
+@media (max-width:420px){.dbar{width:40px}}
+.ak-deep{padding:0}.ak-deep .prose{padding:0 18px 18px}.ak-deep .prose h3{font-family:var(--f-display);font-size:17px;margin-top:6px}
+.ak-end{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;background:linear-gradient(160deg,#FFFDF8,#F6EEDF);border:1px solid #E6D6B4;border-radius:18px;padding:22px 18px;color:#2B1F45}
+.ak-end p{margin:0;max-width:36em}
+.ak-end p{text-align:left}.ak-end p.note{text-align:center}
