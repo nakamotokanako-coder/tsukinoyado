@@ -116,10 +116,13 @@ ${ad('top')}
 ${ad('bottom')}${cta}`});
 
 /* ---------- 魂の星図 ---------- */
-page('/chart/',{title:'魂の星図｜インド占星術の無料鑑定（魂の星・ヨーガ・人生の時期）',desc:'生年月日・時刻・出生地から、インド占星術の出生図、魂の星（アートマカラカ）、心の星宿と宝石の精、ヨーガ、星の強さ、ヴィムショッタリ・ダシャー、16の分割図を無料で計算します。',scripts:['seirei.js','ak.js','varga-read.js','chart-extra.js','chart.js'],crumb:'魂の星図',
-inline:`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.NKCATCH=${JSON.stringify(NAK.map(n=>n.catch||''))};window.NKLAB=${JSON.stringify(NAK.map(n=>n.label))};window.YOGA=${JSON.stringify(YMAP)};window.YSTAT=${JSON.stringify(YST)};window.YDETL=${JSON.stringify(Object.keys(YDT))};`,
+page('/chart/',{og:'/assets/og/chart.jpg',title:'魂の星図｜インド占星術の無料鑑定（魂の星・ヨーガ・人生の時期）',desc:'生年月日・時刻・出生地から、インド占星術の出生図、魂の星（アートマカラカ）、心の星宿と宝石の精、ヨーガ、星の強さ、ヴィムショッタリ・ダシャー、16の分割図を無料で計算します。',scripts:['seirei.js','ak.js','varga-read.js','chart-extra.js','chart.js'],crumb:'魂の星図',
+inline:`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.NKCATCH=${JSON.stringify(NAK.map(n=>n.catch||''))};window.NKLAB=${JSON.stringify(NAK.map(n=>n.label))};window.NKLEAD=${JSON.stringify(NAK.map(n=>n.lead))};window.NKPOEM=${JSON.stringify(NAK.map(n=>n.poem))};window.NKSLUGS=1;window.YOGA=${JSON.stringify(YMAP)};window.YSTAT=${JSON.stringify(YST)};window.YDETL=${JSON.stringify(Object.keys(YDT))};`,
 body:`<div id="inwrap" class="inwrap">
-<div class="hero"><span class="eyebrow">Free Birth Chart</span><h1>魂の星図</h1><p class="lead">宝石の精たちが案内する、あなただけの鑑定書。自分の性質や人生のテーマを、解説で読みたい方へ。</p><p class="note">出生図や天体の度数、分割図を自分で確認したい方は<a href="/horoscope/" data-horo>ホロスコープ（チャート）作成</a>へ。</p></div>
+<div class="chero"><figure class="chero-im"><img src="/assets/land/chart-hero.webp" srcset="/assets/land/chart-hero-s.webp 800w, /assets/land/chart-hero.webp 1600w" sizes="(max-width:800px) 100vw, 960px" alt="" width="1600" height="900"></figure>
+<div class="chero-t"><span class="eyebrow">Free Birth Chart</span><h1>魂の星図</h1><p class="chero-c">あなたの星を読む、美しい一冊</p><p class="chero-s">宝石の精たちが、あなたの本質と人生のテーマを読み解きます</p></div></div>
+<ol class="cwhat">${[['01','わたしの本質','心の星宿・魂の星・アセンダント'],['02','才能と強み','ヨーガと星の強さ'],['03','今の人生の時期','いまの時期と、これからの流れ'],['04','テーマ別に読む','結婚・仕事・お金など']].map(x=>`<li><span>${x[0]}</span><b>${x[1]}</b><small>${x[2]}</small></li>`).join('')}</ol>
+<p class="note chero-n">出生図や天体の度数、分割図を自分で確認したい方は<a href="/horoscope/" data-horo>ホロスコープ（チャート）作成</a>へ。</p>
 <form class="f cform" id="f" novalidate><fieldset><legend>生まれたときのこと</legend>
 <label for="a-bd">生年月日<input id="a-bd" type="date" value="" min="1900-01-01" max="2099-12-31"></label>
 <div class="tgroup"><label for="a-bt">出生時刻<input id="a-bt" type="time" value=""></label>
@@ -135,23 +138,24 @@ body:`<div id="inwrap" class="inwrap">
 <div class="rbanner" id="rbanner"></div>
 <div id="scard"></div>
 <div class="tabs" role="tablist" aria-label="星図の内容">
-<button role="tab" id="t-ess" aria-controls="p-ess" aria-selected="true">わたしの本質</button><button role="tab" id="t-tal" aria-controls="p-tal" aria-selected="false" tabindex="-1">才能と強み</button><button role="tab" id="t-tim" aria-controls="p-tim" aria-selected="false" tabindex="-1">今の人生の時期</button><button role="tab" id="t-thm" aria-controls="p-thm" aria-selected="false" tabindex="-1">テーマ別に読む</button><button role="tab" id="t-dat" aria-controls="p-dat" aria-selected="false" tabindex="-1">星図とデータ</button></div>
-<section class="panel" role="tabpanel" id="p-ess" aria-labelledby="t-ess"><div id="essence" class="stack"></div></section>
+<button role="tab" id="t-ess" aria-controls="p-ess" aria-selected="true"><small>01</small>わたしの本質</button><button role="tab" id="t-tal" aria-controls="p-tal" aria-selected="false" tabindex="-1"><small>02</small>才能と強み</button><button role="tab" id="t-tim" aria-controls="p-tim" aria-selected="false" tabindex="-1"><small>03</small>今の人生の時期</button><button role="tab" id="t-thm" aria-controls="p-thm" aria-selected="false" tabindex="-1"><small>04</small>テーマ別に読む</button><button role="tab" id="t-dat" aria-controls="p-dat" aria-selected="false" tabindex="-1"><small>05</small>星図とデータ</button></div>
+<section class="panel" role="tabpanel" id="p-ess" aria-labelledby="t-ess"><div class="cdoor plain" id="d-ess"><div class="cdoor-t"><span class="cdoor-n">Chapter 01</span><h2>わたしの本質</h2><p class="cdoor-m" id="m-ess"></p></div></div><div id="essence" class="stack"></div><button type="button" class="cnext" data-goto="t-tal">次の章へ：才能と強みを読む →</button></section>
 <section class="panel" role="tabpanel" id="p-tal" aria-labelledby="t-tal" hidden>
-<div class="sec-head"><h2>才能と強み</h2><p>星の組み合わせ（ヨーガ）と、星の強さから見るあなたの持ち味。</p></div>
+<div class="cdoor"><figure><img src="/assets/land/chart-talent.webp" srcset="/assets/land/chart-talent-s.webp 800w, /assets/land/chart-talent.webp 1600w" sizes="(max-width:800px) 100vw, 960px" alt="" width="1600" height="900" loading="lazy"></figure><div class="cdoor-t"><span class="cdoor-n">Chapter 02</span><h2>才能と強み</h2><p class="cdoor-m" id="m-tal"></p></div></div>
 <div id="kings" class="stack"></div>
 <h3 class="subh">あなたのヨーガ</h3><div class="grid" id="yogas"></div><p class="note" id="yoganote"></p>
 <details class="card" id="ytopw"><summary><b>ヨーガの珍しさと数え方</b></summary><div id="ytop"></div></details>
-<h3 class="subh">星の強さ</h3><p class="note">シャドバラとアシュタカヴァルガは、別々のものさしです。数字どうしを比べず、それぞれの基準で見てください。</p><div id="stren" class="stack"></div></section>
+<h3 class="subh">星の強さ</h3><p class="note">シャドバラとアシュタカヴァルガは、別々のものさしです。数字どうしを比べず、それぞれの基準で見てください。</p><div id="stren" class="stack"></div><button type="button" class="cnext" data-goto="t-tim">次の章へ：今の人生の時期を読む →</button></section>
 <section class="panel" role="tabpanel" id="p-tim" aria-labelledby="t-tim" hidden>
-<div class="sec-head"><h2>今の人生の時期</h2><p>ヴィムショッタリ・ダシャー。月の星宿から決まる、星が順番に人生を受け持つ時期です。</p></div>
+<div class="cdoor"><figure><img src="/assets/land/chart-time.webp" srcset="/assets/land/chart-time-s.webp 800w, /assets/land/chart-time.webp 1600w" sizes="(max-width:800px) 100vw, 960px" alt="" width="1600" height="900" loading="lazy"></figure><div class="cdoor-t"><span class="cdoor-n">Chapter 03</span><h2>今の人生の時期</h2><p class="cdoor-m" id="m-tim"></p></div></div><p class="note">ヴィムショッタリ・ダシャー：月の星宿から決まる、星が順番に人生を受け持つ時期です。</p>
 <div id="now"></div><div class="tl" id="dasha"></div>
-<div class="card" id="sswrap"><h3>サディサティ（土星の7年半）</h3><p class="note">土星が月の星座の前後3つの星座を通る約7年半。ダシャーとは別のしくみで、見直しと土台づくりの時期とされます。<a href="/sadesati/">くわしく</a></p><ul id="ss" class="sslist"></ul></div></section>
+<div class="card" id="sswrap"><h3>サディサティ（土星の7年半）</h3><p class="note">土星が月の星座の前後3つの星座を通る約7年半。ダシャーとは別のしくみで、見直しと土台づくりの時期とされます。<a href="/sadesati/">くわしく</a></p><ul id="ss" class="sslist"></ul></div><button type="button" class="cnext" data-goto="t-thm">次の章へ：テーマ別に読む →</button></section>
 <section class="panel" role="tabpanel" id="p-thm" aria-labelledby="t-thm" hidden>
-<div class="sec-head"><h2>テーマ別に読む</h2><p>知りたいテーマを選ぶと、対応する分割図（人生のテーマごとに星を細かく見る図）と解説が出ます。</p></div>
+<div class="cdoor"><figure><img src="/assets/land/chart-theme.webp" srcset="/assets/land/chart-theme-s.webp 800w, /assets/land/chart-theme.webp 1600w" sizes="(max-width:800px) 100vw, 960px" alt="" width="1600" height="900" loading="lazy"></figure><div class="cdoor-t"><span class="cdoor-n">Chapter 04</span><h2>テーマ別に読む</h2><p class="cdoor-m" id="m-thm"></p></div></div>
 <div class="themes" role="group" aria-label="テーマ" id="themes"></div><div id="theme" class="stack"></div>
-<p class="note">16枚の分割図と人生の時期を重ねると、いつ・どの分野で力が開くのかまで読めます。<a href="/kantei/">個人鑑定のご案内</a></p></section>
+<p class="note">16枚の分割図と人生の時期を重ねると、いつ・どの分野で力が開くのかまで読めます。<a href="/kantei/">個人鑑定のご案内</a></p><button type="button" class="cnext" data-goto="t-dat">次の章へ：星図とデータを見る →</button></section>
 <section class="panel" role="tabpanel" id="p-dat" aria-labelledby="t-dat" hidden>
+<div class="cdoor plain"><div class="cdoor-t"><span class="cdoor-n">Chapter 05</span><h2>星図とデータ</h2><p class="cdoor-m" id="m-dat"></p></div></div>
 <div class="sec-head"><h2>出生図（ラーシ・チャート）</h2><p id="stylenote"></p></div>
 <div class="stylesw" role="group" aria-label="図の形"><span>図の形</span><button type="button" class="ghost" data-style="s" aria-pressed="true">南インド式</button><button type="button" class="ghost" data-style="n" aria-pressed="false">北インド式</button></div>
 <figure class="chart l big-chart" id="d1"></figure>

@@ -38,15 +38,28 @@ function render(b,mode){
     '<div class="rc-actions sc-act"><button type="button" class="ghost" data-act="save">画像を保存</button><button type="button" class="ghost" data-act="share">シェアする</button><button type="button" data-goto="t-ess">くわしく読む</button></div><p class="note rc-msg" aria-live="polite"></p>'+
     '<div class="rc-sharebox" hidden>'+TK.shareHTML('インド占星術で魂の星図をひらきました。心の星宿は「'+moon.nak.name+'」、守ってくれる宝石の精は「'+(sp?sp.name:'')+'」でした。 #ナヴァラトナ #インド占星術',location.origin+'/chart/')+'</div>';
 
-  /* ① わたしの本質 */
-  var ess='<div class="ess"><span class="eyebrow">心の星宿<small>月のナクシャトラ＝生まれたときの月がいた星宿。心の動き方を表します</small></span><h3 class="ess-v">'+moon.nak.name+'<small>月は'+S[moon.sign]+'</small></h3><p class="ess-f">'+esc(CT)+'</p><p>'+SM+'</p>'+
+  /* ① わたしの本質：一冊の鑑定書のように。心に残る一文 → 本文 → 補足（開閉） */
+  var NL=(window.NKLEAD||[])[nk]||CT,NP=(window.NKPOEM||[])[nk]||[],LB=(window.NKLAB||[])[nk]||'',akp=r.P[ak],akt=AKT[ak];
+  function poem(a){return '<div class="rd-poem">'+a.map(function(t){return '<p>'+esc(t)+'</p>';}).join('')+'</div>';}
+  var ess='<article class="rd" id="r-nak"><div class="rd-head"><img class="rd-sym" src="/assets/sym/'+moon.nak.slug+'.webp" alt="" width="200" height="200"><div><span class="rd-role">心の星宿</span><h3 class="rd-v">'+moon.nak.name+'</h3>'+(LB?'<span class="rd-lab">'+LB+'</span>':'')+'</div></div>'+
+     '<p class="rd-q">'+esc(NL)+'</p>'+(NP.length?poem(NP):'')+'<div class="rd-body"><p>'+SM+'</p></div>'+
      (mr?'<p class="warn">この日は月が「'+JY.NK[mr[0]]+'」から「'+JY.NK[mr[1]]+'」へ移る日です。時刻がわかると確定できます。</p>':'')+
-     (sp?'<div class="mini-seirei"><img src="'+SR.img(sp.id,true)+'" alt="" width="56" height="56"><span class="note">この星宿を守る精：<a href="/seirei/#'+sp.id+'">'+sp.name+'（'+sp.gem+'・'+lord+'）</a></span></div>':'')+
-     '<a class="more" href="/nakshatra/'+moon.nak.slug+'/">'+moon.nak.name+'をくわしく読む →</a></div>';
-  ess+='<div class="ess"><span class="eyebrow">魂の星<small>アートマカラカ＝7つの星のうち、星座の中でいちばん度数が進んだ星。人生を通して向き合い、育てていくテーマを表します</small></span><h3 class="ess-v">'+ak+'</h3><p class="ess-f">'+AKT[ak][0]+'</p><p>'+AKT[ak][1]+'</p><p>'+AKT[ak][2]+'</p><p class="ess-g"><b>育てたいこと</b>'+AKT[ak][3].replace(/^育てたいのは、/,'')+'</p><a class="more" href="/articles/atmakaraka/">魂の星について読む →</a></div>';
-  ess+='<div class="ess"><span class="eyebrow">アセンダント<small>ラグナ＝生まれた瞬間に東の地平線から昇っていた星座。生まれ持った性質と、外から見たあなたを表します</small></span>'+
-     (b.unknown?'<p class="note">時刻がわからないため、アセンダントは表示していません。</p>':'<h3 class="ess-v">'+S[r.ascSign]+'</h3><p class="ess-f">'+lg[0]+'</p><p>'+lg[1]+'</p>')+'<a class="more" href="/articles/houses/">12のハウスとアセンダントについて読む →</a></div>';
-  ess+='<div class="ess-sub"><h3 class="subh">パートナーシップの配置</h3>'+(window.CX?CX.mangal(r,b):'')+'</div>';
+     '<details class="rd-more"><summary>心の星宿とは</summary><p>生まれたときに月がいた星宿（ナクシャトラ）です。インド占星術では、月は心を表すため、心の動き方や、安心できるもののかたちを読みます。あなたの月は'+S[moon.sign]+'の'+moon.nak.name+'（第'+moon.nak.pada+'パダ）にあります。</p></details>'+
+     '<a class="more" href="/nakshatra/'+moon.nak.slug+'/">'+moon.nak.name+'をくわしく読む →</a></article>';
+  ess+='<article class="rd" id="r-ak"><div class="rd-head"><span class="rd-glyph" aria-hidden="true">'+({太陽:'☉',月:'☽',火星:'♂',水星:'☿',木星:'♃',金星:'♀',土星:'♄'})[ak]+'</span><div><span class="rd-role">魂の星</span><h3 class="rd-v">'+ak+'</h3></div></div>'+
+     '<p class="rd-q">'+akt[0]+'</p><div class="rd-body"><p>'+akt[1]+'</p></div>'+
+     '<div class="rd-daily"><b>日常での表れ方</b><p>'+akt[2]+'</p></div>'+
+     '<div class="rd-grow"><b>育てたいこと</b><p>'+akt[3].replace(/^育てたいのは、/,'')+'</p></div>'+
+     '<details class="rd-more"><summary>アートマカラカとは・なぜこの星なのか</summary><p>アートマカラカ（魂の星）は、太陽から土星までの7つの星のうち、星座の中でいちばん度数が進んでいる星です。人生を通して向き合い、育てていくテーマを表すとされます。あなたの'+ak+'は'+S[akp.sign]+'の'+dm(akp.deg)+'にあり、7つの星の中でもっとも度数が進んでいます。</p></details>'+
+     '<a class="more" href="/articles/atmakaraka/">魂の星について読む →</a></article>';
+  ess+='<article class="rd" id="r-asc"><div class="rd-head"><span class="rd-glyph" aria-hidden="true">↑</span><div><span class="rd-role">アセンダント</span><h3 class="rd-v">'+(b.unknown?'時刻が必要です':S[r.ascSign])+'</h3></div></div>'+
+     (b.unknown?'<p class="note">時刻がわからないため、アセンダントは表示していません。</p>':'<p class="rd-q">'+lg[0]+'</p><div class="rd-body"><p>'+lg[1]+'</p></div>')+
+     '<details class="rd-more"><summary>アセンダントとは</summary><p>生まれた瞬間に東の地平線から昇っていた星座（ラグナ）です。生まれ持った性質や、外から見たあなたの印象を表し、12のハウスを数える起点にもなります。</p></details>'+
+     '<a class="more" href="/articles/houses/">12のハウスとアセンダントについて読む →</a></article>';
+  if(sp)ess+='<aside class="rd-letter" style="--sc:'+sp.color+'"><img src="'+SR.img(sp.id)+'" alt="'+sp.gem+'の精 '+sp.name+'" width="320" height="320" loading="lazy"><div><span class="rd-role">あなたの心の星宿を守る精・'+sp.name+'より</span><p class="rd-say">「'+sp.word+'」</p><p>'+(mode==='sample'?'この星図の':'あなたの')+'心の星宿「'+moon.nak.name+'」を守っています。'+sp.catch+'の'+sp.name+'が、この先の章も一緒に案内します。</p><a class="note" href="/seirei/'+sp.id+'/">'+sp.name+'のこと →</a></div></aside>';
+  ess+='<details class="rd-sub"><summary><b>パートナーシップの配置</b><span class="note">マンガル・ドーシャ（火星の配置）</span></summary>'+(window.CX?CX.mangal(r,b):'')+'</details>';
+  /* 章の扉のひとこと */
+  $('m-ess').textContent='心は「'+moon.nak.name+'」、魂のテーマは「'+akt[0]+'」。';
   $('essence').innerHTML=ess;
 
   /* ② 才能と強み */
@@ -69,6 +82,7 @@ function render(b,mode){
   var contrib=ids.filter(function(id){return EXC.indexOf(id)<0&&PT[lv(id)]>0;}).sort(function(x,y){return PT[lv(y)]-PT[lv(x)];}),
     lab=top<=10?'とても個性的な配置':top<=30?'個性的な配置':top<=60?'ほどよく個性のある配置':'よくある配置が中心';
   $('ytopw').hidden=!(ST.pct.length&&top<=30);
+  $('m-tal').textContent=KG.length?'あなたの星図には、宝石の精の「王の姿」があらわれています。':ids.length?'星の組み合わせ（ヨーガ）と、星の強さから見るあなたの持ち味。':'星の強さから見る、あなたの持ち味。';
   $('ytop').innerHTML=ST.pct.length&&top<=30?'<p style="margin:8px 0 0"><b>'+lab+'</b>：100人いたら、上から約'+top+'番目（'+sc+'点）。</p>'+
    (contrib.length?'<p class="note" style="color:inherit"><b>点数のもとになったヨーガ：</b>'+contrib.map(function(id){var L=lv(id);return (YG[id]||{name:id}).name+'（'+'★★★★'.slice(0,L)+' +'+PT[L]+'点）';}).join('、')+'</p>':'')+
    '<p class="note">数え方：持っているヨーガを、★の数で点数にしました（★★★★＝出現率10%未満は6点、★★★＝10〜25%は3点、★★＝25〜45%は1点、★＝45%以上は0点）。その合計を、ランダムに選んだ4,000人分のチャートと比べています。ヨーガの「数」ではなく「珍しさ」を見ているので、★1つ（出現率45%以上）のヨーガがたくさんあっても点数は上がりません。良い悪いの評価ではありません。</p>':'';
@@ -79,6 +93,7 @@ function render(b,mode){
   var now=Date.now(),Y=365.25*864e5,ds=JY.dasha(b.ms,moon.lon).filter(function(x){return x.end>b.ms&&x.start<b.ms+85*Y;}),cm=null,ca=null;
   ds.forEach(function(x){if(x.start<=now&&now<x.end){cm=x;x.subs.forEach(function(s){if(s.start<=now&&now<s.end)ca=s;});}});
   var cs=cm?spOf(cm.lord):null;
+  $('m-tim').textContent=cm?'いまは「'+cm.lord+'期」。'+TK.DT[cm.lord].split('。')[0]+'。':'人生を、星が順番に受け持ちます。';
   $('now').innerHTML=cm?'<div class="nowc" style="--sc:'+(cs?cs.color:'#4B2E73')+'">'+(cs?'<img src="'+SR.img(cs.id,true)+'" alt="" width="120" height="120">':'')+'<div><span class="eyebrow">今ここ</span><b class="nw">'+cm.lord+'期 ／ '+ca.lord+'の小期</b>'+
      '<p style="margin:4px 0 0"><b>'+cm.lord+'期</b>（大期・'+TK.ym(cm.start)+'〜'+TK.ym(cm.end)+'）：'+TK.DT[cm.lord]+'</p><p style="margin:4px 0 0"><b>'+ca.lord+'の小期</b>（'+TK.ym(ca.start)+'〜'+TK.ym(ca.end)+'）：'+TK.DT[ca.lord]+'</p>'+
      (cs?'<p class="note">この大期を受け持つ精：<a href="/seirei/#'+cs.id+'">'+cs.name+'（'+cs.gem+'）</a></p>':'')+'<p class="note">テーマは一般的なものです。実際の出方は、その星がチャートのどこにあるかで変わります。</p></div></div>':'<p class="note">現在の時期は表示範囲外です。</p>';
@@ -88,6 +103,7 @@ function render(b,mode){
   var ss=JY.sadeSati(b.ms,moon.sign,90);
   $('ss').innerHTML=ss.length?ss.map(function(p){var live=p.start<=now&&(p.end===null||now<p.end),past=p.end!==null&&p.end<=now;return '<li class="'+(live?'cur':past?'past':'fut')+'"><span class="num">'+(p.fromStart?'誕生時':TK.ymd(p.start))+' 〜 '+(p.end?TK.ymd(p.end):'')+'</span> '+(live?'<span class="pill now">いまこの時期</span>':past?'<span class="pill pst">終了</span>':'<span class="pill fut">これから</span>')+'</li>';}).join(''):'<li>表示範囲内にはありません。</li>';
 
+  $('m-thm').textContent='知りたいテーマの扉をひらくと、対応する分割図と読み解きが出ます。';$('m-dat').textContent='読み解きの根拠となる、出生図と数値の資料です。';
   /* ④ テーマ別 */
   var VP=window.VR?VR.parts(r,b,sens):{};
   var dg=[];ORDER.slice(0,7).forEach(function(k){var p=r.P[k],v9=JY.dignity(k,JY.varga(p.lon,9));if(p.dig==='減衰'&&(v9==='自室'||v9==='高揚'))dg.push(k);});
@@ -149,7 +165,7 @@ function makeImage(nkName,ak,asc,sp){return new Promise(function(res,rej){if(!sp
 /* タブ */
 function tabs(){var T=[].slice.call(document.querySelectorAll('[role=tab]'));
   function sel(id,focus){T.forEach(function(t){var on=t.id===id;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1;$(t.getAttribute('aria-controls')).hidden=!on;if(on&&focus)t.focus();});st.tab=id;}
-  T.forEach(function(t,i){t.addEventListener('click',function(){sel(t.id);var tb=document.querySelector('.tabs'),y=tb.getBoundingClientRect().top;if(y>120||y<-2)window.scrollTo({top:window.scrollY+y-4,behavior:'smooth'});});t.addEventListener('keydown',function(e){var k=e.key,j=k==='ArrowRight'?(i+1)%T.length:k==='ArrowLeft'?(i-1+T.length)%T.length:k==='Home'?0:k==='End'?T.length-1:-1;if(j>=0){e.preventDefault();sel(T[j].id,true);}});});
+  T.forEach(function(t,i){t.addEventListener('click',function(){sel(t.id);var tb=document.querySelector('.tabs'),y=tb.getBoundingClientRect().top;window.scrollTo({top:window.scrollY+y-4,behavior:'smooth'});});t.addEventListener('keydown',function(e){var k=e.key,j=k==='ArrowRight'?(i+1)%T.length:k==='ArrowLeft'?(i-1+T.length)%T.length:k==='Home'?0:k==='End'?T.length-1:-1;if(j>=0){e.preventDefault();sel(T[j].id,true);}});});
   return sel;}
 var selTab;
 function show(b,mode){try{render(b,mode);}catch(err){$('status').textContent='計算できませんでした。入力を確認してください。';return;}
