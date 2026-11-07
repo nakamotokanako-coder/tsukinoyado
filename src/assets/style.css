@@ -664,3 +664,6 @@ form input[type=time]::-webkit-date-and-time-value{text-align:left}
 .yz-land .yz-poem{margin:-18px 16px 0;position:relative}
 .yz-land.yidx{margin-top:4px}
 @media (min-width:760px){.yz-land{margin:10px 0 22px}.yz-land img{border-radius:16px;-webkit-mask-image:radial-gradient(ellipse 72% 70% at 50% 46%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 72% 70% at 50% 46%,#000 60%,transparent 100%)}.yz-land .yz-poem{margin-top:-30px}}
+.yz-mot{width:160px;height:160px;object-fit:contain;margin:-6px auto 0}
+.yd.has-mot{position:relative;padding-right:96px}.yd-mot{position:absolute;right:0;top:14px;width:84px;height:84px;object-fit:contain}
+@media (max-width:520px){.yd.has-mot{padding-right:72px}.yd-mot{width:64px;height:64px}}
