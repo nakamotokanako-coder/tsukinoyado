@@ -561,3 +561,30 @@ form.cform>.note,form.cform>.status{grid-column:1/-1}
 .card.read-cta{flex-direction:row}.read-cta>div{flex:1 1 auto;min-width:min(100%,240px)}
 #hin.done .cform{display:none}
 .hctl .vsel{flex-wrap:nowrap}.hctl .vsel select{flex:1 1 auto}
+/* 27星宿：シンボルと呼び名 */
+.nkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.nkc{display:grid;grid-template-columns:56px 1fr;grid-template-rows:auto auto auto;column-gap:10px;align-items:center;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0}
+.nkc:hover{border-color:var(--gold)}
+.nkc-im{grid-row:1/4;width:56px;height:56px;border-radius:50%;background:radial-gradient(circle,var(--gold-soft) 0,transparent 70%);display:flex;align-items:center;justify-content:center}
+.nkc-im img{width:52px;height:52px;object-fit:contain}
+.nkc-n{font-family:var(--f-mono);font-size:11px;color:var(--gold);letter-spacing:.08em}
+.nkc b{font-family:var(--f-display);font-size:15px;line-height:1.35;overflow-wrap:anywhere}
+.nkc-l{font-size:12px;color:var(--muted)}
+.nkhero{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding:18px 0 8px;text-align:center}
+.nkh-im{margin:0 auto;width:min(260px,64vw);position:relative}
+.nkh-im::before{content:"";position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle,var(--gold-soft) 0,transparent 68%);z-index:-1}
+.nkh-im img{width:100%;height:auto;display:block}
+.nkh-im figcaption{font-size:12.5px;color:var(--muted);margin-top:2px}
+.nkh-l{display:inline-block;margin:6px auto 0;font-family:var(--f-display);font-weight:700;font-size:15px;color:#7A5A16;background:var(--gold-soft);border:1px solid #E2CF9F;border-radius:99px;padding:2px 16px}
+[data-theme="dark"] .nkh-l{color:var(--gold)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .nkh-l{color:var(--gold)}}
+.nkh-b h1{margin:6px 0 0}.nkh-c{font-family:var(--f-display);font-weight:700;font-size:18px;margin:4px 0 8px}
+@media (min-width:760px){.nkhero{grid-template-columns:300px minmax(0,1fr);text-align:left;align-items:center;gap:28px}.nkh-im{width:280px}.nkh-l{margin-left:0}.nkh-b .eyebrow{display:block}}
+.nkpn{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.nk-myth{display:flex;gap:14px;align-items:flex-start}.nk-myth img{flex:none;width:72px;height:72px;object-fit:contain}.nk-myth p{margin:0}
+.rc-lab{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:#7A5A16;margin-top:2px}.rc-lab img{width:28px;height:28px;object-fit:contain}
+.sc-lab{font-family:var(--f-body);font-size:12px;font-weight:700;color:var(--gold);margin-left:8px}
+.nobr{display:inline-block;white-space:nowrap}
+/* iPhoneで空の時刻欄が枠からはみ出すのを防ぐ */
+form input[type=time]{display:block;width:100%;min-width:0;max-width:440px;-webkit-appearance:none;appearance:none;min-height:48px;text-align:left}
+form input[type=time]::-webkit-date-and-time-value{text-align:left}

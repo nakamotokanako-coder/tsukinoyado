@@ -31,7 +31,7 @@ function render(b,mode){
   $('scard').innerHTML='<div class="scard" style="--sc:'+(sp?sp.color:'#4B2E73')+'">'+(sp?'<div class="sc-im"><img src="'+SR.img(sp.id)+'" alt="'+sp.gem+'の精 '+sp.name+'" width="320" height="320"></div>':'')+
     '<div class="sc-body"><span class="sc-role">心の星宿を守る宝石の精</span><b class="sc-name">'+(sp?sp.name:'')+'</b><span class="sc-gem">'+(sp?sp.gem+'の精・'+sp.pl+'の精':'')+'</span>'+
     (mode==='sample'?'<span class="sc-sample">サンプル</span>':'')+
-    '<dl class="sc-dl"><div><dt>心の星宿</dt><dd><b>'+moon.nak.name+'</b><span>'+esc(CT)+'</span></dd></div>'+
+    '<dl class="sc-dl"><div><dt>心の星宿</dt><dd><b>'+moon.nak.name+((window.NKLAB||[])[nk]?'<small class="sc-lab">'+NKLAB[nk]+'</small>':'')+'</b><span>'+esc(CT)+'</span></dd></div>'+
     '<div><dt>魂の星<small>アートマカラカ</small></dt><dd><b>'+ak+'</b><span>'+AKT[ak][0]+'</span></dd></div>'+
     '<div><dt>アセンダント<small>ラグナ</small></dt><dd>'+(b.unknown?'<span>時刻がわからないため表示していません</span>':'<b>'+S[r.ascSign]+'</b><span>'+lg[0]+'</span>')+'</dd></div></dl>'+
     '<p class="note sc-n">宝石の精は「心の星宿の支配星（'+lord+'）」から決まります。魂の星やいちばん強い星とは、役割が別です。</p></div></div>'+

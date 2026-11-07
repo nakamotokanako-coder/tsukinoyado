@@ -16,7 +16,7 @@ function card(i,sign,extra,ak){var slug=JY.NKSLUG[i],s=sp(i),url=location.origin
     '<span class="rc-label">あなたの宝石の精</span>'+
     (s?'<img class="rc-img" src="'+SR.img(s.id)+'" alt="'+s.gem+'の精 '+s.name+'" width="320" height="320">':'')+
     '<b class="rc-name">'+(s?s.name:'')+'</b><span class="rc-gem">'+(s?s.gem+'の精・'+s.pl:'')+'</span>'+
-    '<span class="rc-nak"><small>星宿</small>'+JY.NK[i]+'</span>'+
+    '<span class="rc-nak"><small>星宿</small>'+JY.NK[i]+'</span>'+((window.NKLAB||[])[i]?'<span class="rc-lab"><img src="/assets/sym/'+slug+'-s.webp" alt="" width="28" height="28">'+NKLAB[i]+'</span>':'')+
     '<p class="rc-catch">'+esc(CT[i]||'')+'</p>'+akHtml(ak)+
     '<span class="rc-site">'+SITE+'</span></div></div>'+
     '<div class="rc-actions"><a class="btn" href="/nakshatra/'+slug+'/">詳しく読む</a><button type="button" class="ghost" data-act="save">画像を保存</button><button type="button" class="ghost" data-act="share">シェアする</button></div>'+

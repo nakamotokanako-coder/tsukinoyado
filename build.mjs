@@ -28,7 +28,7 @@ const ad=n=>C.adsenseClient?`<div class="ad"><p class="ad-label">広告</p><ins 
 const pages=[];
 const shareS=(text,p)=>{const url=C.siteUrl+p,e=encodeURIComponent,u=e(url),t=e(text);return `<div class="share"><span class="share-l">シェアする</span><a class="sh x" href="https://twitter.com/intent/tweet?text=${t}&url=${u}" target="_blank" rel="noopener">X</a><a class="sh th" href="https://www.threads.net/intent/post?text=${e(text+' '+url)}" target="_blank" rel="noopener">Threads</a><a class="sh ln" href="https://social-plugins.line.me/lineit/share?url=${u}&text=${t}" target="_blank" rel="noopener">LINE</a><a class="sh fb" href="https://www.facebook.com/sharer/sharer.php?u=${u}" target="_blank" rel="noopener">Facebook</a><a class="sh hb" href="https://b.hatena.ne.jp/entry/s/${url.replace(/^https?:\/\//,'')}" target="_blank" rel="noopener">はてブ</a><button type="button" class="sh cp" data-copy="${esc(text+' '+url)}">リンクをコピー</button></div>`;};
 const quickForm=`<section id="quick"><div class="sec-head"><h2>生年月日だけで、あなたの星宿を調べる</h2><p>生まれた時刻がわからなくても大丈夫。日本で生まれた方向けに、日本時間で計算します。</p></div><form class="f quick" id="qf" novalidate><label for="qbd">生年月日<input id="qbd" type="date" value="1990-05-15" min="1900-01-01" max="2099-12-31"></label><div class="actions"><button type="submit">私の星宿を調べる</button></div></form><div id="qres" aria-live="polite"></div></section>`;
-const NKINL=()=>`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.NKSU=${JSON.stringify(NAK.map(n=>n.sukuyo))};window.NKCATCH=${JSON.stringify(NAK.map(n=>n.catch||''))};`;
+const NKINL=()=>`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.NKSU=${JSON.stringify(NAK.map(n=>n.sukuyo))};window.NKCATCH=${JSON.stringify(NAK.map(n=>n.catch||''))};window.NKLAB=${JSON.stringify(NAK.map(n=>n.label))};`;
 function page(p,{title,desc,body,scripts=[],inline='',ld=null,crumb=null,og=null}){
   const full=p==='/'?`${C.siteName}｜${C.siteSub}`:`${title}｜${C.siteName}`;
   const url=C.siteUrl+p;
@@ -65,7 +65,8 @@ ${gender?`<label for="${px}g">性別（伝統的な計算に使用）<select id=
 <div class="custom" id="${px}custom" hidden><label for="${px}la">緯度（北緯はプラス）<input id="${px}la" type="number" step="0.01" value="35.69"></label><label for="${px}lo">経度（東経はプラス）<input id="${px}lo" type="number" step="0.01" value="139.69"></label><label for="${px}tz">時差（UTC＋時間）<input id="${px}tz" type="number" step="0.5" value="9"></label></div></fieldset>`;
 const cta=`<aside class="cta"><h2>星図を、あなただけの物語に</h2><p>無料の星図でわかるのは、星の配置という「地図」までです。16枚の分割図と人生の時期を重ねて読み、あなたの流れとこれからの指針を一冊の鑑定書にまとめる個人鑑定を受け付けています。</p><a href="${C.ctaUrl}" target="_blank" rel="noopener">${C.ctaLabel}</a></aside>`;
 const toolCards=keys=>`<div class="grid">${keys.map(k=>{const t=TOOLS[k];return `<a class="card tool" href="${t[0]}"><span class="k">FREE</span><b>${t[1]}</b><p>${t[2]}</p></a>`;}).join('')}</div>`;
-const nakChips=()=>`<div class="grid sm">${NAK.map(n=>`<a class="card tool" href="/nakshatra/${n.slug}/"><span class="k">${n.id}　${n.lord}</span><b>${n.name}</b><p>${esc(n.catch||n.span)}</p></a>`).join('')}</div>`;
+const SYM=(n,s)=>`/assets/sym/${n.slug}${s?'-s':''}.webp`;
+const nakChips=()=>`<div class="nkgrid">${NAK.map(n=>`<a class="nkc" href="/nakshatra/${n.slug}/"><span class="nkc-im"><img src="${SYM(n,1)}" alt="" width="96" height="96" loading="lazy"></span><span class="nkc-n">${n.id}</span><b>${n.name}</b><span class="nkc-l">${n.label}</span></a>`).join('')}</div>`;
 const artList=list=>`<div class="list">${list.map(a=>`<a href="/articles/${a.slug}/"><b>${esc(a.title)}</b><span>${esc(a.description)}</span></a>`).join('')}</div>`;
 const TARA_ROWS=[['1','ジャンマ','命','自分を整える'],['2','サンパット','栄','実り・豊かさ'],['3','ヴィパット','衰','つまずきに注意'],['4','クシェーマ','安','穏やか・安定'],['5','プラティヤク','危','無理をしない'],['6','サーダナ','成','願いが形になる'],['7','ナイダナ','壊','休息を大切に'],['8','ミトラ','友','人の縁'],['9','パラマ・ミトラ','親','最良の縁']];
 
@@ -104,7 +105,7 @@ ${ad('bottom')}${cta}`});
 
 /* ---------- 魂の星図 ---------- */
 page('/chart/',{title:'魂の星図｜インド占星術の無料鑑定（魂の星・ヨーガ・人生の時期）',desc:'生年月日・時刻・出生地から、インド占星術の出生図、魂の星（アートマカラカ）、心の星宿と宝石の精、ヨーガ、星の強さ、ヴィムショッタリ・ダシャー、16の分割図を無料で計算します。',scripts:['seirei.js','ak.js','varga-read.js','chart-extra.js','chart.js'],crumb:'魂の星図',
-inline:`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.NKCATCH=${JSON.stringify(NAK.map(n=>n.catch||''))};window.YOGA=${JSON.stringify(YMAP)};window.YSTAT=${JSON.stringify(YST)};`,
+inline:`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.NKCATCH=${JSON.stringify(NAK.map(n=>n.catch||''))};window.NKLAB=${JSON.stringify(NAK.map(n=>n.label))};window.YOGA=${JSON.stringify(YMAP)};window.YSTAT=${JSON.stringify(YST)};`,
 body:`<div id="inwrap" class="inwrap">
 <div class="hero"><span class="eyebrow">Free Birth Chart</span><h1>魂の星図</h1><p class="lead">宝石の精たちが案内する、あなただけの鑑定書。心の星宿、魂の星、生まれ持った性質から、才能、人生の時期、結婚や仕事のテーマまで読めます。</p></div>
 <form class="f cform" id="f" novalidate><fieldset><legend>生まれたときのこと</legend>
@@ -157,7 +158,7 @@ ${cta}`});
 /* ---------- ホロスコープ作成 ---------- */
 page('/horoscope/',{title:'ホロスコープ作成｜インド占星術の無料出生図（南インド式・北インド式）',desc:'生年月日・出生時刻・出生地から、インド占星術（ジョーティシュ）のホロスコープを無料で作成。南インド式・北インド式の出生図、天体の度数と星宿、ヴィムショッタリ・ダシャーの日付表、16の分割図、生まれた日の暦を一覧で表示します。',scripts:['horoscope.js'],crumb:'ホロスコープ（チャート）作成',
 body:`<div id="hin" class="inwrap">
-<div class="hero"><span class="eyebrow">Birth Chart Generator</span><h1>ホロスコープ（チャート）作成</h1><p class="lead">インド式の出生図（ラーシ・チャート）を、その場で作成します。天体の度数、ダシャーの日付、16の分割図まで一覧で確かめられます。</p></div>
+<div class="hero"><span class="eyebrow">Birth Chart Generator</span><h1><span class="nobr">ホロスコープ</span><span class="nobr">（チャート）作成</span></h1><p class="lead">インド式の出生図（ラーシ・チャート）を、その場で作成します。天体の度数、ダシャーの日付、16の分割図まで一覧で確かめられます。</p></div>
 <form class="f cform" id="hf" novalidate><fieldset><legend>生まれたときのこと</legend>
 <label for="h-bd">生年月日<input id="h-bd" type="date" value="" min="1900-01-01" max="2099-12-31"></label>
 <div class="tgroup"><label for="h-bt">出生時刻<input id="h-bt" type="time" value=""></label>
@@ -211,7 +212,7 @@ body:`<div class="hero"><span class="eyebrow">27 Nakshatras</span><h1>27星宿�
 ${quickForm}
 <div class="grid"><a class="card tool" href="/wheel/"><span class="k">回して見る</span><b>星宿の円盤</b><p>27星宿の関係を、円盤を回して色で見る</p></a><a class="card tool" href="/famous/"><span class="k">あの人は？</span><b>有名人の星宿</b><p>${FAM.length}人の有名人の月の星宿</p></a></div>
 ${nakChips()}${ad('mid')}
-<div class="tbl"><table style="min-width:620px"><thead><tr><th>#</th><th>星宿</th><th>範囲</th><th>支配星</th><th>ガナ</th></tr></thead><tbody>${NAK.map(n=>`<tr><td class="num">${n.id}</td><td><a href="/nakshatra/${n.slug}/">${n.name}</a></td><td>${n.span}</td><td>${n.lord}</td><td>${n.gana}</td></tr>`).join('')}</tbody></table></div>`});
+<div class="tbl"><table style="min-width:620px"><thead><tr><th>#</th><th>星宿</th><th>呼び名</th><th>範囲</th><th>支配星</th><th>ガナ</th></tr></thead><tbody>${NAK.map(n=>`<tr><td class="num">${n.id}</td><td><a href="/nakshatra/${n.slug}/">${n.name}</a></td><td>${n.label}</td><td>${n.span}</td><td>${n.lord}</td><td>${n.gana}</td></tr>`).join('')}</tbody></table></div>`});
 const TGOOD=[0,1,0,1,0,1,0,1,1],TDESC=['自分自身の星宿と同じ巡り。心と体を整える日。','実りと豊かさの日。','つまずきやすい日。確認をていねいに。','穏やかに満ちる日。','障害にあいやすい日。無理をしない。','願いが形になる日。','休息を大切にする日。大きな決断は控えめに。','人の縁に恵まれる日。','最良の縁の日。'];
 const relTable=i=>{const T=[['ジャンマ',0],['サンパット',1],['ヴィパット',2],['クシェーマ',3],['プラティヤク',4],['サーダナ',5],['ナイダナ',6],['ミトラ',7],['パラマ・ミトラ',8]];
   const rows=T.map(([nm,k])=>{const L=[];for(let j=0;j<27;j++){if(JY.tara(i,j)===k)L.push(`<li><a href="/nakshatra/${NAK[j].slug}/">${NAK[j].name}</a></li>`);}
@@ -221,19 +222,19 @@ const famousOf=i=>{const L=FAM.filter(f=>f.n===i||f.n2===i);if(!L.length)return 
 NAK.forEach((n,i)=>{const prev=NAK[(i+26)%27],next=NAK[(i+1)%27],P=a=>(a||[]).map(x=>`<p>${esc(x)}</p>`).join('');
 page(`/nakshatra/${n.slug}/`,{og:`/assets/og/nak-${n.slug}.jpg`,title:`${n.name}の性格・恋愛・仕事｜インド占星術の27星宿`,desc:`インド占星術の27星宿「${n.name}」。${(n.summary||'').slice(0,70)}`,scripts:['nakwidget.js'],crumb:`<a href="/nakshatra/">27星宿</a> › ${n.name}`,
 ld:{"@context":"https://schema.org","@type":"Article","headline":`${n.name}の性格・恋愛・仕事`,"inLanguage":"ja"},
-body:`<div class="hero"><span class="eyebrow">Nakshatra ${n.id} / 27</span><h1>${n.name}</h1><p class="lead"><b>${esc(n.catch)}</b></p><p class="lead">${esc(n.summary)}</p></div>
+body:`<div class="nkhero"><figure class="nkh-im"><img src="${SYM(n)}" alt="${n.name}のシンボル：${n.symcap}" width="512" height="512"><figcaption>シンボル：${n.symcap}</figcaption></figure><div class="nkh-b"><span class="eyebrow">Nakshatra ${n.id} / 27</span><span class="nkh-l">${n.label}</span><h1>${n.name}</h1><p class="nkh-c">${esc(n.catch)}</p><p class="lead">${esc(n.summary)}</p></div></div>
 <div class="facts"><div><span>範囲（サイデリアル）</span><b>${n.span}</b></div><div><span>支配星</span><b>${n.lord}</b></div><div><span>神格</span><b>${n.deity}</b></div><div><span>シンボル</span><b>${n.symbol}</b></div><div><span>ガナ（気質）</span><b>${n.gana}</b></div><div><span>ヨーニ（動物）</span><b>${n.yoni}</b></div></div>
 <div class="card now" id="nk-today" data-i="${i}"></div>
 <section class="prose"><h2>性格</h2>${P(n.personality)}</section>
 ${ad('mid')}
 <section class="prose"><h2>恋愛とパートナーシップ</h2>${P(n.love)}<h2>仕事と才能</h2>${P(n.work)}</section>
 <section><div class="sec-head"><h2>強みと課題</h2></div><div class="grid"><div class="card"><h3>強み</h3><ul class="chips">${(n.strengths||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div class="card"><h3>課題</h3><ul class="chips">${(n.challenges||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div></section>
-<section class="prose"><h2>神話とシンボル</h2><p>${esc(n.myth)}</p><h2>${n.name}のあなたへ</h2><p>${esc(n.advice)}</p></section>
+<section class="prose"><h2>神話とシンボル</h2><div class="nk-myth"><img src="${SYM(n,1)}" alt="" width="96" height="96" loading="lazy"><p>${esc(n.myth)}</p></div><h2>${n.name}のあなたへ</h2><p>${esc(n.advice)}</p></section>
 ${SR.card(n.lord,{label:n.name+'を守る宝石の精'})}
 ${relTable(i)}${famousOf(i)}
 <p class="note">月がどの星宿にあるかは、生まれた時刻によって変わります。<a href="/chart/">魂の星図</a>で確かめられます。相性は<a href="/aisho/">相性占い</a>へ。</p>
 ${shareS(n.name+'の性格・恋愛・仕事｜インド占星術の27星宿','/nakshatra/'+n.slug+'/')}
-<div class="grid"><a class="card tool" href="/nakshatra/${prev.slug}/"><span class="k">← 前の星宿</span><b>${prev.name}</b></a><a class="card tool" href="/nakshatra/${next.slug}/"><span class="k">次の星宿 →</span><b>${next.name}</b></a></div>
+<div class="nkpn"><a class="nkc" href="/nakshatra/${prev.slug}/"><span class="nkc-im"><img src="${SYM(prev,1)}" alt="" width="96" height="96" loading="lazy"></span><span class="nkc-n">← 前の星宿</span><b>${prev.name}</b><span class="nkc-l">${prev.label}</span></a><a class="nkc" href="/nakshatra/${next.slug}/"><span class="nkc-im"><img src="${SYM(next,1)}" alt="" width="96" height="96" loading="lazy"></span><span class="nkc-n">次の星宿 →</span><b>${next.name}</b><span class="nkc-l">${next.label}</span></a></div>
 ${cta}`});});
 
 /* ---------- 読みもの ---------- */
