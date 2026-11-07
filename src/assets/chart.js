@@ -52,7 +52,7 @@ function render(b,mode){
   /* ② 才能と強み */
   var YG=window.YOGA||{},ys=JY.yogas(r).filter(function(y){return !(b.unknown&&y.lagna);}),grp={};
   ys.forEach(function(y){(grp[y.id]=grp[y.id]||[]).push(y.detail);});
-  var ST=window.YSTAT||{freq:{},pct:[]},LVN=['','よくある','ときどき','珍しい','とても珍しい'],PT=[0,0,1,3,6],EXC=['kemadruma','kalasarpa'];
+  var ST=window.YSTAT||{freq:{},pct:[]},PT=[0,0,1,3,6],EXC=['kemadruma','kalasarpa'];
   function lv(id){var f=ST.freq[id];return f===undefined?2:f<0.10?4:f<0.25?3:f<0.45?2:1;}
   function rar(id){var L=lv(id),f=ST.freq[id];return '<span class="rar r'+L+'">'+'★★★★'.slice(0,L)+'<span class="mut">'+'★★★★'.slice(L)+'</span>'+(f!==undefined?' 試算上の出現率：約'+Math.max(1,Math.round(f*100))+'%':'')+'</span>';}
   var YDET={ruchaka:1};function ylink(id){return YDET[id]?'/yoga/'+id+'/':'/yoga/#'+id;}
@@ -70,8 +70,8 @@ function render(b,mode){
     lab=top<=10?'とても個性的な配置':top<=30?'個性的な配置':top<=60?'ほどよく個性のある配置':'よくある配置が中心';
   $('ytopw').hidden=!(ST.pct.length&&top<=30);
   $('ytop').innerHTML=ST.pct.length&&top<=30?'<p style="margin:8px 0 0"><b>'+lab+'</b>：100人いたら、上から約'+top+'番目（'+sc+'点）。</p>'+
-   (contrib.length?'<p class="note" style="color:inherit"><b>点数のもとになったヨーガ：</b>'+contrib.map(function(id){var L=lv(id);return (YG[id]||{name:id}).name+'（'+LVN[L]+' +'+PT[L]+'点）';}).join('、')+'</p>':'')+
-   '<p class="note">数え方：持っているヨーガを、珍しさで点数にしました（とても珍しい6点、珍しい3点、ときどき1点、よくある0点）。その合計を、ランダムに選んだ4,000人分のチャートと比べています。ヨーガの「数」ではなく「珍しさ」を見ているので、よくあるヨーガがたくさんあっても点数は上がりません。良い悪いの評価ではありません。</p>':'';
+   (contrib.length?'<p class="note" style="color:inherit"><b>点数のもとになったヨーガ：</b>'+contrib.map(function(id){var L=lv(id);return (YG[id]||{name:id}).name+'（'+'★★★★'.slice(0,L)+' +'+PT[L]+'点）';}).join('、')+'</p>':'')+
+   '<p class="note">数え方：持っているヨーガを、★の数で点数にしました（★★★★＝出現率10%未満は6点、★★★＝10〜25%は3点、★★＝25〜45%は1点、★＝45%以上は0点）。その合計を、ランダムに選んだ4,000人分のチャートと比べています。ヨーガの「数」ではなく「珍しさ」を見ているので、★1つ（出現率45%以上）のヨーガがたくさんあっても点数は上がりません。良い悪いの評価ではありません。</p>':'';
   $('yoganote').innerHTML=b.unknown?'時刻がわからないため、アセンダントを使うヨーガ（五大偉人ヨーガ、ラージャ・ヨーガなど）は表示していません。':'ヨーガは成立していても、その星の強さや時期（ダシャー）によって表れ方が変わります。';
   $('stren').innerHTML=window.CX?CX.strength(r,b):'';
 
