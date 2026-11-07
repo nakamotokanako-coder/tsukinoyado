@@ -588,3 +588,13 @@ form.cform>.note,form.cform>.status{grid-column:1/-1}
 /* iPhoneで空の時刻欄が枠からはみ出すのを防ぐ */
 form input[type=time]{display:block;width:100%;min-width:0;max-width:440px;-webkit-appearance:none;appearance:none;min-height:48px;text-align:left}
 form input[type=time]::-webkit-date-and-time-value{text-align:left}
+.nkh-b .eyebrow{display:block}
+.nkhero .lead{text-align:left}
+@media (min-width:760px){.nkh-l{margin-top:4px}}
+
+.nkh-c .seg{display:inline-block}
+.nkc{grid-template-columns:1fr;grid-template-rows:auto;justify-items:center;text-align:center;padding:12px 8px;row-gap:1px}
+.nkc-im{grid-row:auto;width:64px;height:64px}.nkc-im img{width:60px;height:60px}
+.nkc b{word-break:keep-all;overflow-wrap:normal;font-size:14.5px}
+.nkgrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+.nkpn .nkc b{font-size:15px}
