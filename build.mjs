@@ -233,9 +233,35 @@ ${ad('mid')}
 <section class="ak-end"><h2 class="ka">あなたの魂の星を<wbr>調べてみましょう</h2>${last.paras.map(P).join('')}${ctaB}</section>
 ${shareS(a.title,'/articles/'+a.slug+'/')}
 <section><div class="sec-head"><h2>ほかの読みもの</h2></div>${artList(ARTS.filter(x=>x.slug!==a.slug).slice(0,4))}</section>${cta}`;}
+
+/* 読みもの：共通の見せ方（ビジュアル・上の入口・カード・開閉） */
+const RD={
+ 'what-is-jyotish':['Jyotish','logo'],nakshatra:['27 Nakshatras','moti'],planets:['Navagraha','mani'],rashi:['12 Rashis','pushpa'],houses:['12 Bhavas','panna'],
+ dasha:['Vimshottari Dasha','duri'],'sade-sati':['Sade Sati','nila'],'divisional-charts':['Vargas','hira'],compatibility:['Ashtakoota','hira'],tara:['9 Taras','moti'],
+ panchang:['Panchanga','moti'],'mangal-dosha':['Mangal Dosha','prava'],ashtakavarga:['Ashtakavarga','nila'],choghadiya:['Choghadiya','mani'],muhurta:['Muhurta','pushpa'],gochara:['Gochara','pushpa']};
+const RD_DEEP=/4つのパーダと|星座を分ける3つの分類|ハウスの支配星で読み解く|始まりの残り年数|星の強さを見るポイント|星の運行を見るときにも使う|もう一つの物差し|この考え方の出どころ|曜日に残る星の名前|ハウスのグループ分け/;
+const GLY={太陽:'☉',月:'☽',火星:'♂',水星:'☿',木星:'♃',金星:'♀',土星:'♄',ラーフ:'☊',ケートゥ:'☋',牡羊座:'♈',牡牛座:'♉',双子座:'♊',蟹座:'♋',獅子座:'♌',乙女座:'♍',天秤座:'♎',蠍座:'♏',射手座:'♐',山羊座:'♑',水瓶座:'♒',魚座:'♓'};
+function glyphOf(t){for(const k of Object.keys(GLY).sort((a,b)=>b.length-a.length))if(t.startsWith(k))return GLY[k];return '';}
+function orbitSvg(center){const sy=['☉','☽','♂','☿','♃','♀','♄','☊','☋'];return `<div class="rd-vis"><svg class="ak-orb" viewBox="0 0 240 240" aria-hidden="true"><defs><radialGradient id="rdg"><stop offset="0" stop-color="#FFF4D6"/><stop offset=".55" stop-color="#F3E3B6" stop-opacity=".55"/><stop offset="1" stop-color="#F3E3B6" stop-opacity="0"/></radialGradient></defs><circle cx="120" cy="120" r="112" fill="url(#rdg)"/><circle cx="120" cy="120" r="104" class="o1"/><circle cx="120" cy="120" r="78" class="o2"/><ellipse cx="120" cy="120" rx="104" ry="40" class="o3" transform="rotate(-24 120 120)"/>${sy.map((g,i)=>{const an=(i/9)*Math.PI*2-Math.PI/2,x=120+104*Math.cos(an),y=120+104*Math.sin(an);return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="12" class="pd"/><text x="${x.toFixed(1)}" y="${(y+5).toFixed(1)}" class="pt">${g}</text>`;}).join('')}</svg><img src="${center==='logo'?'/assets/logo.webp':SR.img(center)}" alt="" width="120" height="120"></div>`;}
+function listHtml(L){const items=L.map(x=>{const m=x.match(/^([^：]{1,44})：([\s\S]+)$/);return m?{t:m[1],d:m[2]}:{t:'',d:x};});
+ if(items.some(i=>!i.t))return `<ul class="rd-ul">${L.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
+ if(items.length>=6&&items.some(i=>i.d.length>70))return `<div class="ak-cards rd-acc">${items.map(i=>{const g=glyphOf(i.t);return `<details class="ak-card"><summary>${g?`<span class="ak-sym" aria-hidden="true">${g}</span>`:''}<span class="ak-ht"><b>${esc(i.t)}</b></span><span class="ak-pm" aria-hidden="true"></span></summary><div class="ak-body${g?'':' ng'}"><p>${esc(i.d)}</p></div></details>`;}).join('')}</div>`;
+ return `<div class="rd-grid">${items.map(i=>{const g=glyphOf(i.t);return `<div class="rd-item">${g?`<span class="ak-sym" aria-hidden="true">${g}</span>`:''}<div><b>${esc(i.t)}</b><p>${esc(i.d)}</p></div></div>`;}).join('')}</div>`;}
+function richBody(a,t){const S=a.sections||[],first=S[0],last=S[S.length-1],mid=S.slice(1,-1),[eb,ctr]=RD[a.slug]||['Reading','logo'];
+ const P=x=>`<p>${esc(x)}</p>`,body=s=>`${(s.paras||[]).map(P).join('')}${s.list&&s.list.length?listHtml(s.list):''}`;
+ const ctaB=`<a class="btn ak-cta" href="${t[0]}">${t[1]}を無料でひらく</a><p class="note ak-ctan">${esc(t[2])}（無料・登録なし）</p>`;
+ const open=mid.filter(s=>!RD_DEEP.test(s.h2)),deep=mid.filter(s=>RD_DEEP.test(s.h2));
+ return `<div class="ak-hero"><span class="eyebrow">${eb}</span>${orbitSvg(ctr)}<h1 class="rd-h1">${esc(a.title).replace('？','？<wbr>')}</h1><p class="ak-sub">${esc(a.lead)}</p>${ctaB}
+<nav class="rd-toc" aria-label="この記事の内容"><b>この記事の内容</b><ol>${open.map((s,i)=>`<li><a href="#rd-${i}">${esc(s.h2)}</a></li>`).join('')}${deep.length?'<li class="dp"><a href="#rd-deep">さらに深く読みたい方へ</a></li>':''}</ol></nav></div>
+<section class="prose guide ak-intro"><h2>${esc(first.h2)}</h2>${body(first)}</section>
+${open.map((s,i)=>`<section class="rd-sec" id="rd-${i}"><div class="rd-hd"><span class="rd-no">${i+1}</span><h2>${esc(s.h2)}</h2></div><div class="rd-bd guide">${body(s)}</div></section>${i===0?ad('mid'):''}`).join('')}
+${deep.length?`<details class="card ak-deep" id="rd-deep"><summary><b>さらに深く読みたい方へ</b><span class="ak-pm" aria-hidden="true"></span></summary><div class="prose guide">${deep.map(s=>`<h3>${esc(s.h2)}</h3>${body(s)}`).join('')}</div></details>`:''}
+<section class="ak-end"><h2>${esc(last.h2)}</h2>${(last.paras||[]).map(P).join('')}${last.list&&last.list.length?listHtml(last.list):''}${ctaB}</section>
+${shareS(a.title,'/articles/'+a.slug+'/')}
+<section><div class="sec-head"><h2>ほかの読みもの</h2></div>${artList(ARTS.filter(x=>x.slug!==a.slug).slice(0,4))}</section>${cta}`;}
 ARTS.forEach(a=>{const t=TOOLS[a.related_tool]||TOOLS.chart;
 page(`/articles/${a.slug}/`,{title:a.title,desc:a.description,crumb:`<a href="/articles/">読みもの</a>`,ld:{"@context":"https://schema.org","@type":"Article","headline":a.title,"description":a.description,"inLanguage":"ja"},
-body:a.slug==='atmakaraka'?akBody(a,t):`<div class="hero"><span class="eyebrow">Reading</span><h1>${esc(a.title)}</h1><p class="lead">${esc(a.lead)}</p></div>
+body:a.slug==='atmakaraka'?akBody(a,t):RD[a.slug]?richBody(a,t):`<div class="hero"><span class="eyebrow">Reading</span><h1>${esc(a.title)}</h1><p class="lead">${esc(a.lead)}</p></div>
 <article class="prose guide">${(a.sections||[]).map((s,i)=>`<h2 class="ka">${esc(s.h2)}</h2>${s.poem?`<p class="poem">${s.poem.map(esc).join('<br>')}</p>`:''}${(s.paras||[]).map(p=>`<p>${esc(p)}</p>`).join('')}${s.list&&s.list.length?`<ul>${s.list.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${(s.blocks||[]).map(k=>`<div class="ablk${k.img?' wimg':''}">${k.img?`<img src="/assets/seirei/${k.img}-s.webp" alt="" width="72" height="72" loading="lazy">`:''}<h3 class="ka">${esc(k.h3)}</h3>${k.paras.map(p=>`<p>${esc(p)}</p>`).join('')}</div>`).join('')}${s.button?`<p><a class="btn" href="${s.button[1]}">${esc(s.button[0])}</a></p>`:''}${i===1?ad('mid'):''}`).join('')}</article>
 ${shareS(a.title,'/articles/'+a.slug+'/')}
 <a class="card tool" href="${t[0]}"><span class="k">無料で試す</span><b>${t[1]}</b><p>${t[2]}</p></a>
