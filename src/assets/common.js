@@ -73,12 +73,21 @@ function takeHand(p){var d=null;try{d=JSON.parse(sessionStorage.getItem('nv-hand
   set('la',d.la);set('lo',d.lo);set('tz',d.tz);
   d.complete=!!(d.bd&&(d.bt||d.unk));return d;}
 /* 日本語の改行：見出しと中央寄せの短い文は、読点・句点の区切りでだけ折り返す */
-function jaSeg(root){var SEL='h1,h2,h3,h4,.sname,.k-name,.yd-h,.nkh-c,.rc-catch,.rc-akt,.yz-h,.nkl-word,.sr-say,.sr-catch';
+/* 日本語の改行：見出しは句読点・かぎかっこ・カタカナ語の切れ目でだけ折り返す。中央寄せの短い文は句読点で */
+function jaParts(v,head){var out=[],cur='',KA=/[ァ-ヴー・]/;
+  for(var k=0;k<v.length;k++){var c=v[k],nx=v[k+1];
+    if(head&&'「『（'.indexOf(c)>=0&&cur&&!/[「『（\s]$/.test(cur)){out.push(cur);cur='';}
+    cur+=c;if(k+1>=v.length)break;
+    var brk='、。！？'.indexOf(c)>=0&&'」』）'.indexOf(nx)<0&&!/\s/.test(nx);
+    if(head&&!brk){if('」』）'.indexOf(c)>=0&&'、。！？」』）'.indexOf(nx)<0&&v.slice(k+1,k+3)!=='とは'&&!/[をはがにでと]/.test(nx))brk=true;else if(c==='―'&&nx!=='―')brk=true;else if('のとでにはを'.indexOf(c)>=0&&/[一-龠々]/.test(nx)&&cur.length>=6&&v.length-k>4)brk=true;else if(/[ぁ-ゖ]/.test(c)&&KA.test(nx)&&/^[ァ-ヴー・]{5,}/.test(v.slice(k+1)))brk=true;}
+    if(brk){out.push(cur);cur='';}}
+  if(cur)out.push(cur);return out;}
+function jaSeg(root){var SEL='h1,h2,h3,h4,.sname,.k-name,.yd-h,.nkh-c,.rc-catch,.rc-akt,.yz-h,.nkl-word,.sr-say,.sr-catch,.ac-t,.af-list b';
   var list=[].slice.call((root||document).querySelectorAll(SEL+',p,b,span'));
-  list.forEach(function(el){if(el.dataset.jaseg||el.closest('.seg,.nobr,pre,code,table,.si,.ni,svg,.chips'))return;var tx=el.textContent.trim();if(!tx||tx.length>70||!/[、。！？」]/.test(tx.slice(0,-1)))return;
-    if(!el.matches(SEL)){if(tx.length>40||el.children.length>2)return;var cs=getComputedStyle(el);if(cs.textAlign!=='center')return;}
+  list.forEach(function(el){if(el.dataset.jaseg||el.closest('.seg,.nobr,pre,code,table,.si,.ni,svg,.chips'))return;var tx=el.textContent.trim(),head=el.matches(SEL);if(!tx||tx.length>70)return;
+    if(!head){if(tx.length>40||el.children.length>2||!/[、。！？」]/.test(tx.slice(0,-1)))return;var cs=getComputedStyle(el);if(cs.textAlign!=='center')return;}
     el.dataset.jaseg='1';var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null),ns=[],n;while((n=w.nextNode()))ns.push(n);
-    ns.forEach(function(t){var v=t.nodeValue,parts=[],cur='';for(var k=0;k<v.length;k++){cur+=v[k];if('、。！？'.indexOf(v[k])>=0&&k+1<v.length&&'」』）'.indexOf(v[k+1])<0&&!/\s/.test(v[k+1])){parts.push(cur);cur='';}}if(cur)parts.push(cur);if(parts.length<2)return;var f=document.createDocumentFragment();parts.forEach(function(x){var sp=document.createElement('span');sp.className='seg';sp.textContent=x;f.appendChild(sp);});t.parentNode.replaceChild(f,t);});});}
+    ns.forEach(function(t){var parts=jaParts(t.nodeValue,head);if(parts.length<2)return;var f=document.createDocumentFragment();parts.forEach(function(x){var sp=document.createElement('span');sp.className='seg';sp.textContent=x;f.appendChild(sp);});t.parentNode.replaceChild(f,t);});});}
 var jaT=null;function jaWatch(){jaSeg();try{new MutationObserver(function(){clearTimeout(jaT);jaT=setTimeout(function(){jaSeg();},60);}).observe(document.body,{childList:true,subtree:true});}catch(e){}}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',jaWatch);else jaWatch();
 /* ネイティブのシェア（使えない端末では下のボタン列へ） */

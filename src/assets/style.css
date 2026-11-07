@@ -859,3 +859,4 @@ body{line-break:strict}
 .cdet-r{margin-top:8px}.cdet-r p{margin:4px 0 0}
 .tc-basis{margin:12px 0 0;font-size:12.5px;color:var(--muted)}.tc-basis+.tc-theme{margin-top:2px}
 .cd.today .dnum,.dnum.tdy{background:var(--ink);color:var(--surface);border-radius:4px;padding:0 4px;font-family:var(--f-mono);font-weight:700}
+.seg{max-width:100%}
