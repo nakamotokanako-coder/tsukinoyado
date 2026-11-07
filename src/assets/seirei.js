@@ -21,7 +21,7 @@ var L=[
   char:'ぼんやりしているようで、本当のことを見抜く、ふしぎな精。欲がなく、目に見えないものの声を聞いています。',weak:'ぼーっとして、置いていかれる',word:'……いま、なにか聞こえた？'}];
 var BY={};L.forEach(function(s){BY[s.pl]=s;});
 /* 五大偉人ヨーガの特別な姿（画像がそろったものから） */
-var KING={ruchaka:'prava',bhadra:'panna',hamsa:'pushpa',malavya:'hira',shasha:'nila'},KIMG={prava:1,nila:1,panna:1};
+var KING={ruchaka:'prava',bhadra:'panna',hamsa:'pushpa',malavya:'hira',shasha:'nila'},KIMG={prava:1,nila:1,panna:1,hira:1};
 function img(id,small){return '/assets/seirei/'+id+(small?'-s':'')+'.webp';}
 function king(yid){var id=KING[yid];return id&&KIMG[id]?id+'_k':null;}
 function card(pl,opt){opt=opt||{};var s=BY[pl];if(!s)return '';
