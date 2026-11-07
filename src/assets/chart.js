@@ -55,7 +55,7 @@ function render(b,mode){
   var ST=window.YSTAT||{freq:{},pct:[]},PT=[0,0,1,3,6],EXC=['kemadruma','kalasarpa'];
   function lv(id){var f=ST.freq[id];return f===undefined?2:f<0.10?4:f<0.25?3:f<0.45?2:1;}
   function rar(id){var L=lv(id),f=ST.freq[id];return '<span class="rar r'+L+'">'+'★★★★'.slice(0,L)+'<span class="mut">'+'★★★★'.slice(L)+'</span>'+(f!==undefined?' 試算上の出現率：約'+Math.max(1,Math.round(f*100))+'%':'')+'</span>';}
-  var YDET={ruchaka:1};function ylink(id){return YDET[id]?'/yoga/'+id+'/':'/yoga/#'+id;}
+  var YDL=window.YDETL||[];function ylink(id){return YDL.indexOf(id)>=0?'/yoga/'+id+'/':'/yoga/#'+id;}
   var ids=Object.keys(grp).sort(function(x,y){return lv(y)-lv(x);});
   var KG=window.SR?ids.filter(function(id){return SR.KING[id];}):[];
   $('kings').innerHTML=KG.length?KG.map(function(id){var sid=SR.KING[id],s=SR.L.filter(function(x){return x.id===sid;})[0],k=SR.king(id),Y=YG[id]||{name:id,m:'',c:''};

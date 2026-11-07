@@ -12,7 +12,7 @@ const JY=VMX.JY,FD=VMX.FD,SR=VMX.SR;
 const FAM=FAMOUS.map(f=>{const [y,m,d]=f.date.split('-').map(Number),ds=Date.UTC(y,m-1,d)-f.tz*36e5,a=JY.nak(JY.moonSid(ds)).i,b=JY.nak(JY.moonSid(ds+864e5-6e4)).i;return {...f,y,m,d,n:a,n2:a===b?null:b,hm:''};});
 const YOGA=rd('content/yoga.json');
 const YST=fs.existsSync('content/yoga_stats.json')?JSON.parse(fs.readFileSync('content/yoga_stats.json','utf8')):{freq:{},pct:[]};
-const YLV=id=>{const f=YST.freq[id];return f===undefined?2:f<0.10?4:f<0.25?3:f<0.45?2:1;};const YLN=['','よくある','ときどき','珍しい','とても珍しい'];
+const YDT=rd('content/yoga_detail.json');const YLV=id=>{const f=YST.freq[id];return f===undefined?2:f<0.10?4:f<0.25?3:f<0.45?2:1;};const YLN=['','よくある','ときどき','珍しい','とても珍しい'];
 const YMAP=Object.fromEntries(YOGA.map(y=>[y.id,{name:y.name,cat:y.cat,c:y.cond,m:y.p?y.p[0]:y.meaning,h:y.head||''}]));
 const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 fs.cpSync('src/assets',OUT+'/assets',{recursive:true});
@@ -106,7 +106,7 @@ ${ad('bottom')}${cta}`});
 
 /* ---------- 魂の星図 ---------- */
 page('/chart/',{title:'魂の星図｜インド占星術の無料鑑定（魂の星・ヨーガ・人生の時期）',desc:'生年月日・時刻・出生地から、インド占星術の出生図、魂の星（アートマカラカ）、心の星宿と宝石の精、ヨーガ、星の強さ、ヴィムショッタリ・ダシャー、16の分割図を無料で計算します。',scripts:['seirei.js','ak.js','varga-read.js','chart-extra.js','chart.js'],crumb:'魂の星図',
-inline:`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.NKCATCH=${JSON.stringify(NAK.map(n=>n.catch||''))};window.NKLAB=${JSON.stringify(NAK.map(n=>n.label))};window.YOGA=${JSON.stringify(YMAP)};window.YSTAT=${JSON.stringify(YST)};`,
+inline:`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.NKCATCH=${JSON.stringify(NAK.map(n=>n.catch||''))};window.NKLAB=${JSON.stringify(NAK.map(n=>n.label))};window.YOGA=${JSON.stringify(YMAP)};window.YSTAT=${JSON.stringify(YST)};window.YDETL=${JSON.stringify(Object.keys(YDT))};`,
 body:`<div id="inwrap" class="inwrap">
 <div class="hero"><span class="eyebrow">Free Birth Chart</span><h1>魂の星図</h1><p class="lead">宝石の精たちが案内する、あなただけの鑑定書。心の星宿、魂の星、生まれ持った性質から、才能、人生の時期、結婚や仕事のテーマまで読めます。</p></div>
 <form class="f cform" id="f" novalidate><fieldset><legend>生まれたときのこと</legend>
@@ -313,7 +313,7 @@ const YCATD={'五大偉人ヨーガ':['ひとつの星が、人生の柱にな�
 '成功のヨーガ':['才能を、役割と成果へつなぐ'],'結びつきのヨーガ':['ふたつの人生テーマが、深くつながる'],
 '逆転のヨーガ':['難しさの中に、立て直す力を読む','困難や変化を表す領域の関係から、状況を切り抜ける力や、弱さを補う仕組みを読みます。成立条件に加えて、星図全体での働きを確かめることが大切です。'],
 '星の強さ':['同じ星を、ふたつの図から見る'],'解釈が分かれる配置':['ひとつの見方として、知っておく']};
-const YDET={ruchaka:1};
+const YDET=YDT;
 const YRAR=id=>{const L=YLV(id),f=YST.freq[id];return `<span class="rar r${L}">${'★★★★'.slice(0,L)}<span class="mut">${'★★★★'.slice(L)}</span>${f!==undefined?` 試算上の出現率：約${Math.max(1,Math.round(f*100))}%`:''}</span>`;};
 page('/yoga/',{title:'ヨーガ事典｜五大偉人ヨーガからラージャ・ヨーガまで',desc:'インド占星術の「ヨーガ（星の組み合わせ）」27種の成立条件と意味。五大偉人ヨーガ（ルチャカ・バドラ・ハンサ・マーラヴィヤ・シャシャ）、ガジャケーサリ、ラージャ・ヨーガ、ダナ・ヨーガ、ニーチャ・バンガなど。',crumb:'ヨーガ事典',
 ld:{"@context":"https://schema.org","@type":"Article","headline":"ヨーガ事典","inLanguage":"ja"},
@@ -334,34 +334,28 @@ ${ad('bottom')}
 <aside class="cta"><h2>その星の力を、いつ、どう生かすか</h2><p>ヨーガを知ると、自分の才能や人生のテーマに名前がつきます。さらに、ほかの星との関係や人生の時期を重ねることで、今の悩みやこれからの選択と結びつけて読めるようになります。</p><p>個人鑑定では、出生図と16枚の分割図、ダシャーを丁寧に読み解き、あなたの資質、今いる時期、これからの指針を一冊の鑑定書にまとめます。</p><a href="${C.ctaUrl}" target="_blank" rel="noopener">個人鑑定について詳しく見る</a></aside>
 ${shareS('インド占星術のヨーガ事典。五大偉人ヨーガ、ラージャ・ヨーガなど27のヨーガの意味。','/yoga/')}`});
 
-/* ---------- ヨーガ詳細：ルチャカ ---------- */
-{const y=YOGA.find(x=>x.id==='ruchaka'),sp=SR.L.find(x=>x.pl==='火星');
-page('/yoga/ruchaka/',{title:'ルチャカ・ヨーガとは｜成立条件・強み・向いている仕事（インド占星術）',desc:'インド占星術の五大偉人ヨーガ「ルチャカ・ヨーガ」。火星が牡羊座・蠍座・山羊座でケンドラ（1・4・7・10室）にあると成立。強み、力を生かしやすい仕事、火星のハウスによる違い、上手な使い方を解説。',crumb:'<a href="/yoga/">ヨーガ事典</a> › ルチャカ・ヨーガ',
-ld:{"@context":"https://schema.org","@type":"Article","headline":"ルチャカ・ヨーガとは","inLanguage":"ja"},
-body:`<div class="yzhero" style="--sc:${sp.color}"><figure><img src="${SR.img(SR.king('ruchaka')||sp.id)}" alt="火星の王・${sp.name}" width="320" height="320"><figcaption>火星の王・${sp.name}</figcaption></figure><div><span class="eyebrow">Ruchaka Yoga ・ 五大偉人ヨーガ</span><h1>ルチャカ・ヨーガ</h1><p class="yz-h">道を切り開き、人を率いる力</p>${YRAR('ruchaka')}</div></div>
-<div class="yz-poem"><p>誰かが動くのを待つより、自分が最初の一歩を踏み出す</p><p>困難な場面ほど、勇気と決断力が目を覚ます</p></div>
-<div class="prose"><p>ルチャカ・ヨーガは、火星の行動力や突破力が際立つ「五大偉人ヨーガ」のひとつです。</p><p>自ら道を切り開き、目標に向かって人を率いる資質を表します。挑戦するものが見つかったとき、その情熱は、周囲を動かす大きな力になります。</p></div>
+/* ---------- ヨーガ詳細（content/yoga_detail.json） ---------- */
+for(const [id,Z] of Object.entries(YDT)){const y=YOGA.find(x=>x.id===id),sp=SR.L.find(x=>x.pl===Z.pl),nm=y.name,P=a=>a.map(t=>`<p>${esc(t)}</p>`).join('');
+page(`/yoga/${id}/`,{title:`${nm}とは｜成立条件・強み・向いている仕事（インド占星術）`,desc:Z.desc,crumb:`<a href="/yoga/">ヨーガ事典</a> › ${nm}`,
+ld:{"@context":"https://schema.org","@type":"Article","headline":`${nm}とは`,"inLanguage":"ja"},
+body:`<div class="yzhero" style="--sc:${sp.color}"><figure><img src="${SR.img(SR.king(id)||sp.id)}" alt="${Z.pl}の王・${sp.name}" width="320" height="320"><figcaption>${Z.pl}の王・${sp.name}</figcaption></figure><div><span class="eyebrow">${Z.en} ・ ${y.cat}</span><h1>${nm}</h1><p class="yz-h">${esc(Z.head)}</p>${YRAR(id)}</div></div>
+<div class="yz-poem">${Z.poem.map(t=>`<p>${SEG(t)}</p>`).join('')}</div><div class="prose">${P(Z.intro)}</div>
+${Z.extra?`<section><div class="sec-head"><h2>${Z.extra[0]}</h2></div><div class="prose">${P(Z.extra[1])}</div></section>`:''}
 <section><div class="sec-head"><h2>成立する条件</h2><p>次の2つを同時に満たすと成立します。</p></div>
-<div class="tbl"><table class="yz-t"><thead><tr><th>条件</th><th>火星の位置</th></tr></thead><tbody><tr><td>星座</td><td>牡羊座・蠍座〈自分の星座〉、または山羊座〈高揚する星座〉</td></tr><tr><td>ハウス</td><td>ラグナ〈上昇宮〉から数えて1・4・7・10室のいずれか</td></tr></tbody></table></div>
-<div class="prose"><p>1・4・7・10室は「ケンドラ」と呼ばれ、自分自身、生活の基盤、人との関係、社会での活動という、人生の柱を表します。</p><p>火星が得意な星座にあり、その力を人生の主要な場面で発揮できることが、このヨーガの特徴です。</p><p class="note">※文献や流派によっては、月を基準にしたケンドラからも読みます。ここではラグナを基準とする条件を掲載しています。</p></div></section>
+<div class="tbl"><table class="yz-t"><thead><tr><th>条件</th><th>${Z.pl}の位置</th></tr></thead><tbody><tr><td>星座</td><td>${Z.sign}</td></tr><tr><td>ハウス</td><td>ラグナ〈上昇宮〉から数えて1・4・7・10室のいずれか</td></tr></tbody></table></div>
+<div class="prose">${id!=='ruchaka'?'<p>1・4・7・10室は「ケンドラ」と呼ばれ、自分自身、生活の基盤、人との関係、社会での活動という、人生の柱を表します。</p>':''}${P(Z.condp)}${Z.condnote?`<p class="note">${Z.condnote}</p>`:''}</div></section>
 ${ad('top')}
-<section><div class="sec-head"><h2>どんな強みがある？</h2></div><div class="ypts">
-<div class="card"><h3>難しい場面で、決断できる</h3><p>迷いが生まれる状況でも、何を優先するかを見極め、行動に移す力を表します。</p><p>競争やプレッシャーのある場面で集中力を発揮し、「ここは自分が引き受ける」と前に出る。その姿勢が、人を率いる力につながります。</p></div>
-<div class="card"><h3>大切なものを、守り抜く</h3><p>火星の強さは、勝つためだけに使われるものではありません。</p><p>仲間のために声を上げる、不公平な状況を変える、責任を持って最後までやり遂げる。守りたいものが明確になるほど、勇気の使い道も定まっていきます。</p></div>
-<div class="card"><h3>考えを、実際の形にする</h3><p>目標に向かって手を動かし、試し、修正する実践力も持ち味です。</p><p>技術を磨くことや身体を鍛えることなど、取り組んだ分だけ手応えが返ってくる分野で、力を育てやすいと考えられます。</p></div></div>
-<p class="note">古典では、勇敢さや力強さ、指揮官としての資質などが描かれています。現代では、決断力・実行力・統率力として読み取ることができます。</p></section>
-<section><div class="sec-head"><h2>力を生かしやすい仕事</h2><p>火星の象徴を現代の仕事に置き換えると、次のような分野が挙げられます。</p></div>
-<div class="tbl"><table class="yz-t"><thead><tr><th>分野</th><th>生かされる力・仕事の例</th></tr></thead><tbody><tr><td>経営・リーダー職</td><td>決断と実行。起業、事業責任者、プロジェクトの指揮</td></tr><tr><td>スポーツ・現場の仕事</td><td>瞬発力、体力、規律。競技、指導、消防・警察など</td></tr><tr><td>技術・ものづくり</td><td>道具や機械を扱う力。工学、設計、建築、専門技術</td></tr><tr><td>土地・不動産</td><td>土地に関わる実務。開発、建設、不動産関連など</td></tr></tbody></table></div>
-<p class="note">実際の適職は、仕事を表すハウスや、ほかの星の配置も重ねて読みます。ルチャカ・ヨーガは、その中でも「どんな姿勢で力を発揮するか」を知る手がかりになります。</p></section>
-<section><div class="sec-head"><h2>火星があるハウスによる違い</h2><p>同じルチャカ・ヨーガでも、火星がどこにあるかによって、行動力が向かう先は変わります。</p></div>
-<div class="yz-h4">${[['1室','自分自身','自立心や存在感として表れます。自ら先頭に立ち、自分の判断で人生を動かすことがテーマです。'],['4室','暮らし・基盤','住まい、土地、家族を守ることに力が向かいます。安心できる拠点を、自分の手で築こうとする配置です。'],['7室','対人関係・協働','交渉、取引、共同事業など、人と向き合う場面で行動力を発揮します。強く主張する力と、相手の意見を受け止める姿勢が鍵になります。'],['10室','仕事・社会的役割','仕事で成果を出すことや、責任ある立場を担うことに力が向かいます。目標を掲げ、組織や現場を動かす資質として表れます。']].map(h=>`<div class="card"><span class="yz-hn">${h[0]}</span><b>${h[1]}</b><p>${h[2]}</p></div>`).join('')}</div></section>
-<section><div class="sec-head"><h2>強い力を、上手に使うために</h2></div><div class="ypts">
-<div class="card"><h3>勢いに、ひと呼吸を添える</h3><p>判断が速い分、相手にも同じ速さを求めたり、結論を急いだりすることがあります。大切な場面で一度立ち止まることが、判断の確かさにつながります。</p></div>
-<div class="card"><h3>任せることも、リーダーの力</h3><p>自分でできることが多いほど、すべてを引き受けてしまいがちです。人の得意なことを認め、役割を分けることで、個人の突破力がチームの力へと広がります。</p></div>
-<div class="card"><h3>休む時間まで、計画に入れる</h3><p>夢中になると限界まで頑張り続けることも。活動と休息のリズムを整えることが、情熱を長く生かす土台になります。</p></div></div></section>
-<section class="card yend"><h2>このヨーガを読み解くには</h2><p>ルチャカ・ヨーガの働きは、火星があるハウス、ほかの星との関係、そして火星に関わる時期〈ダシャー〉によって変わります。</p><p class="yz-q">あなたの行動力は、何を切り開くためにあるのか<br>どんな場面で、誰のために使いたいのか</p><p>星図全体を読むことで、その強さを自分らしく生かす道が見えてきます。</p><a class="btn" href="/chart/">魂の星図で、自分のヨーガを調べる</a></section>
+<section><div class="sec-head"><h2>どんな強みがある？</h2></div><div class="ypts">${Z.str.map(x=>`<div class="card"><h3>${x[0]}</h3>${P(x[1])}</div>`).join('')}</div><p class="note">${Z.classic}</p></section>
+${Z.signs?`<section><div class="sec-head"><h2>${Z.signsh||'星座による違い'}</h2><p>${Z.signs[0]}</p></div><div class="tbl"><table class="yz-t"><thead><tr><th>星座</th><th>${Z.signs[1]}</th></tr></thead><tbody>${Z.signs[2].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</tbody></table></div></section>`:''}
+<section><div class="sec-head"><h2>力を生かしやすい仕事</h2><p>${Z.pl}の象徴を現代の仕事に置き換えると、次のような分野が挙げられます。</p></div>
+<div class="tbl"><table class="yz-t"><thead><tr><th>分野</th><th>生かされる力・仕事の例</th></tr></thead><tbody>${Z.jobs.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</tbody></table></div><p class="note">${Z.jobsnote}</p></section>
+<section><div class="sec-head"><h2>${Z.pl}があるハウスによる違い</h2>${Z.houselead?`<p>${Z.houselead}</p>`:''}</div>
+<div class="yz-h4">${Z.houses.map(h=>`<div class="card"><span class="yz-hn">${h[0]}</span><b>${h[1]}</b><p>${h[2]}</p></div>`).join('')}</div></section>
+<section><div class="sec-head"><h2>${Z.tipsh}</h2></div><div class="ypts">${Z.tips.map(t=>`<div class="card"><h3>${t[0]}</h3><p>${t[1]}</p></div>`).join('')}</div></section>
+<section class="card yend"><h2>このヨーガを読み解くには</h2><p>${Z.close[0]}</p><p class="yz-q">${Z.close[1].map(t=>`<span class="seg">${SEG(t)}</span>`).join('<br>')}</p><p>${Z.close[2]}</p><a class="btn" href="/chart/">魂の星図で、自分のヨーガを調べる</a></section>
+<div class="nkpn">${['ruchaka','bhadra','hamsa','malavya','shasha'].filter(k=>k!==id&&YDT[k]).map(k=>{const o=YOGA.find(x=>x.id===k);return `<a class="card tool" href="/yoga/${k}/"><span class="k">五大偉人ヨーガ</span><b>${o.name}</b><p>${esc(YDT[k].head)}</p></a>`;}).join('')}</div>
 <p class="note"><a href="/yoga/">← ヨーガ事典にもどる</a></p>
-${shareS('ルチャカ・ヨーガとは｜道を切り開き、人を率いる力','/yoga/ruchaka/')}${cta}`});}
+${shareS(`${nm}とは｜${Z.head}`,`/yoga/${id}/`)}${cta}`});}
 
 /* ---------- はじめての方へ ---------- */
 const ORDER_ART=['what-is-jyotish','nakshatra','planets','rashi','houses','dasha','divisional-charts','atmakaraka','ashtakavarga','sade-sati','gochara','compatibility','mangal-dosha','tara','panchang','choghadiya','muhurta'];

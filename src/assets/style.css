@@ -620,3 +620,5 @@ form input[type=time]::-webkit-date-and-time-value{text-align:left}
 .k-h{display:block;font-family:var(--f-display);font-weight:700;font-size:17px;margin:2px 0}
 .yz-t td,.yz-t th{white-space:normal!important}.yz-t td:first-child{white-space:nowrap!important;width:5.5em}
 .tbl table.yz-t{min-width:0}.yz-t td{font-size:14.5px}
+.yz-poem .seg,.yz-q .seg{display:inline-block}
+.cta a{background:#E2C77F;color:#2B1F45}.cta a:hover{background:#EED79C}
