@@ -54,16 +54,17 @@ function render(b,mode){
   ys.forEach(function(y){(grp[y.id]=grp[y.id]||[]).push(y.detail);});
   var ST=window.YSTAT||{freq:{},pct:[]},LVN=['','よくある','ときどき','珍しい','とても珍しい'],PT=[0,0,1,3,6],EXC=['kemadruma','kalasarpa'];
   function lv(id){var f=ST.freq[id];return f===undefined?2:f<0.10?4:f<0.25?3:f<0.45?2:1;}
-  function rar(id){var L=lv(id),f=ST.freq[id];return '<span class="rar r'+L+'">'+'★★★★'.slice(0,L)+'<span class="mut">'+'★★★★'.slice(L)+'</span> '+LVN[L]+(f!==undefined?'（約'+Math.max(1,Math.round(f*100))+'%の人が持つ）':'')+'</span>';}
+  function rar(id){var L=lv(id),f=ST.freq[id];return '<span class="rar r'+L+'">'+'★★★★'.slice(0,L)+'<span class="mut">'+'★★★★'.slice(L)+'</span>'+(f!==undefined?' 試算上の出現率：約'+Math.max(1,Math.round(f*100))+'%':'')+'</span>';}
+  var YDET={ruchaka:1};function ylink(id){return YDET[id]?'/yoga/'+id+'/':'/yoga/#'+id;}
   var ids=Object.keys(grp).sort(function(x,y){return lv(y)-lv(x);});
   var KG=window.SR?ids.filter(function(id){return SR.KING[id];}):[];
   $('kings').innerHTML=KG.length?KG.map(function(id){var sid=SR.KING[id],s=SR.L.filter(function(x){return x.id===sid;})[0],k=SR.king(id),Y=YG[id]||{name:id,m:'',c:''};
      return '<article class="king2" style="--sc:'+s.color+'"><div class="k-im"><img src="'+SR.img(k||sid)+'" alt="'+s.name+'の王の姿" width="320" height="320"></div><div class="k-body"><span class="eyebrow">五大偉人ヨーガ・王の姿</span><h3 class="k-name">'+s.pl+'の王・'+s.name+'</h3>'+
-       '<p class="k-str"><b>どんな強み？</b>'+Y.m+'</p><p class="note" style="color:inherit"><b>あなたの配置：</b>'+grp[id].join('／')+'</p>'+
-       '<p class="note"><b>'+Y.name+'</b>の成立条件：'+(Y.c||'')+'</p>'+rar(id)+'<a class="more" href="/yoga/#'+id+'">'+Y.name+'をくわしく読む →</a></div></article>';}).join(''):
+       '<p class="k-str"><b>どんな強み？</b>'+(Y.h?'<span class="k-h">'+Y.h+'</span>':'')+Y.m+'</p><p class="note" style="color:inherit"><b>あなたの配置：</b>'+grp[id].join('／')+'</p>'+
+       '<p class="note"><b>'+Y.name+'</b>の成立条件：'+(Y.c||'')+'</p>'+rar(id)+'<a class="more" href="'+ylink(id)+'">'+Y.name+'をくわしく読む →</a></div></article>';}).join(''):
      '<div class="card nok"><p style="margin:0">このチャートには、宝石の精の「王の姿」があらわれる五大偉人ヨーガはありません。五大偉人ヨーガは持っている人の少ない配置で、ないことは悪い意味ではありません。下のヨーガと星の強さに、あなたの持ち味があらわれています。</p></div>';
   var rest=ids.filter(function(id){return KG.indexOf(id)<0;});
-  $('yogas').innerHTML=rest.length?rest.map(function(id){var Y=YG[id]||{name:id,cat:'',m:''};return '<div class="card yc"><span class="eyebrow">'+Y.cat+'</span><b class="yn">'+Y.name+'</b><p style="margin:0">'+Y.m+'</p><p class="note" style="color:inherit"><b>あなたの配置：</b>'+grp[id].join('／')+'</p>'+rar(id)+'<a class="more" href="/yoga/#'+id+'">くわしく読む →</a></div>';}).join(''):(KG.length?'':'<p class="note">主なヨーガは見つかりませんでした。ヨーガがないことは、悪い意味ではありません。</p>');
+  $('yogas').innerHTML=rest.length?rest.map(function(id){var Y=YG[id]||{name:id,cat:'',m:''};return '<div class="card yc"><span class="eyebrow">'+Y.cat+'</span><b class="yn">'+Y.name+'</b>'+(Y.h?'<span class="yd-h">'+Y.h+'</span>':'')+'<p style="margin:0">'+Y.m+'</p><p class="note" style="color:inherit"><b>あなたの配置：</b>'+grp[id].join('／')+'</p>'+rar(id)+'<a class="more" href="/yoga/#'+id+'">くわしく読む →</a></div>';}).join(''):(KG.length?'':'<p class="note">主なヨーガは見つかりませんでした。ヨーガがないことは、悪い意味ではありません。</p>');
   var sc=ids.filter(function(id){return EXC.indexOf(id)<0;}).reduce(function(t,id){return t+PT[lv(id)];},0),below=ST.pct.filter(function(v){return v<sc;}).length,top=Math.max(1,100-below);
   var contrib=ids.filter(function(id){return EXC.indexOf(id)<0&&PT[lv(id)]>0;}).sort(function(x,y){return PT[lv(y)]-PT[lv(x)];}),
     lab=top<=10?'とても個性的な配置':top<=30?'個性的な配置':top<=60?'ほどよく個性のある配置':'よくある配置が中心';
