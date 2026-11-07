@@ -49,3 +49,16 @@ for n in nak:
     d.text((80,520),'インド占星術ナヴァラトナ　tsukinoyado.vercel.app',font=F(SANS,24),fill=MUT)
     im.convert('RGB').save(A+'og/nak-'+n['slug']+'.jpg',quality=88,optimize=True)
 print('ok',len(nak))
+# 宝石の精ごと
+CAT={'mani':'まっすぐな、みんなのまとめ役','moti':'やさしい、甘えん坊の癒し係','prava':'元気いっぱいの切り込み隊長','panna':'おしゃべりな物知り','pushpa':'おおらかな、みんなの先生','hira':'おしゃれな人気者','nila':'無口な職人','gome':'好奇心のかたまり','duri':'ふしぎな夢見る子'}
+PLN={v:k for k,v in PL.items()}
+for id in ORDER:
+    im=bg();d=ImageDraw.Draw(im);shadow(im,sp(id,460),(680,100))
+    lg=Image.open(A+'logo.webp').convert('RGBA').resize((56,56),Image.LANCZOS);im.alpha_composite(lg,(80,46))
+    a,g=NM[id];d.text((80,120),f'ナヴァラトナ　{g}の精・{PLN[id]}',font=F(SANS,28),fill=ACC)
+    d.text((76,165),a,font=F(SERIF,120),fill=INK)
+    d.text((80,330),CAT[id],font=F(SERIF,40),fill=INK)
+    d.text((80,400),'9つの宝石の精が、27の星宿を守っています',font=F(SANS,26),fill=MUT)
+    d.text((80,520),'インド占星術ナヴァラトナ　tsukinoyado.vercel.app',font=F(SANS,24),fill=MUT)
+    im.convert('RGB').save(A+'og/seirei-'+id+'.jpg',quality=88,optimize=True)
+print('seirei ok')

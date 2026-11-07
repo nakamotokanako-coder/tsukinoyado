@@ -718,3 +718,24 @@ body{line-break:strict}
 .sr-mark{margin:0}
 .nmlist{line-height:1.7}
 .sr-char,.sr-weak{text-align:center!important;text-wrap:pretty}.sr-weak{align-self:stretch}
+/* 宝石の精：ひとりずつのページ */
+.sp-hero{display:grid;gap:6px;justify-items:center;text-align:center;padding:14px 0 6px}
+.sp-hero figure{margin:0;width:min(300px,72vw);position:relative}.sp-hero figure::before{content:"";position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--sc) 26%,transparent) 0,transparent 68%);z-index:-1}
+.sp-hero img{width:100%;height:auto;filter:drop-shadow(0 14px 16px rgba(60,40,20,.18))}
+.sp-hero h1{margin:2px 0 0;font-size:40px}.sp-catch{font-family:var(--f-display);font-weight:700;font-size:19px;margin:2px 0}
+.sp-say{font-family:var(--f-display);font-size:18px;margin:8px 0 2px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:8px 18px;display:inline-block}
+@media (min-width:760px){.sp-hero{grid-template-columns:320px 1fr;text-align:left;justify-items:start;align-items:center;gap:28px}.sp-hero .eyebrow{display:block}}
+.sp-share{display:flex;gap:8px;justify-content:center;margin:10px 0 4px}
+.sp-weak{background:var(--gold-soft);border-radius:10px;padding:10px 14px;font-size:14.5px;max-width:40em}.sp-weak small{display:block;font-size:11.5px;font-weight:700;color:var(--gold)}
+.sp-kw{font-size:13.5px;font-weight:700;color:var(--sc)}
+.sp-naks{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-top:8px}
+.sp-naks a{flex-direction:row;gap:12px;align-items:center;text-decoration:none;color:var(--ink);border-left:4px solid var(--sc)}
+.sp-naks img{width:64px;height:64px;object-fit:contain;flex:none}.sp-naks span{display:flex;flex-direction:column}.sp-naks small{font-size:12px;color:var(--gold);font-weight:700}.sp-naks b{font-family:var(--f-display);font-size:17px;word-break:keep-all}
+.sp-king{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.sp-king img{width:180px;height:180px;object-fit:contain;flex:none;margin:0 auto}.sp-king div{flex:1 1 240px}
+.sp-rh{font-size:14px;color:var(--gold);margin:12px 0 6px;letter-spacing:.06em}
+.sp-rel,.sp-all{display:flex;flex-wrap:wrap;gap:8px}
+.sp-rel a,.sp-all a{display:flex;flex-direction:column;align-items:center;width:92px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-bottom:3px solid var(--sc);border-radius:12px;padding:8px 4px}
+.sp-rel img,.sp-all img{width:60px;height:60px;object-fit:contain}.sp-rel b,.sp-all b{font-size:14px}.sp-rel small,.sp-all small{font-size:11px;color:var(--muted)}
+.sp-all{justify-content:center}.sp-all a[aria-current]{background:color-mix(in srgb,var(--sc) 14%,var(--surface))}
+.sr-more{margin-top:6px}
+.sp-all small,.sp-rel small{word-break:keep-all;text-align:center;line-height:1.3}.sp-all a{width:100px}
