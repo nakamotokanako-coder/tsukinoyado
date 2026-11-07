@@ -708,3 +708,13 @@ form input[type=time]::-webkit-date-and-time-value{text-align:left}
 .nk-tara{margin:14px 0}.nk-tara summary{cursor:pointer;display:flex;flex-direction:column;gap:2px}.nk-tara .sec-head{display:none}
 .nks p{margin:0 0 14px}.nks .nks-sum{margin-bottom:12px}
 .nks{display:block}.nks h2{margin:4px 0 12px}
+/* 日本語の改行 */
+body{line-break:strict}
+p,li,dd,figcaption,.note,.lead{text-wrap:pretty}
+.seg{display:inline-block}
+.sr-catch{font-size:16px}
+.sr-char{margin:0;text-align:left;font-size:14.5px;line-height:1.9;align-self:stretch}
+.sr-weak{margin:0;font-size:13.5px;color:var(--muted);align-self:stretch;text-align:left;background:var(--gold-soft);border-radius:8px;padding:6px 12px}.sr-weak small{display:block;font-size:11.5px;font-weight:700;color:var(--gold)}
+.sr-say{margin:2px 0 0;font-family:var(--f-display);font-size:16px}
+.sr-mark{margin:0}
+.nmlist{line-height:1.7}
