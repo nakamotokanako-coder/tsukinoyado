@@ -414,7 +414,7 @@ form.cform .actions .ghost{min-height:48px}
 .tool.feat{border-color:var(--gold);background:linear-gradient(135deg,var(--gold-soft),var(--surface))}
 .tool.feat b:first-of-type{font-family:var(--f-display);font-size:22px}
 .cta .poem{font-family:var(--f-display);line-height:2}
-.ka{word-break:keep-all;overflow-wrap:anywhere}
+.ka{word-break:keep-all;overflow-wrap:break-word}
 /* はじめての方へ：読みやすく */
 h1,h2,h3,.lead.gl,.poem{font-feature-settings:"palt" 1}
 .nw{white-space:nowrap}
@@ -446,3 +446,6 @@ h1,h2,h3,.lead.gl,.poem{font-feature-settings:"palt" 1}
 .dg-hl{fill:var(--gold-soft);stroke:var(--gold)}.dg-ar{display:none}
 .facts.f3{grid-template-columns:repeat(3,minmax(0,1fr))}@media (max-width:520px){.facts.f3{grid-template-columns:1fr}}
 .guide p,.h-txt p{line-height:1.95}
+.ablk{display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;padding:16px 18px}
+.ablk h3{font-family:var(--f-display);font-size:18px;line-height:1.5}
+.ablk p{margin:0}.ablk p:last-child{color:var(--accent);font-weight:500;padding-top:8px;border-top:1px dashed var(--line)}
