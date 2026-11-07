@@ -860,3 +860,7 @@ body{line-break:strict}
 .tc-basis{margin:12px 0 0;font-size:12.5px;color:var(--muted)}.tc-basis+.tc-theme{margin-top:2px}
 .cd.today .dnum,.dnum.tdy{background:var(--ink);color:var(--surface);border-radius:4px;padding:0 4px;font-family:var(--f-mono);font-weight:700}
 .seg{max-width:100%}
+.qback-top{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:14px;padding:12px 16px;margin:14px 0 0}
+.qback-top img{width:64px;height:64px;object-fit:contain}.qb-b{display:flex;flex-direction:column;flex:1 1 160px;min-width:0}.qb-n{font-family:var(--f-display);font-size:19px;word-break:keep-all}
+.qb-a{display:flex;flex-wrap:wrap;gap:6px;flex:1 1 100%}.qb-a>*{min-height:42px;padding:6px 14px;font-size:14px}
+@media (min-width:760px){.qb-a{flex:0 1 auto}}

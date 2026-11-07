@@ -17,7 +17,7 @@ function sampleBirth(){var ms=Date.UTC(SAMPLE.y,SAMPLE.m-1,SAMPLE.d,10,30)-9*36e
 
 function render(b,mode){
   var r=JY.compute(b.ms,b.lat,b.lon),moon=r.P['月'],ak=r.ak,nm=mode==='me'?$('a-nm').value.trim():'',who=mode==='sample'?'サンプル':(nm?esc(nm)+'さん':'あなた');
-  if(mode==='me')TK.saveNak(moon.nak.i);
+  if(mode==='me'&&TK.loadNak()===null)TK.saveNak(moon.nak.i);
   var mr=b.unknown?TK.moonNakRange(b):null,nk=moon.nak.i,lord=JY.DL[nk%9],sp=spOf(lord),CT=(window.NKCATCH||[])[nk]||'',SM=(window.NKSUM||[])[nk]||'';
   var memo={};function sens(D){if(b.unknown)return '';if(memo[D]!==undefined)return memo[D];var a0=JY.varga(r.asc,D),out='';for(var sec of [30,60,120,300,600]){var e=JY.varga(JY.compute(b.ms-sec*1000,b.lat,b.lon).asc,D),l=JY.varga(JY.compute(b.ms+sec*1000,b.lat,b.lon).asc,D);if(e!==a0||l!==a0){out=sec<=60?'<span class="pill r">とても繊細</span>':sec<=300?'<span class="pill r">やや繊細</span>':'';break;}}return memo[D]=out;}
 

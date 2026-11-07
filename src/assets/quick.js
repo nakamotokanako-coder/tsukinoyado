@@ -61,22 +61,29 @@ function makeImage(i,ak){var s=sp(i);return new Promise(function(res,rej){
     cv.toBlob(function(b){b?res(b):rej();},'image/png');});};
   img.onerror=rej;img.src=SR.img(s.id);});}
 
+/* 本人の星宿の記録：まだ記録がない（または同じ）ときだけ自動で記録。別の人を調べたときは上書きしない */
+function rec(i){var m=TK.loadNak();if(m===null||m===i){TK.saveNak(i);return '<p class="note">あなたの星宿として、このブラウザに記録しました。今日の運勢に、あなたの運勢が出ます。</p>';}
+  return '<p class="note">このブラウザには、あなたの星宿として「'+JY.NK[m]+'」が記録されています（上書きしていません）。<button type="button" class="ghost" data-rec="'+i+'" style="margin-left:6px;min-height:36px;padding:4px 12px;font-size:13px">'+JY.NK[i]+'を私の星宿として記録する</button></p>';}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-rec]');if(!b)return;TK.saveNak(+b.dataset.rec);b.parentNode.innerHTML='あなたの星宿として「'+JY.NK[+b.dataset.rec]+'」を記録しました。';welcome();});
 function show(i,sign,extra,ak){var out=$('qres'),w=$('qwelcome');if(w)w.hidden=true;out.innerHTML=card(i,sign,extra,ak);wire(out,i,ak);out.scrollIntoView({behavior:'smooth',block:'start'});}
 function run(e){if(e)e.preventDefault();var v=$('qbd').value,out=$('qres');if(!v){out.innerHTML='<p class="warn">生年月日を選んでください。</p>';return;}
   var a=v.split('-').map(Number),ds=Date.UTC(a[0],a[1]-1,a[2])-9*36e5,
       nk=function(m){return Math.floor(JY.moonSid(m)/(40/3));},sg=function(m){return Math.floor(JY.moonSid(m)/30);};
   var sw=find(ds,nk),ak=akOf(ds);BD=v;
-  if(sw===null){var i=nk(ds),s0=sg(ds),s1=sg(ds+864e5-6e4);TK.saveNak(i);
-    show(i,s0,s0!==s1?'<p class="warn">この日は月の星座が'+JY.SIGNS[s0]+'から'+JY.SIGNS[s1]+'へ移る日です（'+TK.jst(find(ds,sg))+'ごろ）。運勢は生まれた時刻に近いほうの星座で見てください。</p>':'<p class="note">あなたの星宿をこのブラウザに記録しました。今日の運勢に、あなたの運勢が出ます。</p>',ak);}
+  if(sw===null){var i=nk(ds),s0=sg(ds),s1=sg(ds+864e5-6e4);
+    show(i,s0,(s0!==s1?'<p class="warn">この日は月の星座が'+JY.SIGNS[s0]+'から'+JY.SIGNS[s1]+'へ移る日です（'+TK.jst(find(ds,sg))+'ごろ）。運勢は生まれた時刻に近いほうの星座で見てください。</p>':'')+rec(i),ak);}
   else{var i1=nk(ds),i2=nk(ds+864e5-6e4),t=TK.jst(sw);
     out.innerHTML='<div class="card warnbox"><h3>この日は、月の星宿が切り替わる日です</h3><p style="margin:0">日本時間 <b class="num">'+t+'</b> ごろに、月が「'+JY.NK[i1]+'」から「'+JY.NK[i2]+'」へ移りました。生まれた時刻で、どちらかに決まります。</p><div class="qbtn"><button type="button" class="ghost" data-q="0">'+t+'より前に生まれた</button><button type="button" class="ghost" data-q="1">'+t+'より後に生まれた</button></div><p class="note">時刻がわかる方は<a href="/horoscope/">ホロスコープ（チャート）作成</a>や<a href="/chart/">魂の星図</a>で正確に調べられます。</p></div>';
     out.scrollIntoView({behavior:'smooth',block:'start'});
-    out.querySelectorAll('[data-q]').forEach(function(b){b.addEventListener('click',function(){var k=+b.dataset.q,i=k?i2:i1,ms=k?ds+864e5-6e4:ds;TK.saveNak(i);show(i,sg(ms),'<p class="note">あなたの星宿をこのブラウザに記録しました。</p>',ak);});});}
+    out.querySelectorAll('[data-q]').forEach(function(b){b.addEventListener('click',function(){var k=+b.dataset.q,i=k?i2:i1,ms=k?ds+864e5-6e4:ds;show(i,sg(ms),rec(i),ak);});});}
 }
-/* 診断済みの人・まだの人への案内（トップのみ） */
-function welcome(){var w=$('qwelcome');if(!w)return;var i=TK.loadNak();
-  if(i===null){w.innerHTML='<div class="card qguide"><p style="margin:0">生年月日を入れると、<b>あなたの星宿</b>と、それを守る<b>宝石の精</b>がここに表示されます。生まれた時刻がわからなくても大丈夫です。</p><a class="btn" href="#quick">生年月日を入れる</a></div>';return;}
-  var s=sp(i);w.innerHTML='<div class="card seirei qback"'+(s?' style="--sc:'+s.color+'"':'')+'>'+(s?'<img src="'+SR.img(s.id,true)+'" alt="'+s.name+'" width="112" height="112">':'')+'<div><span class="eyebrow">おかえりなさい</span><b class="sname">'+JY.NK[i]+'</b><span class="note">あなたの宝石の精：'+(s?s.name+'（'+s.gem+'）':'')+'</span><div class="qbtn"><button type="button" data-act="mine">私の結果カードを見る</button><a class="btn ghost" href="#today">今日の運勢へ</a></div></div></div>';
-  w.querySelector('[data-act=mine]').addEventListener('click',function(){BD='';show(i,null,'<p class="note">生年月日から調べ直すと、月の星座と魂の星も表示されます。</p>');});}
+/* 再訪の人：上部にコンパクトなカード（記録された本人の星宿だけを根拠にする） */
+function welcome(){var w=$('qwelcome'),top=$('qback'),i=TK.loadNak();if(w)w.hidden=true;if(!top)return;
+  if(i===null){top.hidden=true;return;}
+  var s=sp(i);top.hidden=false;top.style.setProperty('--sc',s?s.color:'#4B2E73');
+  top.innerHTML=(s?'<img src="'+SR.img(s.id,true)+'" alt="" width="72" height="72">':'')+'<div class="qb-b"><span class="eyebrow">おかえりなさい</span><b class="qb-n">'+JY.NK[i]+'</b><span class="note">あなたの宝石の精：'+(s?s.name+'（'+s.gem+'）':'')+'</span></div>'+
+   '<div class="qb-a"><button type="button" data-act="mine">私の結果を見る</button><a class="btn ghost" href="/today/">今日の運勢を見る</a><button type="button" class="ghost" data-act="other">別の人を調べる</button></div>';
+  top.querySelector('[data-act=mine]').addEventListener('click',function(){BD='';show(i,null,'<p class="note">このブラウザに記録されたあなたの星宿から表示しています。生年月日から調べ直すと、月の星座と魂の星も表示されます。</p>');});
+  top.querySelector('[data-act=other]').addEventListener('click',function(){var q=$('quick');q.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(function(){var y=$('qbd-y');y&&y.focus({preventScroll:true});},350);});}
 TK.ready(function(){var f=$('qf');if(!f)return;f.addEventListener('submit',run);welcome();});
 })();
