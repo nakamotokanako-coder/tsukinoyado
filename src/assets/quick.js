@@ -21,7 +21,7 @@ function card(i,sign,extra,ak){var slug=JY.NKSLUG[i],s=sp(i),url=location.origin
     '<span class="rc-site">'+SITE+'</span></div></div>'+
     '<div class="rc-actions"><a class="btn" href="/nakshatra/'+slug+'/">詳しく読む</a><button type="button" class="ghost" data-act="save">画像を保存</button><button type="button" class="ghost" data-act="share">シェアする</button></div>'+
     '<p class="note rc-msg" aria-live="polite"></p>'+
-    '<div class="rc-next"><p class="rc-nh">もっとくわしく見る</p><a class="nx" href="/chart/" data-hand="/chart/"><span class="nx-k">読み解き</span><b>読み解きを見る</b><span>魂の星図：本質・才能・人生の時期を、言葉で</span></a><a class="nx" href="/horoscope/" data-hand="/horoscope/"><span class="nx-k">チャート</span><b>チャートを見る</b><span>ホロスコープ作成：出生図・度数・ダシャーの一覧</span></a><p class="note">生年月日を引き継ぎます。出生時刻と出生地を足すと、アセンダントや分割図まで出ます。</p></div>'+
+    '<div class="rc-next"><p class="rc-nh">もっとくわしく見る</p><a class="nx" href="/chart/" data-hand="/chart/"><span class="nx-k">読み解き</span><b>読み解きを見る</b><span>魂の星図：本質・才能・人生の時期を、言葉で</span></a><a class="nx" href="/horoscope/" data-hand="/horoscope/"><span class="nx-k">チャート</span><b>チャートを見る</b><span>ホロスコープ（チャート）作成：出生図・度数・ダシャーの一覧</span></a><p class="note">生年月日を引き継ぎます。出生時刻と出生地を足すと、アセンダントや分割図まで出ます。</p></div>'+
     '<div class="rc-sharebox" hidden>'+TK.shareHTML('インド占星術で調べたら、私の星宿は「'+JY.NK[i]+'」、宝石の精は「'+(s?s.name:'')+'」でした！ #ナヴァラトナ #インド占星術',url)+'</div>'+
     '<div class="card rc-detail"><span class="eyebrow">あなたの星宿</span><h3 class="rc-dh">'+JY.NK[i]+(sign!==null&&sign!==undefined?'<small>（月の星座：'+JY.SIGNS[sign]+'）</small>':'')+'</h3>'+
     '<p style="margin:0">'+(SM[i]||'')+'</p>'+(extra||'')+
@@ -69,7 +69,7 @@ function run(e){if(e)e.preventDefault();var v=$('qbd').value,out=$('qres');if(!v
   if(sw===null){var i=nk(ds),s0=sg(ds),s1=sg(ds+864e5-6e4);TK.saveNak(i);
     show(i,s0,s0!==s1?'<p class="warn">この日は月の星座が'+JY.SIGNS[s0]+'から'+JY.SIGNS[s1]+'へ移る日です（'+TK.jst(find(ds,sg))+'ごろ）。運勢は生まれた時刻に近いほうの星座で見てください。</p>':'<p class="note">あなたの星宿をこのブラウザに記録しました。今日の運勢に、あなたの運勢が出ます。</p>',ak);}
   else{var i1=nk(ds),i2=nk(ds+864e5-6e4),t=TK.jst(sw);
-    out.innerHTML='<div class="card warnbox"><h3>この日は、月の星宿が切り替わる日です</h3><p style="margin:0">日本時間 <b class="num">'+t+'</b> ごろに、月が「'+JY.NK[i1]+'」から「'+JY.NK[i2]+'」へ移りました。生まれた時刻で、どちらかに決まります。</p><div class="qbtn"><button type="button" class="ghost" data-q="0">'+t+'より前に生まれた</button><button type="button" class="ghost" data-q="1">'+t+'より後に生まれた</button></div><p class="note">時刻がわかる方は<a href="/horoscope/">ホロスコープ作成</a>や<a href="/chart/">魂の星図</a>で正確に調べられます。</p></div>';
+    out.innerHTML='<div class="card warnbox"><h3>この日は、月の星宿が切り替わる日です</h3><p style="margin:0">日本時間 <b class="num">'+t+'</b> ごろに、月が「'+JY.NK[i1]+'」から「'+JY.NK[i2]+'」へ移りました。生まれた時刻で、どちらかに決まります。</p><div class="qbtn"><button type="button" class="ghost" data-q="0">'+t+'より前に生まれた</button><button type="button" class="ghost" data-q="1">'+t+'より後に生まれた</button></div><p class="note">時刻がわかる方は<a href="/horoscope/">ホロスコープ（チャート）作成</a>や<a href="/chart/">魂の星図</a>で正確に調べられます。</p></div>';
     out.scrollIntoView({behavior:'smooth',block:'start'});
     out.querySelectorAll('[data-q]').forEach(function(b){b.addEventListener('click',function(){var k=+b.dataset.q,i=k?i2:i1,ms=k?ds+864e5-6e4:ds;TK.saveNak(i);show(i,sg(ms),'<p class="note">あなたの星宿をこのブラウザに記録しました。</p>',ak);});});}
 }

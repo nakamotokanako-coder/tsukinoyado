@@ -19,11 +19,11 @@ fs.cpSync('src/assets',OUT+'/assets',{recursive:true});
 const astro='node_modules/astronomy-engine/astronomy.browser.min.js';
 fs.copyFileSync(astro,OUT+'/assets/astronomy.min.js');
 const V=Date.now().toString(36);
-const GNAV=[{label:'占う',items:[['/#quick','宝石の精診断','生年月日だけで、精と魂の星'],['/chart/','魂の星図','読み解き：本質・才能・人生の時期'],['/horoscope/','ホロスコープ作成','チャートと度数・ダシャーの一覧'],['/aisho/','相性占い','二人の相性を36点で'],['/group/','グループ相性','最大10人の相性'],['/muhurta/','吉日選び','入籍・引っ越し・開業によい日'],['/calendar/','吉日カレンダー','月ごとの吉日と満月・新月'],['/fortune/','今月の運勢','月の星座12種別'],['/sadesati/','サディサティ判定','土星の7年半'],['/wheel/','星宿の円盤','27星宿の巡りを回して見る']]},
+const GNAV=[{label:'占う',items:[['/#quick','宝石の精診断','生年月日だけで、精と魂の星'],['/chart/','魂の星図','読み解き：本質・才能・人生の時期'],['/horoscope/','ホロスコープ（チャート）作成','チャートと度数・ダシャーの一覧'],['/aisho/','相性占い','二人の相性を36点で'],['/group/','グループ相性','最大10人の相性'],['/muhurta/','吉日選び','入籍・引っ越し・開業によい日'],['/calendar/','吉日カレンダー','月ごとの吉日と満月・新月'],['/fortune/','今月の運勢','月の星座12種別'],['/sadesati/','サディサティ判定','土星の7年半'],['/wheel/','星宿の円盤','27星宿の巡りを回して見る']]},
  {label:'今日の運勢',href:'/today/'},{label:'宝石の精',href:'/seirei/'},
  {label:'学ぶ',items:[['/jyotish/','はじめての方へ','インド占星術とは'],['/nakshatra/','27星宿','星宿ごとの性格・恋愛・仕事'],['/yoga/','ヨーガ事典','27のヨーガと珍しさ'],['/articles/','読みもの','はじめてのインド占星術'],['/famous/','有名人の星宿','あの人と同じ星宿？']]}];
 const NAV=[['/jyotish/','はじめての方へ'],['/today/','今日の運勢'],['/fortune/','今月の運勢'],['/calendar/','吉日カレンダー'],['/chart/','魂の星図'],['/aisho/','相性占い'],['/group/','グループ相性'],['/nakshatra/','27星宿'],['/yoga/','ヨーガ'],['/articles/','読みもの']];
-const TOOLS={horoscope:['/horoscope/','ホロスコープ作成','インド式の出生図・度数・ダシャー表・16分割図'],chart:['/chart/','魂の星図','宝石の精が読み解く、本質・才能・人生の時期'],aisho:['/aisho/','相性占い','36点で見るインド式の相性'],today:['/today/','今日の運勢','27星宿別・毎日更新'],sadesati:['/sadesati/','サディサティ判定','土星の7年半はいつ？'],group:['/group/','グループ相性占い','友だち・家族・職場の相性を一覧で'],yoga:['/yoga/','ヨーガ事典','五大偉人ヨーガほか27のヨーガ'],panchang:['/today/','今日の暦','月の星宿・ティティ・ラーフ・カーラ'],fortune:['/fortune/','今月・今年の運勢','月の星座12種別・星の運行で自動更新'],calendar:['/calendar/','吉日カレンダー','グル・プシュヤ、満月、あなたの好調日'],wheel:['/wheel/','星宿の円盤','回して見る、27星宿の関係'],famous:['/famous/','有名人の星宿','あの人と同じ星宿？'],seirei:['/seirei/','ナヴァラトナ','9つの宝石の精と、守る27星宿'],muhurta:['/muhurta/','吉日選び','入籍・引っ越し・開業によい日を探す']};
+const TOOLS={horoscope:['/horoscope/','ホロスコープ（チャート）作成','インド式の出生図・度数・ダシャー表・16分割図'],chart:['/chart/','魂の星図','宝石の精が読み解く、本質・才能・人生の時期'],aisho:['/aisho/','相性占い','36点で見るインド式の相性'],today:['/today/','今日の運勢','27星宿別・毎日更新'],sadesati:['/sadesati/','サディサティ判定','土星の7年半はいつ？'],group:['/group/','グループ相性占い','友だち・家族・職場の相性を一覧で'],yoga:['/yoga/','ヨーガ事典','五大偉人ヨーガほか27のヨーガ'],panchang:['/today/','今日の暦','月の星宿・ティティ・ラーフ・カーラ'],fortune:['/fortune/','今月・今年の運勢','月の星座12種別・星の運行で自動更新'],calendar:['/calendar/','吉日カレンダー','グル・プシュヤ、満月、あなたの好調日'],wheel:['/wheel/','星宿の円盤','回して見る、27星宿の関係'],famous:['/famous/','有名人の星宿','あの人と同じ星宿？'],seirei:['/seirei/','ナヴァラトナ','9つの宝石の精と、守る27星宿'],muhurta:['/muhurta/','吉日選び','入籍・引っ越し・開業によい日を探す']};
 const ad=n=>C.adsenseClient?`<div class="ad"><p class="ad-label">広告</p><ins class="adsbygoogle" style="display:block" data-ad-client="${C.adsenseClient}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>`:'';
 const pages=[];
 const shareS=(text,p)=>{const url=C.siteUrl+p,e=encodeURIComponent,u=e(url),t=e(text);return `<div class="share"><span class="share-l">シェアする</span><a class="sh x" href="https://twitter.com/intent/tweet?text=${t}&url=${u}" target="_blank" rel="noopener">X</a><a class="sh th" href="https://www.threads.net/intent/post?text=${e(text+' '+url)}" target="_blank" rel="noopener">Threads</a><a class="sh ln" href="https://social-plugins.line.me/lineit/share?url=${u}&text=${t}" target="_blank" rel="noopener">LINE</a><a class="sh fb" href="https://www.facebook.com/sharer/sharer.php?u=${u}" target="_blank" rel="noopener">Facebook</a><a class="sh hb" href="https://b.hatena.ne.jp/entry/s/${url.replace(/^https?:\/\//,'')}" target="_blank" rel="noopener">はてブ</a><button type="button" class="sh cp" data-copy="${esc(text+' '+url)}">リンクをコピー</button></div>`;};
@@ -73,7 +73,7 @@ const TARA_ROWS=[['1','ジャンマ','命','自分を整える'],['2','サンパ
 page('/',{title:'トップ',desc:'生年月日だけで、あなたを守る宝石の精と魂の星（アートマカラカ）がわかるインド占星術の無料占い。ホロスコープ作成、魂の星図、今日の運勢、相性占い、吉日カレンダーも無料で。',scripts:['seirei.js','ak.js','today.js','quick.js'],inline:NKINL(),
 body:`<section class="hero hero-top" id="quick"><span class="eyebrow">Jyotish · Vedic Astrology</span><h1>あなたの宝石の精と、<br>魂の星に出会う</h1><p class="lead">生まれた日の星から、あなたを守る宝石の精と、人生を通して育てていく「魂の星」を読み解きます</p>
 <form class="f quick hq" id="qf" novalidate><label for="qbd">生年月日<input id="qbd" type="date" value="1990-05-15" min="1900-01-01" max="2099-12-31"></label><div class="actions"><button type="submit" class="big-btn">無料で調べる</button></div></form>
-<p class="note">生年月日だけでわかります。出生時刻がわかる方は<a href="/horoscope/">ホロスコープ作成</a>で、本格的なチャートもすぐ作れます。計算はこの端末の中だけで行います。インド占星術がはじめての方は<a href="/jyotish/">はじめての方へ</a></p></section>
+<p class="note">生年月日だけでわかります。出生時刻がわかる方は<a href="/horoscope/">ホロスコープ（チャート）作成</a>で、本格的なチャートもすぐ作れます。計算はこの端末の中だけで行います。インド占星術がはじめての方は<a href="/jyotish/">はじめての方へ</a></p></section>
 <section class="sr-sec" aria-label="ナヴァラトナ 9つの宝石の精"><div class="sr-line" data-tap>${SR.L.map(x=>`<button type="button" data-id="${x.id}" aria-expanded="false" aria-controls="srd"><span class="sr-im"><img src="${SR.img(x.id,true)}" alt="" width="128" height="128"></span><span class="sr-nm">${x.name}</span><span class="sr-gm">${x.gem}</span></button>`).join('')}</div>
 <div class="srd" id="srd" hidden aria-live="polite"></div>
 <p class="note" style="text-align:center"><b>ナヴァラトナ　9つの宝石の精</b>が、27の星宿を3つずつ守っています。精を押すと紹介が出ます。<a href="/seirei/">9人の紹介 →</a></p></section>
@@ -147,7 +147,7 @@ body:`<div id="inwrap" class="inwrap">
 <h3 class="subh">16種類の分割図</h3><p class="note">図を押すと、大きく表示します。</p>
 <div class="vsel"><label for="vpick">分割図を選ぶ<select id="vpick"></select></label></div><div id="vbig"></div>
 <div class="charts" id="vargas"></div><p class="note" id="vnote"></p>
-<div class="card horo-link"><b>度数やダシャーの日付を一覧で見たいときは</b><p class="note" style="margin:4px 0 0">同じ生年月日で「ホロスコープ作成」をひらきます。天体の度数、大期・小期の日付、生まれた日の暦を表にまとめています。</p><a class="btn" href="/horoscope/" data-horo>ホロスコープ作成で見る</a></div></section>
+<div class="card horo-link"><b>度数やダシャーの日付を一覧で見たいときは</b><p class="note" style="margin:4px 0 0">同じ生年月日で「ホロスコープ（チャート）作成」をひらきます。天体の度数、大期・小期の日付、生まれた日の暦を表にまとめています。</p><a class="btn" href="/horoscope/" data-horo>ホロスコープ（チャート）作成で見る</a></div></section>
 <div id="shr"></div>
 <p class="note" style="text-align:center"><button type="button" class="ghost" data-edit>入力内容を変更</button></p>
 </div>
@@ -155,9 +155,9 @@ body:`<div id="inwrap" class="inwrap">
 ${cta}`});
 
 /* ---------- ホロスコープ作成 ---------- */
-page('/horoscope/',{title:'ホロスコープ作成｜インド占星術の無料出生図（南インド式・北インド式）',desc:'生年月日・出生時刻・出生地から、インド占星術（ジョーティシュ）のホロスコープを無料で作成。南インド式・北インド式の出生図、天体の度数と星宿、ヴィムショッタリ・ダシャーの日付表、16の分割図、生まれた日の暦を一覧で表示します。',scripts:['horoscope.js'],crumb:'ホロスコープ作成',
+page('/horoscope/',{title:'ホロスコープ作成｜インド占星術の無料出生図（南インド式・北インド式）',desc:'生年月日・出生時刻・出生地から、インド占星術（ジョーティシュ）のホロスコープを無料で作成。南インド式・北インド式の出生図、天体の度数と星宿、ヴィムショッタリ・ダシャーの日付表、16の分割図、生まれた日の暦を一覧で表示します。',scripts:['horoscope.js'],crumb:'ホロスコープ（チャート）作成',
 body:`<div id="hin" class="inwrap">
-<div class="hero"><span class="eyebrow">Birth Chart Generator</span><h1>ホロスコープ作成</h1><p class="lead">インド式の出生図（ラーシ・チャート）を、その場で作成します。天体の度数、ダシャーの日付、16の分割図まで一覧で確かめられます。</p></div>
+<div class="hero"><span class="eyebrow">Birth Chart Generator</span><h1>ホロスコープ（チャート）作成</h1><p class="lead">インド式の出生図（ラーシ・チャート）を、その場で作成します。天体の度数、ダシャーの日付、16の分割図まで一覧で確かめられます。</p></div>
 <form class="f cform" id="hf" novalidate><fieldset><legend>生まれたときのこと</legend>
 <label for="h-bd">生年月日<input id="h-bd" type="date" value="" min="1900-01-01" max="2099-12-31"></label>
 <div class="tgroup"><label for="h-bt">出生時刻<input id="h-bt" type="time" value=""></label>
