@@ -52,5 +52,5 @@ TK.ready(function(){var p=jstParts(Date.now()),s=$('mynk');
   s.addEventListener('change',function(){mine=s.value===''?null:+s.value;if(mine!==null)TK.saveNak(mine);draw();});
   $('prev').addEventListener('click',function(){go(cur.y,cur.m-1);});$('next').addEventListener('click',function(){go(cur.y,cur.m+1);});
   var q=location.hash.match(/^#(\d{4})-(\d{1,2})$/);go(q?+q[1]:p[0],q?+q[2]-1:p[1]);
-  $('shr').innerHTML=TK.shareHTML('インド占星術の吉日カレンダー。グル・プシュヤや満月の日がひと目でわかります。 #月の宿',location.origin+'/calendar/');});
+  $('shr').innerHTML=TK.shareHTML('インド占星術の吉日カレンダー。グル・プシュヤや満月の日がひと目でわかります。 #ナヴァラトナ',location.origin+'/calendar/');});
 })();

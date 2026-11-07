@@ -38,7 +38,7 @@ function page(p,{title,desc,body,scripts=[],inline='',ld=null,crumb=null,og=null
 ${C.adsenseClient?`<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${C.adsenseClient}" crossorigin="anonymous"></script>`:''}
 ${ld?`<script type="application/ld+json">${JSON.stringify(ld)}</script>`:''}
 </head><body>
-<header class="bar"><div class="bar-in"><a class="logo" href="/">${C.siteName}<small>${C.siteSub}</small></a><nav aria-label="メイン"><ul>${NAV.map(([h,l])=>`<li><a href="${h}"${p.startsWith(h)?' aria-current="page"':''}>${l}</a></li>`).join('')}</ul></nav></div></header>
+<header class="bar"><div class="bar-in"><a class="logo" href="/" aria-label="${C.siteName}"><img src="/assets/seirei/mani-s.webp" alt="" width="34" height="34"><span class="lt"><small>インド占星術</small>ナヴァラトナ</span></a><nav aria-label="メイン"><ul>${NAV.map(([h,l])=>`<li><a href="${h}"${p.startsWith(h)?' aria-current="page"':''}>${l}</a></li>`).join('')}</ul></nav></div></header>
 <main class="main">${crumb?`<p class="crumb"><a href="/">トップ</a> › ${crumb}</p>`:''}${body}</main>
 <script>document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.sh.cp');if(!b)return;var s=b.getAttribute('data-copy'),o=b.textContent;function d(){b.textContent='コピーしました';setTimeout(function(){b.textContent=o;},1600);}if(navigator.clipboard)navigator.clipboard.writeText(s).then(d,function(){});});</script>
 <footer class="foot"><div class="foot-in"><ul><li><a href="/about/">運営者情報</a></li><li><a href="/privacy/">プライバシーポリシー</a></li><li><a href="/contact/">お問い合わせ</a></li><li><a href="/articles/">読みもの</a></li><li><a href="/nakshatra/">27星宿一覧</a></li></ul>
@@ -63,7 +63,7 @@ const TARA_ROWS=[['1','ジャンマ','命','自分を整える'],['2','サンパ
 
 /* ---------- トップ ---------- */
 page('/',{title:'トップ',desc:'インド占星術（ジョーティッシュ）の無料占いサイト。生年月日だけでわかる27星宿、今日の運勢、今月の運勢、吉日カレンダー、魂の星図、相性占いを無料で。',scripts:['seirei.js','today.js','quick.js'],inline:NKINL(),
-body:`<div class="hero"><span class="eyebrow">Jyotish · Vedic Astrology</span><h1>月の宿に、<br>あなたの星を訪ねる。</h1><p class="lead">インド占星術（ジョーティッシュ）は、生まれた瞬間の月が宿っていた「星宿」から、人の性質と人生の時期を読む占星術です。インドで数千年受け継がれてきたこの智慧を、すべて無料でどうぞ。</p></div>
+body:`<div class="hero"><span class="eyebrow">Jyotish · Vedic Astrology</span><h1>9つの宝石の精と、<br>あなたの星を訪ねる。</h1><p class="lead">インド占星術（ジョーティッシュ）は、生まれた瞬間の月が宿っていた「星宿」から、人の性質と人生の時期を読む占星術です。インドで数千年受け継がれてきたこの智慧を、すべて無料でどうぞ。</p></div>
 <div class="sr-line" aria-label="ナヴァラトナ 9つの宝石の精">${SR.L.map(x=>`<a href="/seirei/#${x.id}"><img src="${SR.img(x.id,true)}" alt="${x.gem}の精 ${x.name}" width="96" height="96"><span>${x.name}</span></a>`).join('')}</div>
 <p class="note" style="text-align:center;margin-top:-6px"><b>ナヴァラトナ　9つの宝石の精</b>が、あなたの星宿を守っています。<a href="/seirei/">紹介を見る →</a></p>
 ${quickForm}
@@ -75,7 +75,7 @@ ${ad('top')}
 <section><div class="sec-head"><h2>27星宿（ナクシャトラ）</h2><p>月の通り道を27に分けた「月の宿」。生まれたときの月の星宿が、あなたの心のかたちを表します。</p></div>${nakChips()}</section>
 ${ad('mid')}
 <section><div class="sec-head"><h2>読みもの</h2><p>はじめてのインド占星術。</p></div>${artList(ARTS.slice(0,6))}<p class="note"><a href="/articles/">すべての読みもの →</a></p></section>
-${shareS('インド占星術の無料占いサイト「月の宿」。生年月日だけで27星宿がわかります。','/')}${cta}`});
+${shareS('インド占星術の無料占いサイト「ナヴァラトナ」。生年月日だけで、あなたの星宿と守ってくれる宝石の精がわかります。','/')}${cta}`});
 
 /* ---------- 今日の運勢 ---------- */
 page('/today/',{title:'今日の運勢（27星宿別）と今日の暦',desc:'インド占星術の27星宿（ナクシャトラ）別に、今日の運勢を毎日自動で更新。月の星宿、ティティ、ヨーガ、ラーフ・カーラの時間帯もわかります。',scripts:['today.js'],crumb:'今日の運勢',
@@ -291,13 +291,13 @@ ${cta}`});
 /* ---------- 宝石の精 ---------- */
 const NKBY=pl=>NAK.filter((n,i)=>JY.DL[i%9]===pl);
 page('/seirei/',{title:'ナヴァラトナ　9つの宝石の精｜27星宿を守る精',desc:'インド占星術の9つの星（ナヴァグラハ）には、それぞれ決まった宝石があります。ルビーの精マニ、真珠の精モティなど、27星宿を守る9人の宝石の精を紹介します。',crumb:'ナヴァラトナ',og:'/assets/og.png',
-body:`<div class="hero"><span class="eyebrow">Navaratna · Gem Spirits</span><h1>ナヴァラトナ<br><small style="font-size:.55em">9つの宝石の精</small></h1><p class="lead">インド占星術の9つの星には、それぞれ決まった宝石があります（ナヴァラトナ）。月の宿では、その宝石から生まれた9人の精が、27の星宿を3つずつ守っています。あなたの星宿を守るのは、どの精でしょう？</p></div>
+body:`<div class="hero"><span class="eyebrow">Navaratna · Gem Spirits</span><h1>ナヴァラトナ<br><small style="font-size:.55em">9つの宝石の精</small></h1><p class="lead">インド占星術の9つの星には、それぞれ決まった宝石があります（ナヴァラトナ）。ナヴァラトナでは、その宝石から生まれた9人の精が、27の星宿を3つずつ守っています。あなたの星宿を守るのは、どの精でしょう？</p></div>
 ${quickForm}
 <div class="sr-grid">${SR.L.map(x=>`<div class="card" id="${x.id}"><img src="${SR.img(x.id)}" alt="${x.gem}の精 ${x.name}" width="180" height="180" loading="lazy"><span class="eyebrow">${x.gem}の精・${x.pl}</span><b class="sname">${x.name}</b><b style="font-size:15px">${x.catch}</b><p class="note" style="color:inherit;margin:0">${x.char}</p><p class="note" style="margin:0">ちょっと苦手なこと：${x.weak}</p><p style="margin:0">「${x.word}」</p><p class="note" style="margin:4px 0 0">頭の上のしるし：${x.mark}</p><div class="nk">${NKBY(x.pl).map(n=>`<a class="pill" href="/nakshatra/${n.slug}/">${n.name}</a>`).join('')}</div></div>`).join('')}</div>
 ${ad('mid')}
 <section><div class="sec-head"><h2>五大偉人ヨーガの「王の姿」</h2><p>火星・水星・木星・金星・土星の精は、五大偉人ヨーガを持つ人のもとで、特別な姿になります。<a href="/chart/">魂の星図</a>でヨーガを調べると、あなたの精の王の姿があらわれます。</p></div>
 <div class="sr-grid">${[['nila','シャシャ・ヨーガ'],['prava','ルチャカ・ヨーガ'],['panna','バドラ・ヨーガ'],['hira','マーラヴィヤ・ヨーガ'],['pushpa','ハンサ・ヨーガ']].map(([id,y])=>{const x=SR.L.find(z=>z.id===id);return `<div class="card"><img src="${SR.img(id+'_k')}" alt="${x.name}の王の姿" width="180" height="180" loading="lazy"><span class="eyebrow">${y}</span><b class="sname">${x.pl}の王・${x.name}</b></div>`;}).join('')}</div></section>
-<section><div class="sec-head"><h2>9つの星と宝石</h2></div><div class="prose"><p>インドでは古くから、9つの星（ナヴァグラハ）にそれぞれの宝石を結びつけてきました。太陽はルビー、月は真珠、火星は赤珊瑚、水星はエメラルド、木星はイエローサファイア、金星はダイヤモンド、土星はブルーサファイア、ラーフはヘソナイト、ケートゥはキャッツアイです。この9つの宝石をまとめて「ナヴァラトナ（9つの宝石）」と呼びます。</p><p>27の星宿には、それぞれ支配星があり、9つの星が3つずつ受け持っています。宝石の精は、その支配星の宝石から生まれた存在です。月の宿では、宝石を「身につけて開運するもの」ではなく、それぞれの星の性質を表す色と形として楽しんでいます。</p></div></section>
+<section><div class="sec-head"><h2>9つの星と宝石</h2></div><div class="prose"><p>インドでは古くから、9つの星（ナヴァグラハ）にそれぞれの宝石を結びつけてきました。太陽はルビー、月は真珠、火星は赤珊瑚、水星はエメラルド、木星はイエローサファイア、金星はダイヤモンド、土星はブルーサファイア、ラーフはヘソナイト、ケートゥはキャッツアイです。この9つの宝石をまとめて「ナヴァラトナ（9つの宝石）」と呼びます。</p><p>27の星宿には、それぞれ支配星があり、9つの星が3つずつ受け持っています。宝石の精は、その支配星の宝石から生まれた存在です。ナヴァラトナでは、宝石を「身につけて開運するもの」ではなく、それぞれの星の性質を表す色と形として楽しんでいます。</p></div></section>
 ${shareS('ナヴァラトナ　9つの宝石の精。インド占星術の9つの星から生まれた精たち。あなたの星宿を守るのは？','/seirei/')}${cta}`,scripts:['seirei.js','quick.js'],inline:NKINL()});
 
 /* ---------- 固定ページ ---------- */

@@ -25,12 +25,12 @@ def center(d,y,t,f,fill):
     w=d.textlength(t,font=f);d.text(((1200-w)/2,y),t,font=f,fill=fill)
 # 全体
 im=bg();d=ImageDraw.Draw(im)
-center(d,70,'月の宿',F(SERIF,92),INK)
-center(d,190,'インド占星術の無料占い ─ 27星宿・魂の星図・相性・吉日',F(SANS,28),MUT)
+center(d,58,'インド占星術',F(SERIF,34),MUT)
+center(d,100,'ナヴァラトナ',F(SERIF,92),INK)
+center(d,222,'9つの宝石の精と読む、無料占い ─ 27星宿・星図・相性・吉日',F(SANS,26),MUT)
 S=140;x0=(1200-(S-12)*8-S)//2
 for i,k in enumerate(ORDER):
     shadow(im,sp(k,S),(x0+i*(S-12),330+(0 if i%2==0 else 30)))
-center(d,548,'ナヴァラトナ　9つの宝石の精',F(SERIF,26),(196,120,40))
 center(d,588,'tsukinoyado.vercel.app',F(SANS,20),MUT)
 im.convert('RGB').save(A+'og.png',optimize=True)
 # 星宿ごと
@@ -43,7 +43,7 @@ for n in nak:
     d.text((76,140),nm,font=F(SERIF,fs),fill=INK)
     d.text((80,300),f"{n['lord']}が守る星宿",font=F(SANS,30),fill=INK)
     a,g=NM[id];d.text((80,350),f"宝石の精　{a}（{g}）",font=F(SERIF,36),fill=ACC)
-    d.text((80,405),"ナヴァラトナ　9つの宝石の精",font=F(SANS,24),fill=MUT)
-    d.text((80,520),'月の宿　tsukinoyado.vercel.app',font=F(SANS,24),fill=MUT)
+    d.text((80,405),"ナヴァラトナ　9つの宝石の精より",font=F(SANS,24),fill=MUT)
+    d.text((80,520),'インド占星術ナヴァラトナ　tsukinoyado.vercel.app',font=F(SANS,24),fill=MUT)
     im.convert('RGB').save(A+'og/nak-'+n['slug']+'.jpg',quality=88,optimize=True)
 print('ok',len(nak))

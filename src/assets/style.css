@@ -227,3 +227,6 @@ details.card summary{cursor:pointer}
 .card.seirei{flex-direction:row}
 .sr-line{flex-wrap:wrap;overflow:visible;gap:4px 2px}
 .sr-line a{width:min(18%,96px)}
+.logo{align-items:center;gap:8px}.logo img{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
+.logo .lt{display:flex;flex-direction:column;line-height:1.05;font-size:22px;letter-spacing:.06em}
+.logo .lt small{font-size:10.5px;letter-spacing:.3em;opacity:.75;font-family:var(--f-body);font-weight:600;margin-bottom:2px}

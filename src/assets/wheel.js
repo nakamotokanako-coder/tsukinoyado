@@ -37,5 +37,5 @@ TK.ready(function(){var s=$('wsel'),o='';for(var i=0;i<27;i++)o+='<option value=
   svg.addEventListener('pointerdown',function(ev){drag={a:ang(ev),r:rot};moved=false;svg.setPointerCapture(ev.pointerId);});
   svg.addEventListener('pointermove',function(ev){if(!drag)return;var d=ang(ev)-drag.a;if(Math.abs(d)>3)moved=true;if(moved)setRot(drag.r+d,false);});
   svg.addEventListener('pointerup',function(ev){if(!drag)return;drag=null;if(!moved){var t=document.elementFromPoint(ev.clientX,ev.clientY);if(t&&t.dataset&&t.dataset.i!==undefined){pick=+t.dataset.i;info();$('wg').querySelectorAll('.ws').forEach(function(z){z.classList.toggle('on',+z.dataset.i===pick);});}return;}var top=((-rot/W-.5)%27+27)%27;base=Math.round(top)%27;pick=null;build();setTimeout(function(){moved=false;},50);});
-  build();$('shr').innerHTML=TK.shareHTML('27星宿の円盤を回して、星の巡り（ターラ）を見てみました。 #月の宿 #インド占星術',location.origin+'/wheel/');});
+  build();$('shr').innerHTML=TK.shareHTML('27星宿の円盤を回して、星の巡り（ターラ）を見てみました。 #ナヴァラトナ #インド占星術',location.origin+'/wheel/');});
 })();

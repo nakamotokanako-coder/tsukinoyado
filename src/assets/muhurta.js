@@ -24,7 +24,7 @@ function run(e){if(e)e.preventDefault();var k=$('mp').value,R=P[k],mine=$('mn').
    (out.length?'<div class="mlist">'+out.map(function(o){var x=o.x,top=best.indexOf(x.ds)>=0;return '<div class="mrow'+(top?' top':'')+'"><b class="num">'+x.y+'/'+x.m+'/'+x.d+'（'+WK[x.wd]+'）</b>'+(top?'<span class="pill g">特におすすめ</span>':'')+
      '<span>月の星宿：<a href="/nakshatra/'+JY.NKSLUG[x.nk]+'/">'+JY.NK[x.nk]+'</a>・'+(x.ti<15?'満ちていく月':'欠けていく月')+'の'+(x.ti%15+1)+'日目'+(x.nk===7&&x.wd===4?'・<b>グル・プシュヤ</b>':'')+(o.r!==null?'・あなたにとって「'+JY.TARA[o.r][0]+'」':'')+'</span></div>';}).join('')+'</div>':'<p class="note">この期間には、条件がそろう日がありませんでした。期間を延ばしてみてください。</p>')+
    '<p class="note">'+R.note+'あわせて、曜日（月・水・木・金'+(k==='travel'?'・日':'')+'）、ティティ（月齢日）の吉日、欠けていく月の終わりを避ける、という伝統的な条件で選んでいます。日の判定は日の出（東京）の時点です。</p>'+
-   TK.shareHTML('インド占星術の吉日選びで、'+R.n+'によい日を調べました。 #月の宿 #インド占星術',location.origin+'/muhurta/');}
+   TK.shareHTML('インド占星術の吉日選びで、'+R.n+'によい日を調べました。 #ナヴァラトナ #インド占星術',location.origin+'/muhurta/');}
 TK.ready(function(){var s=$('mn'),mine=TK.loadNak(),o='<option value="">選ばない</option>';for(var i=0;i<27;i++)o+='<option value="'+i+'"'+(mine===i?' selected':'')+'>'+JY.NK[i]+'</option>';s.innerHTML=o;
   $('mp').innerHTML=Object.keys(P).map(function(k){return '<option value="'+k+'">'+P[k].n+'</option>';}).join('');
   $('mf').addEventListener('submit',run);run();});

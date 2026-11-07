@@ -6,7 +6,7 @@ function card(i,sign,extra){var slug=JY.NKSLUG[i];
   return '<div class="card now"><span class="eyebrow">あなたの月の星宿</span><span class="big">'+JY.NK[i]+'</span><h3>月の星座は'+JY.SIGNS[sign]+'</h3>'+
   '<p style="margin:0">'+(SM[i]||'')+'</p>'+(extra||'')+
   (window.SR?SR.card(JY.DL[i%9],{label:JY.NK[i]+'を守る宝石の精'}):'')+'<div class="qbtn"><a class="btn" href="/nakshatra/'+slug+'/">'+JY.NK[i]+'の性格を読む</a><a class="btn ghost" href="/fortune/'+SL[sign]+'/">'+JY.SIGNS[sign]+'の今月の運勢</a><a class="btn ghost" href="/calendar/">吉日カレンダー</a></div>'+
-  TK.shareHTML('インド占星術で調べたら、私の月の星宿は「'+JY.NK[i]+'」でした。 #月の宿 #インド占星術',location.origin+'/nakshatra/'+slug+'/')+'</div>';}
+  TK.shareHTML('インド占星術で調べたら、私の月の星宿は「'+JY.NK[i]+'」でした。 #ナヴァラトナ #インド占星術',location.origin+'/nakshatra/'+slug+'/')+'</div>';}
 function run(e){if(e)e.preventDefault();var v=$('qbd').value,out=$('qres');if(!v){out.innerHTML='<p class="warn">生年月日を入れてください。</p>';return;}
   var a=v.split('-').map(Number),ds=Date.UTC(a[0],a[1]-1,a[2])-9*36e5;var 
       nk=function(m){return Math.floor(JY.moonSid(m)/(40/3));},sg=function(m){return Math.floor(JY.moonSid(m)/30);};

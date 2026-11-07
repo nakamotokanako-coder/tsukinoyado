@@ -38,7 +38,7 @@ function run(){var a=TK.readBirth('a-'),b=TK.readBirth('b-'),st=$('status');if(a
       (hA||hB)?['少し注意の組み合わせ','b',(hA?'あなた':'お相手')+'にだけマンガル・ドーシャがあります。火星の情熱や勢いが、関係の中で強く出やすい組み合わせです。ぶつかったときの冷まし方を二人で決めておくと安心です。ほかの項目の相性がよければ大きな問題ではないとする占い師も多くいます。']:
       ['よい組み合わせ','g',(mA.has||mB.has)?'マンガル・ドーシャはありますが、火星が穏やかに働く位置にあるため、気にしなくてよい組み合わせです。':'二人ともマンガル・ドーシャはありません。'];
   $('res').insertAdjacentHTML('beforeend','<div class="card"><span class="eyebrow">マンガル・ドーシャ（火星の配置）</span><h3><span class="pill '+mv[1]+'">'+mv[0]+'</span></h3><p style="margin:0">'+mv[2]+'</p><p class="note" style="color:inherit"><b>あなた：</b>'+CX.mangalText(mA)+'<br><b>お相手：</b>'+CX.mangalText(mB)+'</p><p class="note">インドで結婚の相性を見るとき、36点の相性とあわせて必ず確かめる配置です。'+((a.unknown||b.unknown)?'時刻がわからない人は、月と金星からだけ見ています。':'')+'</p></div>');
-  $('res').insertAdjacentHTML('beforeend',TK.shareHTML('インド式の相性占いで、二人の相性は36点中'+(Math.round(r.total*10)/10)+'点でした。 #月の宿 #インド占星術',location.origin+'/aisho/'));
+  $('res').insertAdjacentHTML('beforeend',TK.shareHTML('インド式の相性占いで、二人の相性は36点中'+(Math.round(r.total*10)/10)+'点でした。 #ナヴァラトナ #インド占星術',location.origin+'/aisho/'));
   st.textContent='相性を表示しています';return true;}
 TK.initPlace('a-');TK.initPlace('b-');
 $('f').addEventListener('submit',function(e){e.preventDefault();try{if(run())$('res').scrollIntoView({behavior:'smooth'});}catch(err){$('status').textContent='計算できませんでした。入力を確認してください。';}});

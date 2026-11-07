@@ -21,7 +21,7 @@ function run(){var ppl=read().filter(function(x){return x.d;}),st=$('status');if
   ppl.map(function(x,i){return '<tr><td><b>'+x.name.replace(/</g,'&lt;')+'</b><br><a class="note" href="/nakshatra/'+x.nk.slug+'/">'+x.nk.name+'</a>'+(x.amb?'<br><span class="warn">星宿が未確定</span>':'')+'</td>'+M[i].map(function(v){return v===null?'<td class="mut">—</td>':'<td class="num"><span class="pill '+colr(v)+'">'+(Math.round(v*10)/10)+'</span></td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>';
  h+='<div class="card"><h3>相性ランキング</h3><ol style="margin:0;padding-left:1.4em">'+pairs.map(function(p){return '<li>'+ppl[p.a].name.replace(/</g,'&lt;')+' × '+ppl[p.b].name.replace(/</g,'&lt;')+'　<span class="num">'+(Math.round(p.v*10)/10)+'点</span></li>';}).join('')+'</ol><p class="note">点数は、インド式の相性占い「アシュタクータ」（36点満点）を、性別を問わず両方向で計算した平均です。18点以上がひとつの目安です。</p></div>';
  if(ppl.some(function(x){return x.amb;}))h+='<p class="warn">「星宿が未確定」の人は、生まれた日に月の星宿が切り替わっています。時刻を入れると確定します。</p>';
- h+=TK.shareHTML(N+'人のグループ相性を、インド占星術で占いました。 #月の宿 #インド占星術',location.origin+'/group/');
+ h+=TK.shareHTML(N+'人のグループ相性を、インド占星術で占いました。 #ナヴァラトナ #インド占星術',location.origin+'/group/');
  $('res').innerHTML=h;st.textContent=N+'人の相性を表示しています';return true;}
 $('add').addEventListener('click',function(){addRow();save();});
 $('f').addEventListener('submit',function(e){e.preventDefault();try{if(run())$('res').scrollIntoView({behavior:'smooth'});}catch(err){$('status').textContent='計算できませんでした。入力を確認してください。';}});
