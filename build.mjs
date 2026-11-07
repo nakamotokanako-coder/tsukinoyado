@@ -7,31 +7,31 @@ const ARTS=rd('content/articles.json');
 const FAMOUS=rd('content/famous.json');
 /* 計算エンジンをビルドでも使う */
 const VMX={Astronomy:createRequire(import.meta.url)('astronomy-engine'),console,Date,Math};vm.createContext(VMX);
-vm.runInContext(fs.readFileSync('src/assets/calc.js','utf8')+';this.JY=JY;',VMX);vm.runInContext(fs.readFileSync('src/assets/fortune-data.js','utf8')+';this.FD=FD;',VMX);
-const JY=VMX.JY,FD=VMX.FD;
+vm.runInContext(fs.readFileSync('src/assets/calc.js','utf8')+';this.JY=JY;',VMX);vm.runInContext(fs.readFileSync('src/assets/fortune-data.js','utf8')+';this.FD=FD;',VMX);vm.runInContext(fs.readFileSync('src/assets/seirei.js','utf8')+';this.SR=SR;',VMX);
+const JY=VMX.JY,FD=VMX.FD,SR=VMX.SR;
 const FAM=FAMOUS.map(f=>{const [y,m,d]=f.date.split('-').map(Number),ds=Date.UTC(y,m-1,d)-f.tz*36e5,a=JY.nak(JY.moonSid(ds)).i,b=JY.nak(JY.moonSid(ds+864e5-6e4)).i;return {...f,y,m,d,n:a,n2:a===b?null:b,hm:''};});
 const YOGA=rd('content/yoga.json');
 const YST=fs.existsSync('content/yoga_stats.json')?JSON.parse(fs.readFileSync('content/yoga_stats.json','utf8')):{freq:{},pct:[]};
 const YLV=id=>{const f=YST.freq[id];return f===undefined?2:f<0.10?4:f<0.25?3:f<0.45?2:1;};const YLN=['','よくある','ときどき','珍しい','とても珍しい'];
 const YMAP=Object.fromEntries(YOGA.map(y=>[y.id,{name:y.name,cat:y.cat,m:y.meaning.split('。').filter(Boolean).slice(0,2).join('。')+'。'}]));
 const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-for(const f of fs.readdirSync('src/assets')) fs.copyFileSync('src/assets/'+f,OUT+'/assets/'+f);
+fs.cpSync('src/assets',OUT+'/assets',{recursive:true});
 const astro='node_modules/astronomy-engine/astronomy.browser.min.js';
 fs.copyFileSync(astro,OUT+'/assets/astronomy.min.js');
 const V=Date.now().toString(36);
 const NAV=[['/jyotish/','はじめての方へ'],['/today/','今日の運勢'],['/fortune/','今月の運勢'],['/calendar/','吉日カレンダー'],['/chart/','魂の星図'],['/aisho/','相性占い'],['/group/','グループ相性'],['/nakshatra/','27星宿'],['/yoga/','ヨーガ'],['/articles/','読みもの']];
-const TOOLS={chart:['/chart/','魂の星図','出生図・魂の星・ダシャー・16分割図'],aisho:['/aisho/','相性占い','36点で見るインド式の相性'],today:['/today/','今日の運勢','27星宿別・毎日更新'],sadesati:['/sadesati/','サディサティ判定','土星の7年半はいつ？'],group:['/group/','グループ相性占い','友だち・家族・職場の相性を一覧で'],yoga:['/yoga/','ヨーガ事典','五大偉人ヨーガほか27のヨーガ'],panchang:['/today/','今日の暦','月の星宿・ティティ・ラーフ・カーラ'],fortune:['/fortune/','今月・今年の運勢','月の星座12種別・星の運行で自動更新'],calendar:['/calendar/','吉日カレンダー','グル・プシュヤ、満月、あなたの好調日'],wheel:['/wheel/','星宿の円盤','回して見る、27星宿の関係'],famous:['/famous/','有名人の星宿','あの人と同じ星宿？'],muhurta:['/muhurta/','吉日選び','入籍・引っ越し・開業によい日を探す']};
+const TOOLS={chart:['/chart/','魂の星図','出生図・魂の星・ダシャー・16分割図'],aisho:['/aisho/','相性占い','36点で見るインド式の相性'],today:['/today/','今日の運勢','27星宿別・毎日更新'],sadesati:['/sadesati/','サディサティ判定','土星の7年半はいつ？'],group:['/group/','グループ相性占い','友だち・家族・職場の相性を一覧で'],yoga:['/yoga/','ヨーガ事典','五大偉人ヨーガほか27のヨーガ'],panchang:['/today/','今日の暦','月の星宿・ティティ・ラーフ・カーラ'],fortune:['/fortune/','今月・今年の運勢','月の星座12種別・星の運行で自動更新'],calendar:['/calendar/','吉日カレンダー','グル・プシュヤ、満月、あなたの好調日'],wheel:['/wheel/','星宿の円盤','回して見る、27星宿の関係'],famous:['/famous/','有名人の星宿','あの人と同じ星宿？'],seirei:['/seirei/','宝石の精たち','9つの星と27星宿を守る精'],muhurta:['/muhurta/','吉日選び','入籍・引っ越し・開業によい日を探す']};
 const ad=n=>C.adsenseClient?`<div class="ad"><p class="ad-label">広告</p><ins class="adsbygoogle" style="display:block" data-ad-client="${C.adsenseClient}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>`:'';
 const pages=[];
 const shareS=(text,p)=>{const url=C.siteUrl+p,e=encodeURIComponent,u=e(url),t=e(text);return `<div class="share"><span class="share-l">シェアする</span><a class="sh x" href="https://twitter.com/intent/tweet?text=${t}&url=${u}" target="_blank" rel="noopener">X</a><a class="sh th" href="https://www.threads.net/intent/post?text=${e(text+' '+url)}" target="_blank" rel="noopener">Threads</a><a class="sh ln" href="https://social-plugins.line.me/lineit/share?url=${u}&text=${t}" target="_blank" rel="noopener">LINE</a><a class="sh fb" href="https://www.facebook.com/sharer/sharer.php?u=${u}" target="_blank" rel="noopener">Facebook</a><a class="sh hb" href="https://b.hatena.ne.jp/entry/s/${url.replace(/^https?:\/\//,'')}" target="_blank" rel="noopener">はてブ</a><button type="button" class="sh cp" data-copy="${esc(text+' '+url)}">リンクをコピー</button></div>`;};
 const quickForm=`<section id="quick"><div class="sec-head"><h2>生年月日だけで、あなたの星宿を調べる</h2><p>生まれた時刻がわからなくても大丈夫。日本で生まれた方向けに、日本時間で計算します。</p></div><form class="f quick" id="qf" novalidate><label for="qbd">生年月日<input id="qbd" type="date" value="1990-05-15" min="1900-01-01" max="2099-12-31"></label><div class="actions"><button type="submit">星宿を調べる</button></div></form><div id="qres" aria-live="polite"></div></section>`;
 const NKINL=()=>`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.NKSU=${JSON.stringify(NAK.map(n=>n.sukuyo))};`;
-function page(p,{title,desc,body,scripts=[],inline='',ld=null,crumb=null}){
+function page(p,{title,desc,body,scripts=[],inline='',ld=null,crumb=null,og=null}){
   const full=p==='/'?`${C.siteName}｜${C.siteSub}`:`${title}｜${C.siteName}`;
   const url=C.siteUrl+p;
   const html=`<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>${esc(full)}</title><meta name="description" content="${esc(desc)}"><link rel="canonical" href="${url}">
-<meta property="og:title" content="${esc(full)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="${p==='/'?'website':'article'}"><meta property="og:url" content="${url}"><meta property="og:site_name" content="${C.siteName}"><meta property="og:image" content="${C.siteUrl}/assets/og.png"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="${esc(full)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="${p==='/'?'website':'article'}"><meta property="og:url" content="${url}"><meta property="og:site_name" content="${C.siteName}"><meta property="og:image" content="${C.siteUrl}${og||'/assets/og.png'}"><meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#1F1A38"><link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="/assets/style.css?v=${V}">
@@ -62,13 +62,15 @@ const artList=list=>`<div class="list">${list.map(a=>`<a href="/articles/${a.slu
 const TARA_ROWS=[['1','ジャンマ','命','自分を整える'],['2','サンパット','栄','実り・豊かさ'],['3','ヴィパット','衰','つまずきに注意'],['4','クシェーマ','安','穏やか・安定'],['5','プラティヤク','危','無理をしない'],['6','サーダナ','成','願いが形になる'],['7','ナイダナ','壊','休息を大切に'],['8','ミトラ','友','人の縁'],['9','パラマ・ミトラ','親','最良の縁']];
 
 /* ---------- トップ ---------- */
-page('/',{title:'トップ',desc:'インド占星術（ジョーティッシュ）の無料占いサイト。生年月日だけでわかる27星宿、今日の運勢、今月の運勢、吉日カレンダー、魂の星図、相性占いを無料で。',scripts:['today.js','quick.js'],inline:NKINL(),
+page('/',{title:'トップ',desc:'インド占星術（ジョーティッシュ）の無料占いサイト。生年月日だけでわかる27星宿、今日の運勢、今月の運勢、吉日カレンダー、魂の星図、相性占いを無料で。',scripts:['seirei.js','today.js','quick.js'],inline:NKINL(),
 body:`<div class="hero"><span class="eyebrow">Jyotish · Vedic Astrology</span><h1>月の宿に、<br>あなたの星を訪ねる。</h1><p class="lead">インド占星術（ジョーティッシュ）は、生まれた瞬間の月が宿っていた「星宿」から、人の性質と人生の時期を読む占星術です。インドで数千年受け継がれてきたこの智慧を、すべて無料でどうぞ。</p></div>
+<div class="sr-line" aria-label="宝石の精たち">${SR.L.map(x=>`<a href="/seirei/#${x.id}"><img src="${SR.img(x.id,true)}" alt="${x.gem}の精 ${x.name}" width="96" height="96"><span>${x.name}</span></a>`).join('')}</div>
+<p class="note" style="text-align:center;margin-top:-6px">9つの星の宝石の精が、あなたの星宿を守っています。<a href="/seirei/">宝石の精たち →</a></p>
 ${quickForm}
 <section><div class="sec-head"><h2>今日の運勢 <span id="today-date" class="note"></span></h2><p>生まれた星宿と、今日の月の星宿の巡り（ターラ）から読む毎日の運勢です。</p></div>
 <div class="card now" id="mine"></div><div class="grid" id="pick"></div><div class="card" id="nowslot"></div><p class="note"><a href="/today/">27星宿すべての今日の運勢を見る →</a></p></section>
 ${ad('top')}
-<section><div class="sec-head"><h2>無料占い</h2><p>生年月日と時刻、出生地を入れるだけ。計算はすべてあなたの端末の中で行います。</p></div>${toolCards(['chart','aisho','fortune','calendar','muhurta','group','sadesati','wheel','famous','yoga'])}</section>
+<section><div class="sec-head"><h2>無料占い</h2><p>生年月日と時刻、出生地を入れるだけ。計算はすべてあなたの端末の中で行います。</p></div>${toolCards(['chart','aisho','fortune','calendar','muhurta','group','sadesati','seirei','wheel','famous','yoga'])}</section>
 <section><div class="sec-head"><h2>今日の暦（パンチャーンガ）</h2><p>インドの暦で見る、今日という日の性質。</p></div><div class="facts" id="pc"></div></section>
 <section><div class="sec-head"><h2>27星宿（ナクシャトラ）</h2><p>月の通り道を27に分けた「月の宿」。生まれたときの月の星宿が、あなたの心のかたちを表します。</p></div>${nakChips()}</section>
 ${ad('mid')}
@@ -90,7 +92,7 @@ ${ad('top')}
 ${ad('bottom')}${cta}`});
 
 /* ---------- 魂の星図 ---------- */
-page('/chart/',{title:'魂の星図｜インド占星術の無料ホロスコープ（出生図・分割図・ダシャー）',desc:'生年月日・時刻・出生地から、インド占星術の出生図（南インド式）、魂の星（アートマカラカ）、月の星宿、ヴィムショッタリ・ダシャー、サディサティ、分割図D9・D10・D60を無料で計算します。',scripts:['varga-read.js','chart-extra.js','chart.js'],crumb:'魂の星図',
+page('/chart/',{title:'魂の星図｜インド占星術の無料ホロスコープ（出生図・分割図・ダシャー）',desc:'生年月日・時刻・出生地から、インド占星術の出生図（南インド式）、魂の星（アートマカラカ）、月の星宿、ヴィムショッタリ・ダシャー、サディサティ、分割図D9・D10・D60を無料で計算します。',scripts:['seirei.js','varga-read.js','chart-extra.js','chart.js'],crumb:'魂の星図',
 inline:`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.YOGA=${JSON.stringify(YMAP)};window.YSTAT=${JSON.stringify(YST)};`,
 body:`<div class="hero"><span class="eyebrow">Free Birth Chart</span><h1>魂の星図</h1><p class="lead">出生図、魂の目的を示す星、心の星宿、人生の時期、結婚・天職・過去世の分割図まで。生まれた時刻がわかると、より正確になります。</p></div>
 <form class="f" id="f" novalidate>${birthForm('a-','生まれたときのこと',{name:true})}<div class="actions"><button type="submit">星図を出す</button><span class="status" id="status"></span></div></form>
@@ -129,7 +131,7 @@ ${ad('mid')}
 ${cta}`});
 
 /* ---------- 27星宿 ---------- */
-page('/nakshatra/',{title:'27星宿（ナクシャトラ）一覧',desc:'インド占星術の27星宿（ナクシャトラ）の一覧。各星宿の性格、恋愛、仕事、神話をまとめています。',crumb:'27星宿',scripts:['quick.js'],inline:NKINL(),
+page('/nakshatra/',{title:'27星宿（ナクシャトラ）一覧',desc:'インド占星術の27星宿（ナクシャトラ）の一覧。各星宿の性格、恋愛、仕事、神話をまとめています。',crumb:'27星宿',scripts:['seirei.js','quick.js'],inline:NKINL(),
 body:`<div class="hero"><span class="eyebrow">27 Nakshatras</span><h1>27星宿（ナクシャトラ）</h1><p class="lead">ナクシャトラは、月がひと晩ずつ泊まる27の「月の宿」。あなたの星宿は<a href="/chart/">魂の星図</a>で調べられます。</p></div>
 ${quickForm}
 <div class="grid"><a class="card tool" href="/wheel/"><span class="k">回して見る</span><b>星宿の円盤</b><p>27星宿の関係を、円盤を回して色で見る</p></a><a class="card tool" href="/famous/"><span class="k">あの人は？</span><b>有名人の星宿</b><p>${FAM.length}人の有名人の月の星宿</p></a></div>
@@ -142,7 +144,7 @@ const relTable=i=>{const T=[['ジャンマ',0],['サンパット',1],['ヴィパ
   return `<section><div class="sec-head"><h2>${NAK[i].name}の人の、日ごとの運勢（ターラ）</h2><p>${NAK[i].name}生まれの人にとって、その日の月がどの星宿にあるとよい日になるかの一覧です。インドでは、今日の運勢や、大切な日を選ぶときに使います。<a href="/articles/tara/">ターラのしくみ →</a></p></div>${rows}</section>`;};
 const famousOf=i=>{const L=FAM.filter(f=>f.n===i||f.n2===i);if(!L.length)return '';return `<section><div class="sec-head"><h2>${NAK[i].name}の有名人</h2><p>生年月日から計算した月の星宿です。<a href="/famous/">有名人の星宿一覧 →</a></p></div><ul class="chips">${L.map(f=>`<li>${esc(f.name)}${f.n2!==null?'<small>（切り替わりの日）</small>':''}</li>`).join('')}</ul></section>`;};
 NAK.forEach((n,i)=>{const prev=NAK[(i+26)%27],next=NAK[(i+1)%27],P=a=>(a||[]).map(x=>`<p>${esc(x)}</p>`).join('');
-page(`/nakshatra/${n.slug}/`,{title:`${n.name}の性格・恋愛・仕事｜インド占星術の27星宿`,desc:`インド占星術の27星宿「${n.name}」。${(n.summary||'').slice(0,70)}`,scripts:['nakwidget.js'],crumb:`<a href="/nakshatra/">27星宿</a> › ${n.name}`,
+page(`/nakshatra/${n.slug}/`,{og:`/assets/og/nak-${n.slug}.jpg`,title:`${n.name}の性格・恋愛・仕事｜インド占星術の27星宿`,desc:`インド占星術の27星宿「${n.name}」。${(n.summary||'').slice(0,70)}`,scripts:['nakwidget.js'],crumb:`<a href="/nakshatra/">27星宿</a> › ${n.name}`,
 ld:{"@context":"https://schema.org","@type":"Article","headline":`${n.name}の性格・恋愛・仕事`,"inLanguage":"ja"},
 body:`<div class="hero"><span class="eyebrow">Nakshatra ${n.id} / 27</span><h1>${n.name}</h1><p class="lead"><b>${esc(n.catch)}</b></p><p class="lead">${esc(n.summary)}</p></div>
 <div class="facts"><div><span>範囲（サイデリアル）</span><b>${n.span}</b></div><div><span>支配星</span><b>${n.lord}</b></div><div><span>神格</span><b>${n.deity}</b></div><div><span>シンボル</span><b>${n.symbol}</b></div><div><span>ガナ（気質）</span><b>${n.gana}</b></div><div><span>ヨーニ（動物）</span><b>${n.yoni}</b></div></div>
@@ -152,6 +154,7 @@ ${ad('mid')}
 <section class="prose"><h2>恋愛とパートナーシップ</h2>${P(n.love)}<h2>仕事と才能</h2>${P(n.work)}</section>
 <section><div class="sec-head"><h2>強みと課題</h2></div><div class="grid"><div class="card"><h3>強み</h3><ul class="chips">${(n.strengths||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div class="card"><h3>課題</h3><ul class="chips">${(n.challenges||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div></section>
 <section class="prose"><h2>神話とシンボル</h2><p>${esc(n.myth)}</p><h2>${n.name}のあなたへ</h2><p>${esc(n.advice)}</p></section>
+${SR.card(n.lord,{label:n.name+'を守る宝石の精'})}
 ${relTable(i)}${famousOf(i)}
 <p class="note">月がどの星宿にあるかは、生まれた時刻によって変わります。<a href="/chart/">魂の星図</a>で確かめられます。相性は<a href="/aisho/">相性占い</a>へ。</p>
 ${shareS(n.name+'の性格・恋愛・仕事｜インド占星術の27星宿','/nakshatra/'+n.slug+'/')}
@@ -241,6 +244,7 @@ SNAME.forEach((s,i)=>{const now=Date.now();
 page(`/fortune/${FD.SL[i]}/`,{title:`${s}（月星座）の今月の運勢・今年の運勢｜インド占星術`,desc:`インド占星術で月が${s}（${FD.IN[i]}）にある人の、今月の運勢と今年の運勢。木星・土星・ラーフの運行と、願いが叶いやすい日・注意日（チャンドラーシュタマ）を自動計算します。`,scripts:['fortune-data.js','fortune.js'],crumb:`<a href="/fortune/">今月の運勢</a> › ${s}`,
 body:`<div class="hero"><span class="eyebrow">Moon in ${FD.SL[i].replace(/^./,c=>c.toUpperCase())}</span><h1>${s}の運勢</h1><p class="lead">月が${s}（${FD.IN[i]}）にある人へ。${FD.CHAR[i]}</p></div>
 <div id="ftn" data-s="${i}"></div>
+${SR.card(['火星','金星','水星','月','太陽','水星','金星','火星','木星','土星','土星','木星'][i],{label:s+'を治める星の精'})}
 <section><div class="sec-head"><h2>今月の運勢</h2><div class="seg"><button type="button" class="ghost" data-off="0" aria-pressed="true">今月</button><button type="button" class="ghost" data-off="1" aria-pressed="false">来月</button></div></div><div id="fm">${FD.month(i,now,0)}</div></section>
 ${ad('mid')}
 <section><div class="sec-head"><h2>今年の運勢</h2><p>木星・土星・ラーフ、3つの大きな星の巡り</p></div><div id="fy">${FD.year(i,now)}</div></section>
@@ -283,6 +287,18 @@ ${ad('mid')}
 <p>「特におすすめ」は、満ちていく月の日、あなたにとってサンパット・サーダナ・パラマ・ミトラ（実り・達成・最良の縁）の日、グル・プシュヤなどが重なる日です。</p>
 <p>本格的なムフールタでは、その日の中でもよい時間帯（ラグナ）まで選び、本人の出生図の時期も重ねます。このページは日を選ぶための簡易版です。当日の時間帯は<a href="/today/">今日の吉凶の時間帯（チョーガディヤ）</a>で見られます。</p></div></section>
 ${cta}`});
+
+/* ---------- 宝石の精 ---------- */
+const NKBY=pl=>NAK.filter((n,i)=>JY.DL[i%9]===pl);
+page('/seirei/',{title:'宝石の精たち｜9つの星と27星宿を守る精',desc:'インド占星術の9つの星（ナヴァグラハ）には、それぞれ決まった宝石があります。ルビーの精マニ、真珠の精モティなど、27星宿を守る9人の宝石の精を紹介します。',crumb:'宝石の精たち',og:'/assets/og.png',
+body:`<div class="hero"><span class="eyebrow">Gem Spirits</span><h1>宝石の精たち</h1><p class="lead">インド占星術の9つの星には、それぞれ決まった宝石があります（ナヴァラトナ）。月の宿では、その宝石から生まれた9人の精が、27の星宿を3つずつ守っています。あなたの星宿を守るのは、どの精でしょう？</p></div>
+${quickForm}
+<div class="sr-grid">${SR.L.map(x=>`<div class="card" id="${x.id}"><img src="${SR.img(x.id)}" alt="${x.gem}の精 ${x.name}" width="180" height="180" loading="lazy"><span class="eyebrow">${x.gem}の精・${x.pl}</span><b class="sname">${x.name}</b><b style="font-size:15px">${x.catch}</b><p class="note" style="color:inherit;margin:0">${x.char}</p><p class="note" style="margin:0">ちょっと苦手なこと：${x.weak}</p><p style="margin:0">「${x.word}」</p><p class="note" style="margin:4px 0 0">頭の上のしるし：${x.mark}</p><div class="nk">${NKBY(x.pl).map(n=>`<a class="pill" href="/nakshatra/${n.slug}/">${n.name}</a>`).join('')}</div></div>`).join('')}</div>
+${ad('mid')}
+<section><div class="sec-head"><h2>五大偉人ヨーガの「王の姿」</h2><p>火星・水星・木星・金星・土星の精は、五大偉人ヨーガを持つ人のもとで、特別な姿になります。<a href="/chart/">魂の星図</a>でヨーガを調べると、あなたの精の王の姿があらわれます。</p></div>
+<div class="sr-grid">${[['nila','シャシャ・ヨーガ'],['prava','ルチャカ・ヨーガ'],['panna','バドラ・ヨーガ']].map(([id,y])=>{const x=SR.L.find(z=>z.id===id);return `<div class="card"><img src="${SR.img(id+'_k')}" alt="${x.name}の王の姿" width="180" height="180" loading="lazy"><span class="eyebrow">${y}</span><b class="sname">${x.pl}の王・${x.name}</b></div>`;}).join('')}</div></section>
+<section><div class="sec-head"><h2>9つの星と宝石</h2></div><div class="prose"><p>インドでは古くから、9つの星（ナヴァグラハ）にそれぞれの宝石を結びつけてきました。太陽はルビー、月は真珠、火星は赤珊瑚、水星はエメラルド、木星はイエローサファイア、金星はダイヤモンド、土星はブルーサファイア、ラーフはヘソナイト、ケートゥはキャッツアイです。この9つの宝石をまとめて「ナヴァラトナ（9つの宝石）」と呼びます。</p><p>27の星宿には、それぞれ支配星があり、9つの星が3つずつ受け持っています。宝石の精は、その支配星の宝石から生まれた存在です。月の宿では、宝石を「身につけて開運するもの」ではなく、それぞれの星の性質を表す色と形として楽しんでいます。</p></div></section>
+${shareS('インド占星術の9つの星を守る、宝石の精たち。あなたの星宿の精は？','/seirei/')}${cta}`,scripts:['seirei.js','quick.js'],inline:NKINL()});
 
 /* ---------- 固定ページ ---------- */
 page('/about/',{title:'運営者情報',desc:`${C.siteName}の運営者情報とサイトの方針。`,crumb:'運営者情報',body:`<div class="hero"><h1>運営者情報</h1></div><div class="prose">
