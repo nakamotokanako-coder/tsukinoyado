@@ -28,15 +28,15 @@ function render(b,mode){
 
   /* あなたの星図カード */
   var lg=b.unknown?null:first(LGT[r.ascSign]);
-  $('scard').innerHTML='<div class="scard" style="--sc:'+(sp?sp.color:'#4B2E73')+'">'+(sp?'<div class="sc-im"><img src="'+SR.img(sp.id)+'" alt="'+sp.gem+'の精 '+sp.name+'" width="320" height="320"></div>':'')+
-    '<div class="sc-body"><span class="sc-role">心の星宿を守る宝石の精</span><b class="sc-name">'+(sp?sp.name:'')+'</b><span class="sc-gem">'+(sp?sp.gem+'の精・'+sp.pl+'の精':'')+'</span>'+
+  $('scard').innerHTML='<div class="scard" style="--sc:'+(sp?sp.color:'#4B2E73')+'">'+(sp?'<div class="sc-im"><img src="'+SR.img(sp.id)+'" alt="'+sp.gem+'の精霊 '+sp.name+'" width="320" height="320"></div>':'')+
+    '<div class="sc-body"><span class="sc-role">心の星宿を守る宝石の精霊</span><b class="sc-name">'+(sp?sp.name:'')+'</b><span class="sc-gem">'+(sp?sp.gem+'の精霊・'+sp.pl+'の精霊':'')+'</span>'+
     (mode==='sample'?'<span class="sc-sample">サンプル</span>':'')+
     '<dl class="sc-dl"><div><dt>心の星宿</dt><dd><b>'+moon.nak.name+((window.NKLAB||[])[nk]?'<small class="sc-lab">'+NKLAB[nk]+'</small>':'')+'</b><span>'+esc(CT)+'</span></dd></div>'+
     '<div><dt>魂の星<small>アートマカラカ</small></dt><dd><b>'+ak+'</b><span>'+AKT[ak][0]+'</span></dd></div>'+
     '<div><dt>アセンダント<small>ラグナ</small></dt><dd>'+(b.unknown?'<span>時刻がわからないため表示していません</span>':'<b>'+S[r.ascSign]+'</b><span>'+lg[0]+'</span>')+'</dd></div></dl>'+
-    '<p class="note sc-n">宝石の精は「心の星宿の支配星（'+lord+'）」から決まります。魂の星やいちばん強い星とは、役割が別です。</p></div></div>'+
+    '<p class="note sc-n">宝石の精霊は「心の星宿の支配星（'+lord+'）」から決まります。魂の星やいちばん強い星とは、役割が別です。</p></div></div>'+
     '<div class="rc-actions sc-act"><button type="button" class="ghost" data-act="save">画像を保存</button><button type="button" class="ghost" data-act="share">シェアする</button><button type="button" data-goto="t-ess">くわしく読む</button></div><p class="note rc-msg" aria-live="polite"></p>'+
-    '<div class="rc-sharebox" hidden>'+TK.shareHTML('インド占星術で魂の星図をひらきました。心の星宿は「'+moon.nak.name+'」、守ってくれる宝石の精は「'+(sp?sp.name:'')+'」でした。 #ナヴァラトナ #インド占星術',location.origin+'/chart/')+'</div>';
+    '<div class="rc-sharebox" hidden>'+TK.shareHTML('インド占星術で魂の星図をひらきました。心の星宿は「'+moon.nak.name+'」、守ってくれる宝石の精霊は「'+(sp?sp.name:'')+'」でした。 #ナヴァラトナ #インド占星術',location.origin+'/chart/')+'</div>';
 
   /* ① わたしの本質：一冊の鑑定書のように。心に残る一文 → 本文 → 補足（開閉） */
   var NL=(window.NKLEAD||[])[nk]||CT,NP=(window.NKPOEM||[])[nk]||[],LB=(window.NKLAB||[])[nk]||'',akp=r.P[ak],akt=AKT[ak];
@@ -56,7 +56,7 @@ function render(b,mode){
      (b.unknown?'<p class="note">時刻がわからないため、アセンダントは表示していません。</p>':'<p class="rd-q">'+lg[0]+'</p><div class="rd-body"><p>'+lg[1]+'</p></div>')+
      '<details class="rd-more"><summary>アセンダントとは</summary><p>生まれた瞬間に東の地平線から昇っていた星座（ラグナ）です。生まれ持った性質や、外から見たあなたの印象を表し、12のハウスを数える起点にもなります。</p></details>'+
      '<a class="more" href="/articles/houses/">12のハウスとアセンダントについて読む →</a></article>';
-  if(sp)ess+='<aside class="rd-letter" style="--sc:'+sp.color+'"><img src="'+SR.img(sp.id)+'" alt="'+sp.gem+'の精 '+sp.name+'" width="320" height="320" loading="lazy"><div><span class="rd-role">あなたの心の星宿を守る精・'+sp.name+'より</span><p class="rd-say">「'+sp.word+'」</p><p>'+(mode==='sample'?'この星図の':'あなたの')+'心の星宿「'+moon.nak.name+'」を守っています。'+sp.catch+'の'+sp.name+'が、この先の章も一緒に案内します。</p><a class="note" href="/seirei/'+sp.id+'/">'+sp.name+'のこと →</a></div></aside>';
+  if(sp)ess+='<aside class="rd-letter" style="--sc:'+sp.color+'"><img src="'+SR.img(sp.id)+'" alt="'+sp.gem+'の精霊 '+sp.name+'" width="320" height="320" loading="lazy"><div><span class="rd-role">あなたの心の星宿を守る精霊・'+sp.name+'より</span><p class="rd-say">「'+sp.word+'」</p><p>'+(mode==='sample'?'この星図の':'あなたの')+'心の星宿「'+moon.nak.name+'」を守っています。'+sp.catch+'の'+sp.name+'が、この先の章も一緒に案内します。</p><a class="note" href="/seirei/'+sp.id+'/">'+sp.name+'のこと →</a></div></aside>';
   ess+='<details class="rd-sub"><summary><b>パートナーシップの配置</b><span class="note">マンガル・ドーシャ（火星の配置）</span></summary>'+(window.CX?CX.mangal(r,b):'')+'</details>';
   /* 章の扉のひとこと */
   $('m-ess').textContent='心は「'+moon.nak.name+'」、魂のテーマは「'+akt[0]+'」。';
@@ -75,14 +75,14 @@ function render(b,mode){
      return '<article class="king2" style="--sc:'+s.color+'"><div class="k-im"><img src="'+SR.img(k||sid)+'" alt="'+s.name+'の王の姿" width="320" height="320"></div><div class="k-body"><span class="eyebrow">五大偉人ヨーガ・王の姿</span><h3 class="k-name">'+s.pl+'の王・'+s.name+'</h3>'+
        '<p class="k-str"><b>どんな強み？</b>'+(Y.h?'<span class="k-h">'+Y.h+'</span>':'')+Y.m+'</p><p class="note" style="color:inherit"><b>あなたの配置：</b>'+grp[id].join('／')+'</p>'+
        '<p class="note"><b>'+Y.name+'</b>の成立条件：'+(Y.c||'')+'</p>'+rar(id)+'<a class="more" href="'+ylink(id)+'">'+Y.name+'をくわしく読む →</a></div></article>';}).join(''):
-     '<div class="card nok"><p style="margin:0">このチャートには、宝石の精の「王の姿」があらわれる五大偉人ヨーガはありません。五大偉人ヨーガは持っている人の少ない配置で、ないことは悪い意味ではありません。下のヨーガと星の強さに、あなたの持ち味があらわれています。</p></div>';
+     '<div class="card nok"><p style="margin:0">このチャートには、宝石の精霊の「王の姿」があらわれる五大偉人ヨーガはありません。五大偉人ヨーガは持っている人の少ない配置で、ないことは悪い意味ではありません。下のヨーガと星の強さに、あなたの持ち味があらわれています。</p></div>';
   var rest=ids.filter(function(id){return KG.indexOf(id)<0;});
   $('yogas').innerHTML=rest.length?rest.map(function(id){var Y=YG[id]||{name:id,cat:'',m:''};return '<div class="card yc"><span class="eyebrow">'+Y.cat+'</span><b class="yn">'+Y.name+'</b>'+(Y.h?'<span class="yd-h">'+Y.h+'</span>':'')+'<p style="margin:0">'+Y.m+'</p><p class="note" style="color:inherit"><b>あなたの配置：</b>'+grp[id].join('／')+'</p>'+rar(id)+'<a class="more" href="/yoga/#'+id+'">くわしく読む →</a></div>';}).join(''):(KG.length?'':'<p class="note">主なヨーガは見つかりませんでした。ヨーガがないことは、悪い意味ではありません。</p>');
   var sc=ids.filter(function(id){return EXC.indexOf(id)<0;}).reduce(function(t,id){return t+PT[lv(id)];},0),below=ST.pct.filter(function(v){return v<sc;}).length,top=Math.max(1,100-below);
   var contrib=ids.filter(function(id){return EXC.indexOf(id)<0&&PT[lv(id)]>0;}).sort(function(x,y){return PT[lv(y)]-PT[lv(x)];}),
     lab=top<=10?'とても個性的な配置':top<=30?'個性的な配置':top<=60?'ほどよく個性のある配置':'よくある配置が中心';
   $('ytopw').hidden=!(ST.pct.length&&top<=30);
-  $('m-tal').textContent=KG.length?'あなたの星図には、宝石の精の「王の姿」があらわれています。':ids.length?'星の組み合わせ（ヨーガ）と、星の強さから見るあなたの持ち味。':'星の強さから見る、あなたの持ち味。';
+  $('m-tal').textContent=KG.length?'あなたの星図には、宝石の精霊の「王の姿」があらわれています。':ids.length?'星の組み合わせ（ヨーガ）と、星の強さから見るあなたの持ち味。':'星の強さから見る、あなたの持ち味。';
   $('ytop').innerHTML=ST.pct.length&&top<=30?'<p style="margin:8px 0 0"><b>'+lab+'</b>：100人いたら、上から約'+top+'番目（'+sc+'点）。</p>'+
    (contrib.length?'<p class="note" style="color:inherit"><b>点数のもとになったヨーガ：</b>'+contrib.map(function(id){var L=lv(id);return (YG[id]||{name:id}).name+'（'+'★★★★'.slice(0,L)+' +'+PT[L]+'点）';}).join('、')+'</p>':'')+
    '<p class="note">数え方：持っているヨーガを、★の数で点数にしました（★★★★＝出現率10%未満は6点、★★★＝10〜25%は3点、★★＝25〜45%は1点、★＝45%以上は0点）。その合計を、ランダムに選んだ4,000人分のチャートと比べています。ヨーガの「数」ではなく「珍しさ」を見ているので、★1つ（出現率45%以上）のヨーガがたくさんあっても点数は上がりません。良い悪いの評価ではありません。</p>':'';
@@ -96,7 +96,7 @@ function render(b,mode){
   $('m-tim').textContent=cm?'いまは「'+cm.lord+'期」。'+TK.DT[cm.lord].split('。')[0]+'。':'人生を、星が順番に受け持ちます。';
   $('now').innerHTML=cm?'<div class="nowc" style="--sc:'+(cs?cs.color:'#4B2E73')+'">'+(cs?'<img src="'+SR.img(cs.id,true)+'" alt="" width="120" height="120">':'')+'<div><span class="eyebrow">今ここ</span><b class="nw">'+cm.lord+'期 ／ '+ca.lord+'の小期</b>'+
      '<p style="margin:4px 0 0"><b>'+cm.lord+'期</b>（大期・'+TK.ym(cm.start)+'〜'+TK.ym(cm.end)+'）：'+TK.DT[cm.lord]+'</p><p style="margin:4px 0 0"><b>'+ca.lord+'の小期</b>（'+TK.ym(ca.start)+'〜'+TK.ym(ca.end)+'）：'+TK.DT[ca.lord]+'</p>'+
-     (cs?'<p class="note">この大期を受け持つ精：<a href="/seirei/#'+cs.id+'">'+cs.name+'（'+cs.gem+'）</a></p>':'')+'<p class="note">テーマは一般的なものです。実際の出方は、その星がチャートのどこにあるかで変わります。</p></div></div>':'<p class="note">現在の時期は表示範囲外です。</p>';
+     (cs?'<p class="note">この大期を受け持つ精霊：<a href="/seirei/#'+cs.id+'">'+cs.name+'（'+cs.gem+'）</a></p>':'')+'<p class="note">テーマは一般的なものです。実際の出方は、その星がチャートのどこにあるかで変わります。</p></div></div>':'<p class="note">現在の時期は表示範囲外です。</p>';
   $('dasha').innerHTML=ds.map(function(x){var age=x.start<=b.ms?0:Math.floor((x.start-b.ms)/Y),cur=x===cm,past=x.end<=now,s2=spOf(x.lord);
      return '<details class="tl-row '+(cur?'cur':past?'past':'fut')+'"'+(cur?' open':'')+'><summary>'+(s2?'<img src="'+SR.img(s2.id,true)+'" alt="" width="40" height="40">':'')+'<span class="tl-m"><b>'+x.lord+'期</b><span class="d">'+(x.start<=b.ms?'誕生時':TK.ym(x.start))+' 〜 '+TK.ym(x.end)+'（'+age+'歳〜）</span></span>'+(cur?'<span class="pill now">今ここ</span>':past?'<span class="pill pst">過去</span>':'<span class="pill fut">これから</span>')+'</summary>'+
        '<p class="tl-t">'+TK.DT[x.lord]+'</p><ul class="subs">'+x.subs.map(function(s){var c=s===ca;return '<li'+(c?' class="cur"':'')+'><b>'+s.lord+'の小期</b><span class="d">'+TK.ym(s.start)+' 〜 '+TK.ym(s.end)+'</span>'+(c?'<span class="pill now">今ここ</span>':'')+'</li>';}).join('')+'</ul></details>';}).join('');
@@ -141,7 +141,7 @@ function render(b,mode){
 /* 保存とシェア */
 function wireCard(nkName,ak,asc,sp){var root=$('scard'),msg=root.querySelector('.rc-msg');
   root.querySelectorAll('[data-act]').forEach(function(x){x.addEventListener('click',function(){
-    if(x.dataset.act==='share'){var text='インド占星術で魂の星図をひらきました。心の星宿は「'+nkName+'」、宝石の精は「'+(sp?sp.name:'')+'」。 #ナヴァラトナ';
+    if(x.dataset.act==='share'){var text='インド占星術で魂の星図をひらきました。心の星宿は「'+nkName+'」、宝石の精霊は「'+(sp?sp.name:'')+'」。 #ナヴァラトナ';
       if(navigator.share)navigator.share({title:SITE,text:text,url:location.origin+'/chart/'}).catch(function(){});else{var bx=root.querySelector('.rc-sharebox');bx.hidden=!bx.hidden;}}
     else{msg.textContent='画像を作っています…';makeImage(nkName,ak,asc,sp).then(function(blob){var name='navaratna-chart.png',file=null;try{file=new File([blob],name,{type:'image/png'});}catch(e){}
       if(file&&navigator.canShare&&navigator.canShare({files:[file]})&&/iPhone|iPad|Android/i.test(navigator.userAgent)){navigator.share({files:[file],title:SITE}).then(function(){msg.textContent='';}).catch(function(){msg.textContent='';});}
@@ -153,10 +153,10 @@ function makeImage(nkName,ak,asc,sp){return new Promise(function(res,rej){if(!sp
     var rg=x.createRadialGradient(W/2,480,40,W/2,480,480);rg.addColorStop(0,sp.color+'55');rg.addColorStop(1,sp.color+'00');x.fillStyle=rg;x.fillRect(0,0,W,H);
     x.strokeStyle='#C9A85C';x.lineWidth=3;x.strokeRect(40,40,W-80,H-80);x.lineWidth=1;x.strokeRect(54,54,W-108,H-108);
     var serif='"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif',sans='"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif';
-    x.textAlign='center';x.fillStyle='#A9822F';x.font='700 32px '+sans;x.fillText('魂の星図　心の星宿を守る宝石の精',W/2,140);
+    x.textAlign='center';x.fillStyle='#A9822F';x.font='700 32px '+sans;x.fillText('魂の星図　心の星宿を守る宝石の精霊',W/2,140);
     x.drawImage(img,W/2-290,165,580,580);
     x.fillStyle='#2B1F45';x.font='800 108px '+serif;x.fillText(sp.name,W/2,850);
-    x.fillStyle='#584E70';x.font='500 34px '+sans;x.fillText(sp.gem+'の精・'+sp.pl+'の精',W/2,905);
+    x.fillStyle='#584E70';x.font='500 34px '+sans;x.fillText(sp.gem+'の精霊・'+sp.pl+'の精霊',W/2,905);
     var rows=[['心の星宿',nkName],['魂の星',ak]];if(asc)rows.push(['アセンダント',asc]);
     rows.forEach(function(rw,k){var yy=995+k*72;x.textAlign='right';x.fillStyle='#A9822F';x.font='700 32px '+sans;x.fillText(rw[0],W/2-24,yy);x.textAlign='left';x.fillStyle='#2B1F45';x.font='800 46px '+serif;x.fillText(rw[1],W/2+8,yy);});
     x.textAlign='center';x.fillStyle='#A9822F';x.font='600 28px '+sans;x.fillText('インド占星術ナヴァラトナ',W/2,1262);

@@ -28,7 +28,7 @@ im=bg();d=ImageDraw.Draw(im)
 lg=Image.open(A+'logo.webp').convert('RGBA').resize((96,96),Image.LANCZOS);im.alpha_composite(lg,(552,14))
 center(d,112,'インド占星術',F(SERIF,30),MUT)
 center(d,146,'ナヴァラトナ',F(SERIF,80),INK)
-center(d,250,'9つの宝石の精と読む、無料占い ─ 27星宿・星図・相性・吉日',F(SANS,26),MUT)
+center(d,250,'9つの宝石の精霊と読む、無料占い ─ 27星宿・星図・相性・吉日',F(SANS,26),MUT)
 S=140;x0=(1200-(S-12)*8-S)//2
 for i,k in enumerate(ORDER):
     shadow(im,sp(k,S),(x0+i*(S-12),330+(0 if i%2==0 else 30)))
@@ -44,21 +44,21 @@ for n in nak:
     nm=n['name'];fs=96 if len(nm)<=6 else 76 if len(nm)<=9 else 60
     d.text((76,150),nm,font=F(SERIF,fs),fill=INK)
     d.text((80,300),f"{n['lord']}が守る星宿",font=F(SANS,30),fill=INK)
-    a,g=NM[id];d.text((80,350),f"宝石の精　{a}（{g}）",font=F(SERIF,36),fill=ACC)
-    d.text((80,405),"ナヴァラトナ　9つの宝石の精より",font=F(SANS,24),fill=MUT)
+    a,g=NM[id];d.text((80,350),f"宝石の精霊　{a}（{g}）",font=F(SERIF,36),fill=ACC)
+    d.text((80,405),"ナヴァラトナ　9つの宝石の精霊より",font=F(SANS,24),fill=MUT)
     d.text((80,520),'インド占星術ナヴァラトナ　tsukinoyado.vercel.app',font=F(SANS,24),fill=MUT)
     im.convert('RGB').save(A+'og/nak-'+n['slug']+'.jpg',quality=88,optimize=True)
 print('ok',len(nak))
-# 宝石の精ごと
+# 宝石の精霊ごと
 CAT={'mani':'まっすぐな、みんなのまとめ役','moti':'やさしい、甘えん坊の癒し係','prava':'元気いっぱいの切り込み隊長','panna':'おしゃべりな物知り','pushpa':'おおらかな、みんなの先生','hira':'おしゃれな人気者','nila':'無口な職人','gome':'好奇心のかたまり','duri':'ふしぎな夢見る子'}
 PLN={v:k for k,v in PL.items()}
 for id in ORDER:
     im=bg();d=ImageDraw.Draw(im);shadow(im,sp(id,460),(680,100))
     lg=Image.open(A+'logo.webp').convert('RGBA').resize((56,56),Image.LANCZOS);im.alpha_composite(lg,(80,46))
-    a,g=NM[id];d.text((80,120),f'ナヴァラトナ　{g}の精・{PLN[id]}',font=F(SANS,28),fill=ACC)
+    a,g=NM[id];d.text((80,120),f'ナヴァラトナ　{g}の精霊・{PLN[id]}',font=F(SANS,28),fill=ACC)
     d.text((76,165),a,font=F(SERIF,120),fill=INK)
     d.text((80,330),CAT[id],font=F(SERIF,40),fill=INK)
-    d.text((80,400),'9つの宝石の精が、27の星宿を守っています',font=F(SANS,26),fill=MUT)
+    d.text((80,400),'9つの宝石の精霊が、27の星宿を守っています',font=F(SANS,26),fill=MUT)
     d.text((80,520),'インド占星術ナヴァラトナ　tsukinoyado.vercel.app',font=F(SANS,24),fill=MUT)
     im.convert('RGB').save(A+'og/seirei-'+id+'.jpg',quality=88,optimize=True)
 print('seirei ok')
