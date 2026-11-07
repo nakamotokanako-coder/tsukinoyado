@@ -223,20 +223,25 @@ const famousOf=i=>{const L=FAM.filter(f=>f.n===i||f.n2===i);if(!L.length)return 
 NAK.forEach((n,i)=>{const prev=NAK[(i+26)%27],next=NAK[(i+1)%27],P=a=>(a||[]).map(x=>`<p>${esc(x)}</p>`).join('');
 page(`/nakshatra/${n.slug}/`,{og:`/assets/og/nak-${n.slug}.jpg`,title:`${n.name}の性格・恋愛・仕事｜インド占星術の27星宿`,desc:`インド占星術の27星宿「${n.name}」。${(n.summary||'').slice(0,70)}`,scripts:['nakwidget.js'],crumb:`<a href="/nakshatra/">27星宿</a> › ${n.name}`,
 ld:{"@context":"https://schema.org","@type":"Article","headline":`${n.name}の性格・恋愛・仕事`,"inLanguage":"ja"},
-body:`<div class="nkhero"><figure class="nkh-im"><img src="${SYM(n)}" alt="${n.name}のシンボル：${n.symcap}" width="512" height="512"><figcaption>シンボル：${n.symcap}</figcaption></figure><div class="nkh-b"><span class="eyebrow">Nakshatra ${n.id} / 27</span><span class="nkh-l">${n.label}</span><h1>${n.name}</h1><p class="nkh-c">${SEG(n.catch)}</p><p class="lead">${esc(n.summary)}</p></div></div>
-<div class="facts"><div><span>範囲（サイデリアル）</span><b>${n.span}</b></div><div><span>支配星</span><b>${n.lord}</b></div><div><span>神格</span><b>${n.deity}</b></div><div><span>シンボル</span><b>${n.symbol}</b></div><div><span>ガナ（気質）</span><b>${n.gana}</b></div><div><span>ヨーニ（動物）</span><b>${n.yoni}</b></div></div>
-<div class="card now" id="nk-today" data-i="${i}"></div>
-<section class="prose"><h2>性格</h2>${P(n.personality)}</section>
-${ad('mid')}
-<section class="prose"><h2>恋愛とパートナーシップ</h2>${P(n.love)}<h2>仕事と才能</h2>${P(n.work)}</section>
-<section><div class="sec-head"><h2>強みと課題</h2></div><div class="grid"><div class="card"><h3>強み</h3><ul class="chips">${(n.strengths||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div class="card"><h3>課題</h3><ul class="chips">${(n.challenges||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div></section>
-<section class="prose"><h2>神話とシンボル</h2><div class="nk-myth"><img src="${SYM(n,1)}" alt="" width="96" height="96" loading="lazy"><p>${esc(n.myth)}</p></div><h2>${n.name}のあなたへ</h2><p>${esc(n.advice)}</p></section>
-${SR.card(n.lord,{label:n.name+'を守る宝石の精'})}
-${relTable(i)}${famousOf(i)}
-<p class="note">月がどの星宿にあるかは、生まれた時刻によって変わります。<a href="/chart/">魂の星図</a>で確かめられます。相性は<a href="/aisho/">相性占い</a>へ。</p>
-${shareS(n.name+'の性格・恋愛・仕事｜インド占星術の27星宿','/nakshatra/'+n.slug+'/')}
+body:`<div class="nkz">
+<div class="nkhero"><figure class="nkh-im"><img src="${SYM(n)}" alt="${n.name}のシンボル：${n.symcap}" width="512" height="512"></figure>
+<div class="nkh-b"><span class="eyebrow">Nakshatra ${String(n.id).padStart(2,'0')} ／ 27</span><span class="nkh-l">${n.label}</span><h1>${n.name}</h1><span class="nkh-en">${n.en}</span>
+<p class="nkh-lead">${SEG(n.lead)}</p><div class="nkh-poem">${n.poem.map(t=>`<p>${SEG(t)}</p>`).join('')}</div>
+<ul class="nkh-tr">${n.traits.map(t=>`<li>${t}</li>`).join('')}</ul>
+<p class="nkh-meta">支配星：${n.lord}　・　象徴：${n.symcap}</p></div></div>
+<nav class="nk-toc" aria-label="このページの内容">${[['p','性格'],['l','恋愛'],['w','仕事'],['s','強み'],['m','神話'],['letter','あなたへ'],['info','基本情報']].map(x=>`<a href="#nk-${x[0]}">${x[1]}</a>`).join('')}</nav>
+<div class="nkt" id="nk-today" data-i="${i}"></div>
+${[['p','性格',n.hp,n.personality],['l','恋愛とパートナーシップ',n.hl,n.love],['w','仕事と才能',n.hw,n.work]].map(([k,lab,h,ps],ix)=>{const t=(ps||[]).join('\n'),j=t.indexOf('。'),sum=j>0?t.slice(0,j+1):'',rest=(ps||[]).map((x,q)=>q===0&&j>0?x.slice(j+1):x).filter(x=>x.trim());return `<section class="nks" id="nk-${k}"><span class="nks-lab">${lab}</span><h2>${SEG(h)}</h2><p class="nks-sum">${esc(sum)}</p>${rest.map(x=>`<p>${esc(x)}</p>`).join('')}</section>${ix===0?ad('mid'):''}`;}).join('')}
+<section class="nks" id="nk-s"><span class="nks-lab">強みと課題</span><h2>${SEG(n.hs)}</h2><div class="nk-sc"><div><h3>強み</h3><ul>${(n.strengths||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div><h3>その力を生かすヒント</h3><ul>${(n.challenges||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div></section>
+<section class="nks" id="nk-m"><span class="nks-lab">神話とシンボル</span><h2>${n.deity.split('（')[0]}と、${n.symcap}</h2><div class="nk-myth"><img src="${SYM(n,1)}" alt="" width="96" height="96" loading="lazy"><p>${esc(n.myth)}</p></div></section>
+${(()=>{const s2=SR.BY[n.lord];return `<section class="nk-letter" id="nk-letter" style="--sc:${s2.color}"><div class="nkl-txt"><span class="nk-tag">星宿からのメッセージ</span><h2>${n.name}のあなたへ</h2><p>${esc(n.advice)}</p></div><div class="nkl-sp"><span class="nk-tag sp">ナヴァラトナ・宝石の精</span><img src="${SR.img(s2.id)}" alt="${s2.gem}の精 ${s2.name}" width="320" height="320" loading="lazy"><b>${s2.name}</b><span class="note">${s2.gem}の精・${n.name}を守る</span><p class="nkl-word">「${s2.word}」</p><a class="note" href="/seirei/#${s2.id}">${s2.name}の紹介 →</a></div></section>`;})()}
+<section id="nk-info"><div class="sec-head"><h2>${n.name}の基本情報</h2></div><div class="nk-info"><div><span>範囲（サイデリアル）</span><b>${n.span}</b></div><div><span>支配星</span><b>${n.lord}</b></div><div><span>神格</span><b>${n.deity}</b></div><div><span>シンボル</span><b>${n.symbol}</b></div><div><span>ガナ（気質）</span><b>${n.gana}</b></div><div><span>ヨーニ（動物）</span><b>${n.yoni}</b></div></div></section>
+<details class="card nk-tara" id="nk-tara"><summary><b>ターラの9つの巡りを詳しく見る</b><span class="note">${n.name}の人にとって、その日の月がどの星宿にあるとよい日か</span></summary>${relTable(i).replace(/^<section>/,'<div>').replace(/<\/section>$/,'</div>')}</details>
+${famousOf(i)}
+<section class="card yend"><h2>あなたの星宿は？</h2><p>月がどの星宿にあるかは、生まれた日と時刻で決まります。生年月日だけでも、すぐに調べられます。</p><div class="qbtn" style="justify-content:center"><a class="btn" href="/#quick">生年月日で調べる</a><a class="btn ghost" href="/chart/">魂の星図で詳しく見る</a></div><p class="note">相性は<a href="/aisho/">相性占い</a>へ。</p></section>
+${shareS(n.name+'｜'+n.lead+'（インド占星術の27星宿）','/nakshatra/'+n.slug+'/')}
 <div class="nkpn"><a class="nkc" href="/nakshatra/${prev.slug}/"><span class="nkc-im"><img src="${SYM(prev,1)}" alt="" width="96" height="96" loading="lazy"></span><span class="nkc-n">← 前の星宿</span><b>${NM(prev.name)}</b><span class="nkc-l">${prev.label}</span></a><a class="nkc" href="/nakshatra/${next.slug}/"><span class="nkc-im"><img src="${SYM(next,1)}" alt="" width="96" height="96" loading="lazy"></span><span class="nkc-n">次の星宿 →</span><b>${NM(next.name)}</b><span class="nkc-l">${next.label}</span></a></div>
-${cta}`});});
+</div>${cta}`});});
 
 /* ---------- 読みもの ---------- */
 page('/articles/',{title:'読みもの｜はじめてのインド占星術',desc:'インド占星術（ジョーティッシュ）の基本をやさしく解説。27星宿、9つの星、12星座、ハウス、ダシャー、サディサティ、分割図、相性、暦まで。',crumb:'読みもの',
