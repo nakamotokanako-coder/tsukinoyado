@@ -26,6 +26,13 @@ function img(id,small){return '/assets/seirei/'+id+(small?'-s':'')+'.webp';}
 function king(yid){var id=KING[yid];return id&&KIMG[id]?id+'_k':null;}
 function card(pl,opt){opt=opt||{};var s=BY[pl];if(!s)return '';
   return '<div class="card seirei"><img src="'+img(opt.k||s.id,true)+'" alt="'+s.gem+'の精 '+s.name+'" width="128" height="128" loading="lazy"><div><span class="eyebrow">'+(opt.label||'あなたを守る宝石の精')+'</span><b class="sname">'+s.name+'</b><span class="note">'+s.gem+'の精・'+s.pl+'</span><p class="note" style="color:inherit;margin:4px 0 0">'+(opt.text||s.catch+'。'+s.char)+'</p><a href="/seirei/#'+s.id+'" class="note">ナヴァラトナ →</a></div></div>';}
+/* トップの9人：タップで紹介を出す */
+function lineup(){var box=document.querySelector('.sr-line[data-tap]');if(!box)return;var pane=document.getElementById('srd');
+  box.querySelectorAll('button[data-id]').forEach(function(bt){bt.addEventListener('click',function(){var open=bt.getAttribute('aria-expanded')==='true';
+    box.querySelectorAll('button[data-id]').forEach(function(x){x.setAttribute('aria-expanded','false');});
+    if(open){pane.hidden=true;return;}bt.setAttribute('aria-expanded','true');var s=L.filter(function(x){return x.id===bt.dataset.id;})[0];
+    pane.style.setProperty('--sc',s.color);pane.innerHTML='<img src="'+img(s.id,true)+'" alt="" width="96" height="96"><div><b class="sname">'+s.name+'</b><span class="note">'+s.gem+'の精・受け持つ星は'+s.pl+'</span><p style="margin:4px 0 0">'+s.catch+'。「'+s.word+'」</p><a href="/seirei/#'+s.id+'">'+s.name+'のくわしい紹介 →</a></div>';pane.hidden=false;});});}
+if(typeof document!=='undefined')(document.readyState==='loading'?document.addEventListener('DOMContentLoaded',lineup):lineup());
 return {L:L,BY:BY,KING:KING,img:img,king:king,card:card};
 })();
 if(typeof module!=='undefined')module.exports=SR;
