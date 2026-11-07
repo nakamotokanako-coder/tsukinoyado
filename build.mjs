@@ -63,7 +63,7 @@ ${name?`<label for="${px}nm">お名前（任意）<input id="${px}nm" type="text
 ${gender?`<label for="${px}g">性別（伝統的な計算に使用）<select id="${px}g"><option value="f"${def.g==='f'?' selected':''}>女性</option><option value="m"${def.g==='m'?' selected':''}>男性</option></select></label>`:''}
 <label class="inline" for="${px}unk"><input id="${px}unk" type="checkbox">時刻がわからない</label>
 <div class="custom" id="${px}custom" hidden><label for="${px}la">緯度（北緯はプラス）<input id="${px}la" type="number" step="0.01" value="35.69"></label><label for="${px}lo">経度（東経はプラス）<input id="${px}lo" type="number" step="0.01" value="139.69"></label><label for="${px}tz">時差（UTC＋時間）<input id="${px}tz" type="number" step="0.5" value="9"></label></div></fieldset>`;
-const cta=`<aside class="cta"><h2>星図を、あなただけの物語に</h2><p>無料の星図でわかるのは、星の配置という「地図」までです。16枚の分割図と人生の時期を重ねて読み、あなたの流れとこれからの指針を一冊の鑑定書にまとめる個人鑑定を受け付けています。</p><a href="${C.ctaUrl}" target="_blank" rel="noopener">${C.ctaLabel}</a></aside>`;
+const cta=`<aside class="cta"><h2>星図を、あなただけの物語に</h2><p>無料の星図でわかるのは、星の配置という「地図」までです。16枚の分割図と人生の時期を重ねて読み、あなたの流れとこれからの指針を一冊の鑑定書にまとめる個人鑑定を受け付けています。</p><a href="/kantei/">個人鑑定のご案内を見る</a></aside>`;
 const toolCards=keys=>`<div class="grid">${keys.map(k=>{const t=TOOLS[k];return `<a class="card tool" href="${t[0]}"><span class="k">FREE</span><b>${t[1]}</b><p>${t[2]}</p></a>`;}).join('')}</div>`;
 const NM=t=>t.replace(/・/g,'・<wbr>');const SEG=t=>esc(t).split('、').map((x,i,a)=>`<span class="seg">${x}${i<a.length-1?'、':''}</span>`).join('');
 const SYM=(n,s)=>`/assets/sym/${n.slug}${s?'-s':''}.webp`;
@@ -150,7 +150,7 @@ body:`<div id="inwrap" class="inwrap">
 <section class="panel" role="tabpanel" id="p-thm" aria-labelledby="t-thm" hidden>
 <div class="sec-head"><h2>テーマ別に読む</h2><p>知りたいテーマを選ぶと、対応する分割図（人生のテーマごとに星を細かく見る図）と解説が出ます。</p></div>
 <div class="themes" role="group" aria-label="テーマ" id="themes"></div><div id="theme" class="stack"></div>
-<p class="note">16枚の分割図と人生の時期を重ねると、いつ・どの分野で力が開くのかまで読めます。<a href="${C.ctaUrl}" target="_blank" rel="noopener">個人鑑定のご案内</a></p></section>
+<p class="note">16枚の分割図と人生の時期を重ねると、いつ・どの分野で力が開くのかまで読めます。<a href="/kantei/">個人鑑定のご案内</a></p></section>
 <section class="panel" role="tabpanel" id="p-dat" aria-labelledby="t-dat" hidden>
 <div class="sec-head"><h2>出生図（ラーシ・チャート）</h2><p id="stylenote"></p></div>
 <div class="stylesw" role="group" aria-label="図の形"><span>図の形</span><button type="button" class="ghost" data-style="s" aria-pressed="true">南インド式</button><button type="button" class="ghost" data-style="n" aria-pressed="false">北インド式</button></div>
@@ -374,7 +374,7 @@ ${ad('top')}
 ${YCATS.map((c,ci)=>{const D=YCATD[c]||[''];return `<section id="cat-${ci}" class="ycat"><div class="sec-head"><span class="eyebrow">${c}</span><h2>${D[0]}</h2>${D.slice(1).map(t=>`<p>${t}</p>`).join('')}</div>${YOGA.filter(y=>y.cat===c).map(y=>`<article class="yd${YMOT(y.id)?' has-mot':''}" id="${y.id}">${YMOT(y.id)?`<img class="yd-mot" src="/assets/ymot/${y.id}-s.webp" alt="" width="192" height="192" loading="lazy">`:''}<h3>${esc(y.name)}</h3><p class="yd-h">${esc(y.head||'')}</p>${YRAR(y.id)}${(y.p||[y.meaning]).map(t=>`<p>${esc(t)}</p>`).join('')}<p class="c"><b>成立条件：</b>${esc(y.cond)}</p>${YDET[y.id]?`<a class="more" href="/yoga/${y.id}/">${esc(y.name)}をくわしく読む →</a>`:''}</article>`).join('')}</section>`;}).join('')}
 ${ad('bottom')}
 <section class="card yend"><h2>あなたの星には、どんなヨーガがある？</h2><p class="lead">知っているつもりの自分に、まだ言葉になっていない強みがあるかもしれません。</p><p>「魂の星図」では、出生情報からヨーガを自動判定できます。気になる名前を見つけたら、この事典で意味を確かめてみてください。</p><a class="btn" href="/chart/">無料で、自分のヨーガを調べる</a></section>
-<aside class="cta"><h2>その星の力を、いつ、どう生かすか</h2><p>ヨーガを知ると、自分の才能や人生のテーマに名前がつきます。さらに、ほかの星との関係や人生の時期を重ねることで、今の悩みやこれからの選択と結びつけて読めるようになります。</p><p>個人鑑定では、出生図と16枚の分割図、ダシャーを丁寧に読み解き、あなたの資質、今いる時期、これからの指針を一冊の鑑定書にまとめます。</p><a href="${C.ctaUrl}" target="_blank" rel="noopener">個人鑑定について詳しく見る</a></aside>
+<aside class="cta"><h2>その星の力を、いつ、どう生かすか</h2><p>ヨーガを知ると、自分の才能や人生のテーマに名前がつきます。さらに、ほかの星との関係や人生の時期を重ねることで、今の悩みやこれからの選択と結びつけて読めるようになります。</p><p>個人鑑定では、出生図と16枚の分割図、ダシャーを丁寧に読み解き、あなたの資質、今いる時期、これからの指針を一冊の鑑定書にまとめます。</p><a href="/kantei/">個人鑑定について詳しく見る</a></aside>
 ${shareS('インド占星術のヨーガ事典。五大偉人ヨーガ、ラージャ・ヨーガなど27のヨーガの意味。','/yoga/')}`});
 
 /* ---------- ヨーガ詳細（content/yoga_detail.json） ---------- */
@@ -448,7 +448,7 @@ ${ad('mid')}
 <a class="card tool" href="/yoga/"><span class="k">FREE</span><b>ヨーガ事典</b><b class="tc">星の組み合わせが語る、才能と可能性</b><p>「ヨーガ」とは、星の特定の組み合わせのこと。五大偉人ヨーガをはじめ、27のヨーガの意味を紹介します。</p></a>
 </div></section>
 <section><div class="sec-head"><h2>もっと知りたくなったら</h2><p>自分の星図を見ながら読むと、難しく感じた言葉も少しずつ身近になります。まずは1〜3から。そのあとは、気になるテーマを選んで読み進めてください。</p></div><div class="list">${ORDER_ART.map((sl,i)=>{const a=ARTS.find(x=>x.slug===sl);return a?`<a href="/articles/${a.slug}/"><b>${i+1}．${GUIDE_T[sl][0]}</b><span>${GUIDE_T[sl][1]}</span></a>`:'';}).join('')}</div></section>
-<aside class="cta"><h2 class="ka">星図から、<wbr>あなたのこれからを<wbr>読み解く</h2><p class="poem">「自分の強みを、仕事にどう生かせる？」<br>「恋愛や結婚で、繰り返しているテーマは？」<br>「今の私は、どんな時期にいるんだろう？」</p><p>星図を見て、もっと詳しく知りたくなった方へ。</p><p>個人鑑定では、出生図・16種類の分割図・人生の時期を重ね合わせ、あなたのご相談に沿って読み解きます。生まれ持った持ち味と、今向き合っていること。そして、これからの選択のヒントを、あなたのための一冊の鑑定書にまとめてお届けします。</p><a href="${C.ctaUrl}" target="_blank" rel="noopener">個人鑑定について相談する（Threads）</a></aside>`});
+<aside class="cta"><h2 class="ka">星図から、<wbr>あなたのこれからを<wbr>読み解く</h2><p class="poem">「自分の強みを、仕事にどう生かせる？」<br>「恋愛や結婚で、繰り返しているテーマは？」<br>「今の私は、どんな時期にいるんだろう？」</p><p>星図を見て、もっと詳しく知りたくなった方へ。</p><p>個人鑑定では、出生図・16種類の分割図・人生の時期を重ね合わせ、あなたのご相談に沿って読み解きます。生まれ持った持ち味と、今向き合っていること。そして、これからの選択のヒントを、あなたのための一冊の鑑定書にまとめてお届けします。</p><a href="/kantei/">個人鑑定のご案内を見る</a></aside>`});
 
 /* ---------- グループ相性 ---------- */
 page('/group/',{title:'グループ相性占い｜インド占星術で友だち・家族・職場の相性を一覧',desc:'最大10人の生年月日から、インド占星術の相性（アシュタクータ36点）を全員分まとめて計算。いちばん相性のいい二人、グループの潤滑油、グループの気質がわかります。',scripts:['group.js'],crumb:'グループ相性占い',
@@ -588,7 +588,18 @@ page('/privacy/',{title:'プライバシーポリシー',desc:`${C.siteName}の�
 <h2>免責事項</h2><p>当サイトの内容は、正確さに努めていますが、その完全性を保証するものではありません。当サイトの情報を利用したことによる損害について、責任を負いかねます。</p>
 <h2>著作権</h2><p>当サイトの文章の無断転載はご遠慮ください。</p>
 <h2>改定</h2><p>本ポリシーは、必要に応じて改定することがあります。</p><p class="note">制定日：2026年11月</p></div>`});
-page('/contact/',{title:'お問い合わせ',desc:`${C.siteName}へのお問い合わせ方法。`,crumb:'お問い合わせ',body:`<div class="hero"><h1>お問い合わせ</h1></div><div class="prose"><p>${esc(C.contactText)}</p><p>占い結果の個別のご相談にはお答えしていません。個人鑑定をご希望の方は、<a href="${C.ctaUrl}" target="_blank" rel="noopener">個人鑑定のご案内</a>をご覧ください。</p></div>`});
+page('/kantei/',{title:'個人鑑定のご案内',desc:'インド占星術ナヴァラトナの個人鑑定のご案内。出生図・16種類の分割図・人生の時期（ダシャー）を重ねて、ご相談に沿って読み解きます。',crumb:'個人鑑定のご案内',
+body:`<div class="phd"><span class="eyebrow">Personal Reading</span><h1>個人鑑定のご案内</h1><p class="th-s">無料の星図で見えた「地図」を、あなたのご相談に沿って、ひとつの物語として読み解きます。</p></div>
+<section class="nks"><span class="nks-lab">こんなご相談に</span><h2>こんなときに</h2><ul class="kt-l"><li>自分の強みを、仕事にどう生かせるか知りたい</li><li>恋愛や結婚で、繰り返しているテーマを知りたい</li><li>今の自分が、人生のどんな時期にいるのか知りたい</li><li>これからの選択の、ヒントがほしい</li></ul></section>
+<section class="nks"><span class="nks-lab">鑑定で読み解くこと</span><h2>出生図・分割図・人生の時期を重ねて</h2><p>インド占星術の出生図、16種類の分割図、ヴィムショッタリ・ダシャー（人生の時期）を重ね合わせて読みます。生まれ持った持ち味と、今向き合っていること、そしてこれからの選択のヒントを、ご相談に沿ってお伝えします。</p></section>
+<section class="nks"><span class="nks-lab">受け取れるもの</span><h2>あなたのための鑑定書</h2><p>読み解いた内容を、一冊の鑑定書にまとめてお届けします。</p></section>
+<section class="nks"><span class="nks-lab">料金・納期</span><h2>料金と納期</h2><p>料金・納期・お届け方法は、お問い合わせの際にご案内しています。</p></section>
+<section class="nks"><span class="nks-lab">必要な情報</span><h2>ご用意いただくもの</h2><ul class="kt-l"><li>生年月日</li><li>生まれた時刻（母子手帳などで確認できる正確な時刻。わからない場合はご相談ください）</li><li>生まれた場所（市区町村まで）</li><li>いちばん知りたいこと、ご相談の内容</li></ul></section>
+<section class="nks"><span class="nks-lab">申し込みの流れ</span><h2>お申し込みの流れ</h2><ol class="kt-l"><li>Threadsのアカウント（@morino_kanako）へ、メッセージでお問い合わせください</li><li>料金・納期・お届け方法をご案内します</li><li>出生情報とご相談内容をお送りいただき、鑑定を始めます</li></ol>
+<p><a class="btn" href="${C.ctaUrl}" target="_blank" rel="noopener">Threadsで問い合わせる（外部サイト）</a></p></section>
+<p class="note">このサイトの無料の星図・占いの結果について、個別のご質問にはお答えしていません。</p>`});
+
+page('/contact/',{title:'お問い合わせ',desc:`${C.siteName}へのお問い合わせ方法。`,crumb:'お問い合わせ',body:`<div class="hero"><h1>お問い合わせ</h1></div><div class="prose"><p>${esc(C.contactText)}</p><p>占い結果の個別のご相談にはお答えしていません。個人鑑定をご希望の方は、<a href="/kantei/">個人鑑定のご案内</a>をご覧ください。</p></div>`});
 
 /* ---------- 404・sitemap・robots・icon ---------- */
 fs.writeFileSync(OUT+'/404.html',fs.readFileSync(OUT+'/contact/index.html','utf8').replace(/<main class="main">[\s\S]*<\/main>/,'<main class="main"><div class="hero"><h1>ページが見つかりません</h1><p class="lead"><a href="/">トップへ戻る</a></p></div></main>').replace(/<title>[^<]*<\/title>/,`<title>ページが見つかりません｜${C.siteName}</title>`));
