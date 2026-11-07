@@ -62,6 +62,16 @@ function enhanceDates(root){(root||document).querySelectorAll('input[type=date]'
     if(nv!==inp.value){inp.value=nv;inp.dispatchEvent(new Event('change',{bubbles:true}));}}
   [Y,M,D].forEach(function(s){s.addEventListener('change',function(e){e.stopPropagation();sync();});});sync();});}
 enhanceDates();
+/* ページ間の受け渡し：生年月日などはURLに載せず、このタブの sessionStorage だけで渡す */
+function formData(p){var g=function(k){var e=$(p+k);return e?e.value:'';};return {bd:g('bd'),bt:g('bt'),unk:!!($(p+'unk')&&$(p+'unk').checked),pl:g('pl'),la:g('la'),lo:g('lo'),tz:g('tz')};}
+function handTo(url,data){try{sessionStorage.setItem('nv-hand',JSON.stringify(data));}catch(e){}location.href=url;}
+function takeHand(p){var d=null;try{d=JSON.parse(sessionStorage.getItem('nv-hand')||'null');sessionStorage.removeItem('nv-hand');}catch(e){}if(!d||!d.bd)return null;
+  var set=function(k,v){var e=$(p+k);if(e&&v!==undefined&&v!==null&&(v!==''||k==='bt'))e.value=v;};
+  set('bd',d.bd);var a=d.bd.split('-').map(Number);if($(p+'bd-y')){$(p+'bd-y').value=String(a[0]);$(p+'bd-m').value=String(a[1]);$(p+'bd-d').value=String(a[2]);$(p+'bd-d').dispatchEvent(new Event('change'));}
+  set('bt',d.bt||'');if($(p+'unk'))$(p+'unk').checked=!!d.unk;
+  if(d.pl!==undefined&&d.pl!==''&&$(p+'pl')){set('pl',d.pl);$(p+'custom')&&($(p+'custom').hidden=d.pl!=='x');}
+  set('la',d.la);set('lo',d.lo);set('tz',d.tz);
+  d.complete=!!(d.bd&&(d.bt||d.unk));return d;}
 function ready(fn){if(window.Astronomy&&window.JY)fn();else setTimeout(function(){ready(fn);},80);}
-return {getStyle:getStyle,setStyle:setStyle,enhanceDates:enhanceDates,shareHTML:shareHTML,PLACES:PLACES,$:$,initPlace:initPlace,readBirth:readBirth,moonNakRange:moonNakRange,jst:jst,ym:ym,ymd:ymd,grid:grid,TARA_T:TARA_T,DT:DT,saveNak:saveNak,loadNak:loadNak,ready:ready};
+return {formData:formData,handTo:handTo,takeHand:takeHand,getStyle:getStyle,setStyle:setStyle,enhanceDates:enhanceDates,shareHTML:shareHTML,PLACES:PLACES,$:$,initPlace:initPlace,readBirth:readBirth,moonNakRange:moonNakRange,jst:jst,ym:ym,ymd:ymd,grid:grid,TARA_T:TARA_T,DT:DT,saveNak:saveNak,loadNak:loadNak,ready:ready};
 })();

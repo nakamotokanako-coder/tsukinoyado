@@ -523,3 +523,41 @@ details[open]>summary .ak-pm::after{transform:rotate(0)}
 .rd-h1,.rd-hd h2,.ak-end h2{overflow-wrap:anywhere}
 .guide .ak-card b,.guide .rd-item b,.ak-card b,.rd-item b{background:none}
 .rd-acc .ak-ht b{font-size:17px}
+/* トップ結果：魂の星と、次の2つの道 */
+.rc-ak{margin-top:6px;font-family:var(--f-display);font-weight:800;font-size:19px;color:#2B1F45;display:flex;align-items:baseline;gap:8px}
+.rc-ak small{font-family:var(--f-body);font-size:12px;font-weight:700;color:#7A5A16;background:#F6EEDC;border:1px solid #E2CF9F;border-radius:99px;padding:0 10px}
+.rc-akt{font-size:13.5px;color:#584E70}
+.rc-next{margin:18px 0 6px}.rc-nh{margin:0 0 8px;font-family:var(--f-display);font-weight:700;font-size:17px;text-align:center}
+.rc-next .nx{display:grid;grid-template-columns:auto 1fr;column-gap:12px;align-items:center;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:14px;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 0 rgba(43,31,69,.04)}
+.rc-next .nx:hover{border-color:var(--gold)}
+.rc-next .nx-k{grid-row:span 2;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--surface);background:var(--accent);border-radius:8px;padding:6px 8px;writing-mode:horizontal-tb}
+.rc-next .nx b{font-family:var(--f-display);font-size:18px}.rc-next .nx b::after{content:" →";color:var(--gold)}
+.rc-next .nx span:last-child{font-size:13.5px;color:var(--muted);line-height:1.6}
+@media (min-width:720px){.rc-next{display:grid;grid-template-columns:1fr 1fr;gap:12px}.rc-next .rc-nh,.rc-next .note{grid-column:1/-1}.rc-next .nx{margin:0}}
+/* ホロスコープ作成 */
+.hkey{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:14px 0}
+.hkey>div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.hkey dt{font-size:12px;color:var(--gold);font-weight:700;letter-spacing:.06em}.hkey dd{margin:2px 0 0;font-family:var(--f-display);font-weight:700;font-size:18px;line-height:1.5}
+.hkey dd small{font-family:var(--f-body);font-weight:500;font-size:12.5px;color:var(--muted)}
+.hpanch dd{font-size:16px}.hkey>.note{grid-column:1/-1;margin:0}
+.read-cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;border-left:4px solid var(--gold);margin:16px 0}
+.read-cta>div{flex:1 1 260px}.read-cta .btn{flex:none}
+.hctl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-bottom:10px}
+.hctl .vsel{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:700}.hctl .vsel select{max-width:min(320px,70vw)}
+.hpt{min-width:860px}.hpt td,.hpt th{white-space:nowrap}.hpt .asc-row td{background:var(--gold-soft)}.hpt .ab{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 4px}
+.hdasha{display:flex;flex-direction:column;gap:6px}
+.dmd{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.dmd>summary{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;padding:10px 14px;cursor:pointer;list-style:none}
+.dmd>summary::-webkit-details-marker{display:none}.dmd>summary::before{content:"▸";color:var(--gold)}.dmd[open]>summary::before{content:"▾"}
+.dmd .dl{min-width:4.5em;font-family:var(--f-display)}.dmd .dd{font-size:14px}.dmd .da{font-size:12.5px;color:var(--muted)}
+.dmd.past{opacity:.72}.dmd.cur{border-color:var(--accent);box-shadow:inset 4px 0 0 var(--accent)}
+.dad{width:100%;border-collapse:collapse;font-size:14px;margin:0 0 8px}.dad th,.dad td{padding:5px 14px;border-top:1px solid var(--line);text-align:left}.dad th{font-size:12px;color:var(--muted);font-weight:700}
+.dad tr.cur td{background:var(--accent-soft);font-weight:700}
+.vthumb[aria-pressed="true"]{border-color:var(--accent);background:var(--surface)}
+.horo-link{border-left:4px solid var(--gold);margin-top:18px}.horo-link .btn{margin-top:8px}
+.rbanner .btn.ghost{padding:6px 12px;font-size:13px}
+.rc-catch+.rc-ak{margin-top:12px;padding-top:10px;border-top:1px dashed #E2CF9F}
+form.cform>.note,form.cform>.status{grid-column:1/-1}
+.card.read-cta{flex-direction:row}.read-cta>div{flex:1 1 auto;min-width:min(100%,240px)}
+#hin.done .cform{display:none}
+.hctl .vsel{flex-wrap:nowrap}.hctl .vsel select{flex:1 1 auto}

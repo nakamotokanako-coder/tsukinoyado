@@ -1,6 +1,6 @@
 /* 魂の星図：入力 → 星図カード → 5つのタブ。計算はすべて JY（calc.js）の既存の関数を使う */
 (function(){var $=TK.$;
-var AKT={"太陽": ["誇りと、謙虚さを育てる", "自分の意思で生きることや、認められることが、大切なテーマになります。", "評価されないと自信が揺らいだり、弱みを見せるのが難しかったりするかもしれません。", "育てたいのは、自分の尊厳も、相手の尊厳も大切にする姿勢。人からの評価に支えられるだけでなく、自分が納得できる選択を重ねていくことです。"], "月": ["心に寄り添う力を育てる", "安心できるつながりや、人を思いやることが、大切なテーマになります。", "誰かの気持ちを敏感に感じ取る一方で、自分の不安に心を占められることもあるでしょう。", "育てたいのは、自分と相手、それぞれの気持ちに耳を傾けること。気持ちが違うときにも、すぐに否定せず、理解しようとする姿勢です。"], "火星": ["強さを、守る力に変える", "行動すること、競うこと、自分の意思を貫くことが、大切なテーマになります。", "納得できないことに強く反応したり、負けたくない気持ちが先に立ったりするかもしれません。", "育てたいのは、怒りや勢いに任せずに力を使うこと。必要な場面でははっきりと意思を伝えながら、相手を傷つけない方法を選ぶことです。"], "水星": ["言葉に、誠実さを宿す", "学ぶこと、考えること、言葉を交わすことが、大切なテーマになります。", "うまく説明しようとするほど本音が遠のいたり、その場を収めるために曖昧な返事をしたりすることもあるでしょう。", "育てたいのは、伝える力と、言葉への責任。わからないことを認める、約束を守る、相手の話を最後まで聞く。そんな積み重ねが、信頼につながります。"], "木星": ["知恵と、学び続ける姿勢を育てる", "何を信じ、誰から学び、得たものをどう分かち合うかが、大切なテーマになります。", "答えを求める気持ちが強いからこそ、自分の正しさにこだわってしまうこともあるでしょう。", "育てたいのは、知識を持つことに加えて、それを生き方に反映すること。教える立場になっても、学ぶ姿勢や、教えてくれた人への敬意を持ち続けることです。"], "金星": ["愛と欲望に、誠実に向き合う", "愛すること、美しさを味わうこと、喜びを分かち合うことが、大切なテーマになります。", "愛されたい気持ちから無理をしたり、満たされなさを埋めるために刺激を求めたりすることもあるでしょう。", "育てたいのは、自分の望みと、相手の意思の両方を尊重すること。関係の中の約束や信頼を大切にしながら、喜びを分かち合うことです。"], "土星": ["痛みへの理解を、思いやりに変える", "責任、時間、努力、そして人の痛みにどう向き合うかが、大切なテーマになります。", "「自分が引き受けなければ」と背負いすぎたり、思うように進まない自分に厳しくなったりすることもあるでしょう。", "育てたいのは、人の事情や限界を理解し、支え合う姿勢。自分にも休息や助けが必要だと認めながら、長く続けられる形で責任を果たしていくことです。"]};
+var AKT=window.AKT;
 var LGT=['開拓者。まっすぐで行動が早く、自分の道を自分で切り開きます。','安定と美。落ち着きと五感の豊かさで、確かなものを育てます。','知性と軽やかさ。言葉と好奇心で、人と情報をつなぎます。','守り育てる人。情が深く、家族や仲間を大切にします。','王の気質。誇り高く、自然と人の中心に立ちます。','分析と奉仕。細やかな気配りと実務力で、人を助けます。','調和と公正。美意識とバランス感覚で、人と人を結びます。','深さと変容。秘めた情熱と洞察力で、物事の本質に迫ります。','理想と自由。信念と冒険心を持ち、遠くを目指します。','忍耐と実現力。時間をかけて、着実に目標を形にします。','独創と博愛。型にはまらず、新しい視点で人の役に立ちます。','共感と霊性。優しさと直感で、人の痛みに寄り添います。'];
 var VM={2:['D2 ホーラ','財・お金の蓄え方'],3:['D3 ドレッカーナ','兄弟姉妹・勇気・行動力'],4:['D4 チャトゥルタムシャ','家・土地・不動産'],7:['D7 サプタムシャ','子ども・子孫'],9:['D9 ナヴァムシャ','結婚・パートナー・人生の実り'],10:['D10 ダシャムシャ','仕事・天職・社会での役割'],12:['D12 ドワーダシャムシャ','両親'],16:['D16 ショーダシャムシャ','快適さ・幸福・乗り物'],20:['D20 ヴィムシャムシャ','信仰・精神修行'],24:['D24 チャトゥルヴィムシャムシャ','学問・教育'],27:['D27 バムシャ','総合的な強さと弱さ'],30:['D30 トリムシャムシャ','困難・弱点'],40:['D40 カヴェーダムシャ','母方から受け継ぐもの'],45:['D45 アクシャヴェーダムシャ','父方から受け継ぐもの・品性'],60:['D60 シャシュティアムシャ','過去世から持ってきたカルマ']};var VD=[2,3,4,7,9,10,12,16,20,24,27,30,40,45,60];
 var THEMES=[['結婚・パートナー',9],['仕事・天職',10],['子ども・創作',7],['お金',2],['家・不動産',4],['学び',24],['両親',12],['幸福・快適さ',16],['兄弟・行動力',3],['精神性・信仰',20],['困難と弱点',30],['過去世のカルマ',60]];
@@ -24,7 +24,7 @@ function render(b,mode){
   /* 状態の帯 */
   $('rbanner').className='rbanner '+mode;
   $('rbanner').innerHTML=mode==='sample'?'<b class="tag">サンプル</b><span>これは<b>サンプルの星図</b>です（1990年5月15日 10:30 東京生まれ）。あなたの結果ではありません。</span><button type="button" data-edit>自分の生年月日で見る</button>':
-    '<b class="tag me">あなたの星図</b><span>'+who+'／'+esc(b.label)+'</span><button type="button" class="ghost" data-edit>入力内容を変更</button>';
+    '<b class="tag me">あなたの星図</b><span>'+who+'／'+esc(b.label)+'</span><button type="button" class="ghost" data-edit>入力内容を変更</button><a class="btn ghost" href="/horoscope/" data-horo>チャートの数値を見る</a>';
 
   /* あなたの星図カード */
   var lg=b.unknown?null:first(LGT[r.ascSign]);
@@ -157,6 +157,10 @@ function show(b,mode){try{render(b,mode);}catch(err){$('status').textContent='�
 TK.initPlace('a-');selTab=tabs();
 $('f').addEventListener('submit',function(e){e.preventDefault();var b=TK.readBirth('a-');if(b.err){$('status').textContent=b.err;return;}show(b,'me');});
 $('sample').addEventListener('click',function(){show(sampleBirth(),'sample');});
+/* ホロスコープ作成ページとの行き来（URLには載せない） */
+function horoData(){if(st.mode==='sample'){var ti=TK.PLACES.map(function(x){return x[0];}).indexOf('東京');return {bd:'1990-05-15',bt:'10:30',unk:false,pl:String(ti)};}return TK.formData('a-');}
+document.addEventListener('click',function(e){var h=e.target.closest&&e.target.closest('[data-horo]');if(h){e.preventDefault();TK.handTo('/horoscope/',horoData());}});
+(function(){var d=TK.takeHand('a-');if(!d)return;if(d.complete){var b=TK.readBirth('a-');if(!b.err)show(b,'me');}else{$('status').textContent='生年月日を入れました。出生時刻と出生地を入れて「私の星図をひらく」を押してください。';setTimeout(function(){var t=$('a-bt');if(t)t.focus();},300);}})();
 document.addEventListener('click',function(e){var ed=e.target.closest&&e.target.closest('[data-edit]');if(ed){$('inwrap').classList.remove('done');$('inwrap').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(function(){$('a-bd-y')?$('a-bd-y').focus({preventScroll:true}):$('a-bd').focus({preventScroll:true});},350);return;}
   var g=e.target.closest&&e.target.closest('[data-goto]');if(g){selTab(g.dataset.goto);document.querySelector('.tabs').scrollIntoView({behavior:'smooth',block:'start'});}});
 /* 南インド式・北インド式の切り替え（結果を保ったまま描き直す） */
