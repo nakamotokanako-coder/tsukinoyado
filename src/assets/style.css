@@ -405,3 +405,13 @@ form.cform .actions .ghost{min-height:48px}
  .tabs [role=tab][aria-selected=true]{background:var(--accent);color:var(--surface);box-shadow:none;border-color:var(--accent)}}
 #yogas{grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr))}
 #ptable th:first-child,#ptable td:first-child{position:sticky;left:0;background:var(--surface);z-index:1}
+/* はじめての方へ */
+.lead.gl{font-family:var(--f-display);font-size:clamp(19px,4.6vw,24px);color:var(--ink);font-weight:800}
+.guide .poem{font-family:var(--f-display);font-size:17px;line-height:2;color:var(--ink)}
+.guide h3.gh{word-break:keep-all;overflow-wrap:anywhere;display:flex;align-items:baseline;gap:10px;font-family:var(--f-display);font-size:19px;margin-top:10px;line-height:1.5}
+.guide h3.gh span{flex:none;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--gold-soft);color:var(--gold);font-size:15px}
+.tool .tc{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.5}
+.tool.feat{border-color:var(--gold);background:linear-gradient(135deg,var(--gold-soft),var(--surface))}
+.tool.feat b:first-of-type{font-family:var(--f-display);font-size:22px}
+.cta .poem{font-family:var(--f-display);line-height:2}
+.ka{word-break:keep-all;overflow-wrap:anywhere}
