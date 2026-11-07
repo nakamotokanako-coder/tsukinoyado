@@ -464,7 +464,7 @@ body:`<div class="hero"><span class="eyebrow">Auspicious Days</span><h1>吉日�
 <div class="calbar"><button type="button" class="ghost" id="prev" aria-label="前の月">◀</button><h2 id="mtitle" style="margin:0"></h2><button type="button" class="ghost" id="next" aria-label="次の月">▶</button><label for="mynk" class="inline" style="margin-left:auto">あなたの星宿 <select id="mynk"></select></label></div>
 <p class="cbasis">このカレンダーは、<b>東京の日の出の時点</b>の月の星宿とティティで判定しています（「今日の運勢」は現在時刻で判定するため、同じ日でも表示が違うことがあります）。</p>
 <div id="cal"></div>
-<ul class="cleg"><li><span class="ckt">吉</span>暦の吉日</li><li><i class="mo f"></i>満月　<i class="mo n"></i>新月</li><li><span class="cleg-b g">◎</span>あなたの好調日（緑の枠）</li><li><span class="cleg-b b">△</span>あなたの注意日（橙の枠）</li><li><span class="ctd">今日</span>今日</li><li><span class="cleg-sel"></span>選択中の日</li></ul>
+<ul class="cleg"><li><span class="ckt">吉</span>暦の吉日</li><li><i class="mo f"></i>満月　<i class="mo n"></i>新月</li><li><span class="cleg-b g">◎</span>あなたの好調日（緑の枠）</li><li><span class="cleg-b b">△</span>あなたの注意日（橙の枠）</li><li><span class="dnum tdy">7</span>今日（日付を濃い色で囲む）</li><li><span class="cleg-sel"></span>選択中の日</li></ul>
 <p class="note">好調日・注意日は、上で「あなたの星宿」を選ぶと表示されます。星宿がわからない方は<a href="/#quick">生年月日だけで調べる</a>へ。</p>
 <div id="det"></div><div id="mylist"></div>
 <p class="note">入籍・引っ越し・開業など、目的に合う日を探すなら<a href="/muhurta/">吉日選び（ムフールタ）</a>へ。</p>
