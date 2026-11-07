@@ -49,8 +49,8 @@ document.querySelectorAll('.dd-b').forEach(function(b){b.addEventListener('click
 document.addEventListener('click',function(e){if(!e.target.closest('.gn')&&!e.target.closest('.menu-btn'))closeAll();});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAll();if(mb&&mb.getAttribute('aria-expanded')==='true'){mb.click();mb.focus();}}});})();</script>
 <script>document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.sh.cp');if(!b)return;var s=b.getAttribute('data-copy'),o=b.textContent;function d(){b.textContent='コピーしました';setTimeout(function(){b.textContent=o;},1600);}if(navigator.clipboard)navigator.clipboard.writeText(s).then(d,function(){});});</script>
-<footer class="foot"><div class="foot-in"><ul><li><a href="/about/">運営者情報</a></li><li><a href="/privacy/">プライバシーポリシー</a></li><li><a href="/contact/">お問い合わせ</a></li><li><a href="/articles/">読みもの</a></li><li><a href="/nakshatra/">27星宿一覧</a></li></ul>
-<p>当サイトの占いは、インド占星術（パラーシャラ式・ラーヒリー）の伝統的な読み方にもとづく一つの視点です。重要な決断は、ご自身の判断でお願いします。入力された生年月日は、お使いの端末の中だけで計算され、送信・保存されません。</p><p>© ${new Date().getFullYear()} ${C.siteName}</p></div></footer>
+<footer class="foot"><div class="foot-in"><ul><li><a href="/about/">運営者情報</a></li><li><a href="/privacy/">プライバシーポリシー</a></li><li><a href="/contact/">お問い合わせ</a></li><li><a href="/shop/">鑑定書のご購入</a></li><li><a href="/tokushoho/">特定商取引法に基づく表記</a></li><li><a href="/articles/">読みもの</a></li><li><a href="/nakshatra/">27星宿一覧</a></li></ul>
+<p>当サイトの占いは、インド占星術（パラーシャラ式・ラーヒリー）の伝統的な読み方にもとづく一つの視点です。重要な決断は、ご自身の判断でお願いします。無料の占いで入力された生年月日は、お使いの端末の中だけで計算され、送信・保存されません（鑑定書のご注文フォームを除く）。</p><p>© ${new Date().getFullYear()} ${C.siteName}</p></div></footer>
 ${scripts.length?`<script src="/assets/astronomy.min.js"></script><script src="/assets/calc.js?v=${V}"></script><script src="/assets/common.js?v=${V}"></script>`:`<script src="/assets/common.js?v=${V}" defer></script>`}${inline?`<script>${inline}</script>`:''}${scripts.map(s=>`<script src="/assets/${s}?v=${V}"></script>`).join('')}
 </body></html>`;
   const dir=path.join(OUT,p); fs.mkdirSync(dir,{recursive:true}); fs.writeFileSync(path.join(dir,'index.html'),html); pages.push(p);
@@ -582,21 +582,47 @@ page('/about/',{title:'運営者情報',desc:`${C.siteName}の運営者情報と
 <h2>計算方法</h2><p>天体の位置は、オープンソースの天文計算ライブラリ Astronomy Engine（MIT License）で計算しています。インド占星術の方式は、パラーシャラ式、アヤナムシャはラーヒリー、ハウスはホールサイン、ラーフ・ケートゥは平均位置、ダシャーは1年＝365.25日です。ほかのサイトやソフトと、日付が数日ずれることがあります。</p>
 <h2>占いの結果について</h2><p>占いの結果は、伝統的な読み方にもとづく一つの視点です。健康・法律・お金など重要な判断は、専門家への相談とご自身の判断でお願いします。</p></div>`});
 page('/privacy/',{title:'プライバシーポリシー',desc:`${C.siteName}のプライバシーポリシー（個人情報・Cookie・広告配信について）。`,crumb:'プライバシーポリシー',body:`<div class="hero"><h1>プライバシーポリシー</h1></div><div class="prose">
-<h2>入力された生年月日について</h2><p>当サイトの占いで入力された生年月日・時刻・出生地は、お使いの端末（ブラウザ）の中だけで計算に使われ、当サイトのサーバーに送信・保存されることはありません。今日の運勢を表示するため、計算した星宿の番号のみをブラウザのローカルストレージに保存する場合があります。ブラウザの設定から削除できます。</p>
+<h2>入力された生年月日について</h2><p>当サイトの無料の占いで入力された生年月日・時刻・出生地は、お使いの端末（ブラウザ）の中だけで計算に使われ、当サイトのサーバーに送信・保存されることはありません。今日の運勢を表示するため、計算した星宿の番号のみをブラウザのローカルストレージに保存する場合があります。ブラウザの設定から削除できます。</p>
+<h2>鑑定書のご注文でお預かりする情報</h2><p>鑑定書のご注文では、お名前、メールアドレス、生年月日、出生時刻、出生地、ご相談内容をお預かりします。これらは鑑定書の作成とお届け、ご注文に関するご連絡のためだけに使い、法令に基づく場合を除いて第三者に提供しません。お支払いはPayPalで行われ、当サイトがクレジットカード番号などをお預かりすることはありません。注文内容の送信には、メール配信サービス（Resend）を利用します。</p>
 <h2>広告の配信について</h2><p>当サイトでは、第三者配信の広告サービス（Google AdSense）を利用する場合があります。広告配信事業者は、ユーザーの興味に応じた広告を表示するためにCookieを使用することがあります。Cookieを無効にする方法や、Googleによる広告でのCookieの使用については、<a href="https://policies.google.com/technologies/ads?hl=ja" target="_blank" rel="noopener">Googleの広告に関するポリシー</a>をご覧ください。パーソナライズ広告は、<a href="https://adssettings.google.com/" target="_blank" rel="noopener">広告設定</a>で無効にできます。</p>
 <h2>アクセス解析について</h2><p>当サイトでは、サイトの改善のためにアクセス解析ツールを利用する場合があります。解析ツールはCookieを使って匿名のトラフィックデータを収集することがあり、個人を特定するものではありません。</p>
 <h2>免責事項</h2><p>当サイトの内容は、正確さに努めていますが、その完全性を保証するものではありません。当サイトの情報を利用したことによる損害について、責任を負いかねます。</p>
 <h2>著作権</h2><p>当サイトの文章の無断転載はご遠慮ください。</p>
 <h2>改定</h2><p>本ポリシーは、必要に応じて改定することがあります。</p><p class="note">制定日：2026年11月</p></div>`});
+/* ---------- ショップ（PayPal） ---------- */
+{const SH=rd('content/shop.json'),SL=SH.seller||{},ready=!!C.paypalClientId,yen=v=>v?Number(v).toLocaleString('ja-JP')+'円（税込）':'準備中';
+page('/shop/',{title:'鑑定書のご購入｜インド占星術の鑑定書（PDF）',desc:'インド占星術ナヴァラトナの鑑定書（PDF）のご購入ページ。出生図・16種類の分割図・人生の時期を重ねて、ご相談に沿って読み解きます。お支払いはPayPal。',crumb:'鑑定書のご購入',scripts:['shop.js'],
+inline:`window.SHOP=${JSON.stringify({currency:SH.currency,products:SH.products.map(p=>({id:p.id,name:p.name,price:p.price,days:p.days})),clientId:C.paypalClientId||''})};`,
+body:`<div class="phd"><span class="eyebrow">Shop</span><h1>鑑定書のご購入</h1><p class="th-s">あなたのご相談に沿って読み解き、PDFの鑑定書にまとめてお届けします。</p></div>
+${ready&&SH.products.some(p=>p.price)?'':'<p class="shop-wait"><b>ただいま、ご購入の受付を準備しています。</b>受付開始まで、もうしばらくお待ちください。</p>'}
+<section class="shop-items">${SH.products.map(p=>`<article class="card shop-item" id="p-${p.id}"><span class="eyebrow">PDF鑑定書</span><h2>${esc(p.name)}</h2><p>${esc(p.lead)}</p><h3>読み解く内容</h3><ul class="kt-l">${p.includes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><dl class="shop-dl"><div><dt>料金</dt><dd>${yen(p.price)}</dd></div><div><dt>お届け</dt><dd>${p.days?'お支払い確認から'+p.days+'日以内に、PDFをメールでお送りします':'準備中'}</dd></div></dl></article>`).join('')}</section>
+<section class="shop-form-sec" id="order"><div class="sec-head"><h2>ご注文フォーム</h2><p>出生情報とご相談内容を入力してから、PayPalでお支払いください。お支払いが完了すると、注文内容が鑑定士に届きます。</p></div>
+<form class="f cform" id="sf" novalidate><fieldset><legend>ご注文の内容</legend>
+${SH.products.length>1?`<label for="s-p">商品<select id="s-p">${SH.products.map(p=>`<option value="${p.id}">${esc(p.name)}（${yen(p.price)}）</option>`).join('')}</select></label>`:`<input type="hidden" id="s-p" value="${SH.products[0].id}">`}
+<label for="s-name">お名前（ニックネーム可）<input id="s-name" type="text" autocomplete="name" required></label>
+<label for="s-email">メールアドレス（鑑定書のお届け先）<input id="s-email" type="email" autocomplete="email" required></label>
+<label for="s-bd">生年月日<input id="s-bd" type="date" value="" min="1900-01-01" max="2099-12-31"></label>
+<div class="tgroup"><label for="s-bt">出生時刻<input id="s-bt" type="time" value=""></label><label class="inline" for="s-unk"><input id="s-unk" type="checkbox">時刻がわからない</label><p class="note">母子手帳などで確認できる時刻がおすすめです。わからない場合は、時刻を使わない範囲で読み解きます。</p></div>
+<label for="s-place">出生地（市区町村まで。海外の場合は都市名）<input id="s-place" type="text" required></label>
+<label for="s-msg">いちばん知りたいこと・ご相談の内容<textarea id="s-msg" rows="5" required></textarea></label>
+<label class="inline" for="s-ok"><input id="s-ok" type="checkbox"><span><a href="/tokushoho/" target="_blank">特定商取引法に基づく表記</a>と<a href="/privacy/" target="_blank">プライバシーポリシー</a>に同意します</span></label>
+</fieldset>
+<div class="shop-sum" id="ssum" aria-live="polite"></div>
+<div id="paypal" class="shop-pay"></div><p class="status" id="sstatus" role="status"></p></form></section>
+<p class="note">ご注文やお届けについてのお問い合わせは、${SL.email?esc(SL.email):'Threads（@morino_kanako）のメッセージ'}で受け付けています。</p>`});
+const V=x=>x?esc(x):'<span class="tbd">【要設定】</span>';
+page('/tokushoho/',{title:'特定商取引法に基づく表記',desc:`${C.siteName}の特定商取引法に基づく表記。`,crumb:'特定商取引法に基づく表記',
+body:`<div class="phd"><h1>特定商取引法に基づく表記</h1></div><dl class="tpc">${[['販売事業者',V(SL.name)],['運営責任者',V(SL.manager)],['所在地',V(SL.address)],['電話番号',V(SL.phone)],['メールアドレス',V(SL.email)],['販売価格','各商品ページに表示（消費税込み）'],['商品代金以外の必要料金','なし（インターネット接続の通信料はお客様のご負担です）'],['お支払い方法','PayPal（クレジットカード・PayPal残高など）'],['お支払い時期','ご注文時にお支払いが確定します'],['商品の引き渡し時期',SH.products.map(p=>esc(p.name)+'：'+(p.days?'お支払い確認から'+p.days+'日以内':'<span class="tbd">【要設定】</span>')).join('<br>')],['引き渡し方法',V(SL.delivery)],['返品・キャンセル',V(SL.refund)]].map(r=>`<div><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join('')}</dl>`});}
+
 page('/kantei/',{title:'個人鑑定のご案内',desc:'インド占星術ナヴァラトナの個人鑑定のご案内。出生図・16種類の分割図・人生の時期（ダシャー）を重ねて、ご相談に沿って読み解きます。',crumb:'個人鑑定のご案内',
 body:`<div class="phd"><span class="eyebrow">Personal Reading</span><h1>個人鑑定のご案内</h1><p class="th-s">無料の星図で見えた「地図」を、あなたのご相談に沿って、ひとつの物語として読み解きます。</p></div>
 <section class="nks"><span class="nks-lab">こんなご相談に</span><h2>こんなときに</h2><ul class="kt-l"><li>自分の強みを、仕事にどう生かせるか知りたい</li><li>恋愛や結婚で、繰り返しているテーマを知りたい</li><li>今の自分が、人生のどんな時期にいるのか知りたい</li><li>これからの選択の、ヒントがほしい</li></ul></section>
 <section class="nks"><span class="nks-lab">鑑定で読み解くこと</span><h2>出生図・分割図・人生の時期を重ねて</h2><p>インド占星術の出生図、16種類の分割図、ヴィムショッタリ・ダシャー（人生の時期）を重ね合わせて読みます。生まれ持った持ち味と、今向き合っていること、そしてこれからの選択のヒントを、ご相談に沿ってお伝えします。</p></section>
 <section class="nks"><span class="nks-lab">受け取れるもの</span><h2>あなたのための鑑定書</h2><p>読み解いた内容を、一冊の鑑定書にまとめてお届けします。</p></section>
-<section class="nks"><span class="nks-lab">料金・納期</span><h2>料金と納期</h2><p>料金・納期・お届け方法は、お問い合わせの際にご案内しています。</p></section>
+<section class="nks"><span class="nks-lab">料金・納期</span><h2>料金と納期</h2><p>料金とお届けまでの日数は、<a href="/shop/">鑑定書のご購入ページ</a>に掲載しています。</p></section>
 <section class="nks"><span class="nks-lab">必要な情報</span><h2>ご用意いただくもの</h2><ul class="kt-l"><li>生年月日</li><li>生まれた時刻（母子手帳などで確認できる正確な時刻。わからない場合はご相談ください）</li><li>生まれた場所（市区町村まで）</li><li>いちばん知りたいこと、ご相談の内容</li></ul></section>
-<section class="nks"><span class="nks-lab">申し込みの流れ</span><h2>お申し込みの流れ</h2><ol class="kt-l"><li>Threadsのアカウント（@morino_kanako）へ、メッセージでお問い合わせください</li><li>料金・納期・お届け方法をご案内します</li><li>出生情報とご相談内容をお送りいただき、鑑定を始めます</li></ol>
-<p><a class="btn" href="${C.ctaUrl}" target="_blank" rel="noopener">Threadsで問い合わせる（外部サイト）</a></p></section>
+<section class="nks"><span class="nks-lab">申し込みの流れ</span><h2>お申し込みの流れ</h2><ol class="kt-l"><li><a href="/shop/">鑑定書のご購入ページ</a>のフォームに、出生情報とご相談内容を入力します</li><li>PayPalでお支払いいただくと、ご注文が鑑定士に届きます</li><li>鑑定書（PDF）をメールでお届けします</li></ol>
+<p><a class="btn" href="/shop/">鑑定書のご購入へ</a></p><p class="note">ご購入前のご質問は、<a href="${C.ctaUrl}" target="_blank" rel="noopener">Threadsで問い合わせる（外部サイト）</a>からどうぞ。</p></section>
 <p class="note">このサイトの無料の星図・占いの結果について、個別のご質問にはお答えしていません。</p>`});
 
 page('/contact/',{title:'お問い合わせ',desc:`${C.siteName}へのお問い合わせ方法。`,crumb:'お問い合わせ',body:`<div class="hero"><h1>お問い合わせ</h1></div><div class="prose"><p>${esc(C.contactText)}</p><p>占い結果の個別のご相談にはお答えしていません。個人鑑定をご希望の方は、<a href="/kantei/">個人鑑定のご案内</a>をご覧ください。</p></div>`});
