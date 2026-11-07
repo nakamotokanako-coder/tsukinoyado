@@ -17,10 +17,10 @@ function card(now,p){var el=$('tcard'),mine=TK.loadNak(),i=st.sel;
   if(i===null){el.innerHTML='<div class="tc-empty"><span class="eyebrow">あなたの今日の運勢</span><p class="tc-lead">あなたの星宿（生まれたときの月の星宿）がわかると、ここに今日の運勢が出ます。</p><div class="tc-btns"><a class="btn" href="/#quick">自分の星宿を調べる</a><button type="button" class="ghost" data-pick-open>星宿を選ぶ</button></div><p class="note">生年月日だけで調べられます。一度調べると、このブラウザに記録されます。</p></div>';return;}
   var t=JY.tara(i,p.nak.i),T=TK.TARA_T[t],n=JY.TARA[t],isMine=mine===i;
   el.innerHTML='<div class="tc-head"><img src="/assets/sym/'+JY.NKSLUG[i]+'-s.webp" alt="" width="56" height="56"><div><span class="tc-who">'+(isMine?'あなたの星宿':'選択中の星宿')+'</span><b class="tc-nk">'+JY.NK[i]+'</b></div><button type="button" class="ghost tc-chg" data-pick-open>変更する</button></div>'+
-   '<h2 class="tc-theme t-'+T.r+'">'+T.tag+'</h2><p class="tc-all">'+T.all+'</p>'+
+   '<p class="tc-basis">いまの運勢（現在時刻 '+TK.jst(now)+' の月の星宿「'+p.nak.name+'」で判定）</p><h2 class="tc-theme t-'+T.r+'">'+T.tag+'</h2><p class="tc-all">'+T.all+'</p>'+
    '<div class="tc-lw"><div><b>恋愛</b><p>'+T.love+'</p></div><div><b>仕事</b><p>'+T.work+'</p></div></div>'+
    '<details class="tc-tara"><summary>今日は「'+n[0]+'（'+n[1]+'）」の日　<span>くわしく</span></summary><p>生まれた星宿（'+JY.NK[i]+'）から、今日の月の星宿（'+p.nak.name+'）まで数えると'+(t+1)+'番目。9つの巡り（ターラ）のうち「'+n[0]+'」にあたり、「'+TM[t]+'」の日とされます。<a href="#tara-how">ターラのしくみ</a></p></details>'+
-   '<p class="tc-next">'+(p.nakEnd?'次の切り替わり：<b>'+TK.jst(p.nakEnd,true)+'</b>（日本時間）。月が次の星宿へ移ると、運勢も変わります。':'')+'</p>'+
+   '<p class="tc-next">'+(p.nakEnd?'次の切替：<b>'+TK.jst(p.nakEnd,true)+'</b>（日本時間）。月が次の星宿へ移ると、運勢も変わります。':'')+'</p>'+
    (!isMine&&mine!==null?'<div class="tc-btns"><button type="button" class="ghost" data-show="'+mine+'">あなたの星宿（'+JY.NK[mine]+'）に戻す</button><button type="button" class="ghost" data-save="'+i+'">'+JY.NK[i]+'を私の星宿にする</button></div>':'')+
    (!isMine&&mine===null?'<div class="tc-btns"><button type="button" class="ghost" data-save="'+i+'">'+JY.NK[i]+'を私の星宿にする</button></div>':'')+
    '<p class="tc-link"><a href="/nakshatra/'+JY.NKSLUG[i]+'/">'+JY.NK[i]+'の性格を読む →</a></p>';}

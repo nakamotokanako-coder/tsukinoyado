@@ -462,8 +462,10 @@ ${cta}`});
 page('/calendar/',{title:'吉日カレンダー｜インド占星術の暦で見る吉日・満月・新月',desc:'インド占星術の暦（パンチャーンガ）で見る月ごとの吉日カレンダー。毎日の月の星宿、グル・プシュヤ、アムリタ・シッディ、エーカーダシー、満月・新月、あなたの星宿にとっての好調日がわかります。',scripts:['calendar.js'],crumb:'吉日カレンダー',
 body:`<div class="hero"><span class="eyebrow">Auspicious Days</span><h1>吉日カレンダー</h1><p class="lead">インドの暦で、毎日の月の星宿と吉日を一覧にしました。あなたの星宿を選ぶと、あなたにとっての好調日が色でわかります。</p></div>
 <div class="calbar"><button type="button" class="ghost" id="prev" aria-label="前の月">◀</button><h2 id="mtitle" style="margin:0"></h2><button type="button" class="ghost" id="next" aria-label="次の月">▶</button><label for="mynk" class="inline" style="margin-left:auto">あなたの星宿 <select id="mynk"></select></label></div>
+<p class="cbasis">このカレンダーは、<b>東京の日の出の時点</b>の月の星宿とティティで判定しています（「今日の運勢」は現在時刻で判定するため、同じ日でも表示が違うことがあります）。</p>
 <div id="cal"></div>
-<p class="note">色の見方：<span class="pill g">吉日</span>は暦の吉日、<span class="pill s">暦の節目</span>は満月・新月など。あなたの星宿を選ぶと、好調日は緑、注意日はオレンジの枠になります。星宿は日の出（東京）の時点のものです。星宿がわからない方は<a href="/">生年月日だけで調べる</a>へ。</p>
+<ul class="cleg"><li><span class="ckt">吉</span>暦の吉日</li><li><i class="mo f"></i>満月　<i class="mo n"></i>新月</li><li><span class="cleg-b g">◎</span>あなたの好調日（緑の枠）</li><li><span class="cleg-b b">△</span>あなたの注意日（橙の枠）</li><li><span class="ctd">今日</span>今日</li><li><span class="cleg-sel"></span>選択中の日</li></ul>
+<p class="note">好調日・注意日は、上で「あなたの星宿」を選ぶと表示されます。星宿がわからない方は<a href="/#quick">生年月日だけで調べる</a>へ。</p>
 <div id="det"></div><div id="mylist"></div>
 <p class="note">入籍・引っ越し・開業など、目的に合う日を探すなら<a href="/muhurta/">吉日選び（ムフールタ）</a>へ。</p>
 <section><div class="sec-head"><h2>今月の吉日と暦の節目</h2></div><div class="card" id="list"></div></section>
