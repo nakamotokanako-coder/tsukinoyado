@@ -335,26 +335,35 @@ ${ad('bottom')}
 ${shareS('インド占星術のヨーガ事典。五大偉人ヨーガ、ラージャ・ヨーガなど27のヨーガの意味。','/yoga/')}`});
 
 /* ---------- ヨーガ詳細（content/yoga_detail.json） ---------- */
+/* 北インド式のひし形で、ケンドラ（1・4・7・10室）を示す小さな図 */
+const KPOLY={1:'50,0 75,25 50,50 25,25',4:'0,50 25,25 50,50 25,75',7:'50,100 25,75 50,50 75,75',10:'100,50 75,75 50,50 75,25'},KPOS={1:[50,27],4:[25,52],7:[50,77],10:[75,52]};
+const kendraSvg=(hl,big)=>`<svg class="ksvg${big?' big':''}" viewBox="-2 -2 104 104" role="img" aria-label="${hl.length>1?'1・4・7・10室（ケンドラ）':hl[0]+'室'}の位置"><rect x="0" y="0" width="100" height="100" rx="2" class="kb"/>${[1,4,7,10].map(h=>`<polygon points="${KPOLY[h]}" class="${hl.includes(h)?'kh':'kn'}"/>`).join('')}<path d="M0 0L100 100M100 0L0 100M50 0L100 50L50 100L0 50Z" class="kl"/>${[1,4,7,10].map(h=>`<text x="${KPOS[h][0]}" y="${KPOS[h][1]}" class="${hl.includes(h)?'kt on':'kt'}">${h}</text>`).join('')}</svg>`;
+const KLAB={1:'自分自身',4:'生活の基盤',7:'人との関係',10:'社会での活動'};
 for(const [id,Z] of Object.entries(YDT)){const y=YOGA.find(x=>x.id===id),sp=SR.L.find(x=>x.pl===Z.pl),nm=y.name,P=a=>a.map(t=>`<p>${esc(t)}</p>`).join('');
+const SEC=[['cond','成立する条件'],['str','どんな強み？'],...(Z.signs?[['sign',Z.signsh||'星座による違い']]:[]),['job','生かしやすい仕事'],['house','ハウスによる違い'],['tips','上手に使うために']];
+const H=(k,t,sub)=>{const n=SEC.findIndex(x=>x[0]===k)+1;return `<div class="yz-sh"><span class="yz-n">${String(n).padStart(2,'0')}</span><h2>${t}</h2>${sub?`<p>${sub}</p>`:''}</div>`;};
+const signs=Z.sign.split(/、|または/).map(t=>t.trim()).filter(Boolean);
 page(`/yoga/${id}/`,{title:`${nm}とは｜成立条件・強み・向いている仕事（インド占星術）`,desc:Z.desc,crumb:`<a href="/yoga/">ヨーガ事典</a> › ${nm}`,
 ld:{"@context":"https://schema.org","@type":"Article","headline":`${nm}とは`,"inLanguage":"ja"},
-body:`<div class="yzhero" style="--sc:${sp.color}"><figure><img src="${SR.img(SR.king(id)||sp.id)}" alt="${Z.pl}の王・${sp.name}" width="320" height="320"><figcaption>${Z.pl}の王・${sp.name}</figcaption></figure><div><span class="eyebrow">${Z.en} ・ ${y.cat}</span><h1>${nm}</h1><p class="yz-h">${esc(Z.head)}</p>${YRAR(id)}</div></div>
-<div class="yz-poem">${Z.poem.map(t=>`<p>${SEG(t)}</p>`).join('')}</div><div class="prose">${P(Z.intro)}</div>
-${Z.extra?`<section><div class="sec-head"><h2>${Z.extra[0]}</h2></div><div class="prose">${P(Z.extra[1])}</div></section>`:''}
-<section><div class="sec-head"><h2>成立する条件</h2><p>次の2つを同時に満たすと成立します。</p></div>
-<div class="tbl"><table class="yz-t"><thead><tr><th>条件</th><th>${Z.pl}の位置</th></tr></thead><tbody><tr><td>星座</td><td>${Z.sign}</td></tr><tr><td>ハウス</td><td>ラグナ〈上昇宮〉から数えて1・4・7・10室のいずれか</td></tr></tbody></table></div>
-<div class="prose">${id!=='ruchaka'?'<p>1・4・7・10室は「ケンドラ」と呼ばれ、自分自身、生活の基盤、人との関係、社会での活動という、人生の柱を表します。</p>':''}${P(Z.condp)}${Z.condnote?`<p class="note">${Z.condnote}</p>`:''}</div></section>
+body:`<div class="yz" style="--sc:${sp.color}">
+<div class="yzhero"><figure><img src="${SR.img(SR.king(id)||sp.id)}" alt="${Z.pl}の王・${sp.name}" width="320" height="320"><figcaption>${Z.pl}の王・${sp.name}</figcaption></figure><div><span class="eyebrow">${Z.en} ・ ${y.cat}</span><h1>${nm}</h1><p class="yz-h">${esc(Z.head)}</p>${YRAR(id)}</div></div>
+<div class="yz-poem">${Z.poem.map(t=>`<p>${SEG(t)}</p>`).join('')}</div>
+<div class="yz-intro">${P(Z.intro)}</div>
+<nav class="yz-toc" aria-label="このページの内容">${SEC.map((x,i)=>`<a href="#y-${x[0]}"><span>${String(i+1).padStart(2,'0')}</span>${x[1]}</a>`).join('')}</nav>
+${Z.extra?`<section class="yz-extra"><h2>${Z.extra[0]}</h2>${P(Z.extra[1])}</section>`:''}
+<section id="y-cond">${H('cond','成立する条件','次の2つを同時に満たすと成立します。')}
+<div class="yz-cond"><div class="card"><span class="yz-k">条件 1 ・ 星座</span><b class="yz-kv">${Z.pl}が、得意な星座にある</b><ul class="yz-signs">${signs.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>
+<div class="card"><span class="yz-k">条件 2 ・ ハウス</span><b class="yz-kv">ラグナから1・4・7・10室にある</b><div class="yz-kd">${kendraSvg([1,4,7,10],1)}<ul>${[1,4,7,10].map(h=>`<li><b>${h}室</b>${KLAB[h]}</li>`).join('')}</ul></div><p class="note">1・4・7・10室は「ケンドラ」と呼ばれる、人生の柱となる4つの場所です。図は北インド式で、上が1室です。</p></div></div>
+<div class="prose">${P(Z.condp.filter(t=>!t.startsWith('1・4・7・10室は')))}${Z.condnote?`<p class="note">${Z.condnote}</p>`:''}</div></section>
 ${ad('top')}
-<section><div class="sec-head"><h2>どんな強みがある？</h2></div><div class="ypts">${Z.str.map(x=>`<div class="card"><h3>${x[0]}</h3>${P(x[1])}</div>`).join('')}</div><p class="note">${Z.classic}</p></section>
-${Z.signs?`<section><div class="sec-head"><h2>${Z.signsh||'星座による違い'}</h2><p>${Z.signs[0]}</p></div><div class="tbl"><table class="yz-t"><thead><tr><th>星座</th><th>${Z.signs[1]}</th></tr></thead><tbody>${Z.signs[2].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</tbody></table></div></section>`:''}
-<section><div class="sec-head"><h2>力を生かしやすい仕事</h2><p>${Z.pl}の象徴を現代の仕事に置き換えると、次のような分野が挙げられます。</p></div>
-<div class="tbl"><table class="yz-t"><thead><tr><th>分野</th><th>生かされる力・仕事の例</th></tr></thead><tbody>${Z.jobs.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</tbody></table></div><p class="note">${Z.jobsnote}</p></section>
-<section><div class="sec-head"><h2>${Z.pl}があるハウスによる違い</h2>${Z.houselead?`<p>${Z.houselead}</p>`:''}</div>
-<div class="yz-h4">${Z.houses.map(h=>`<div class="card"><span class="yz-hn">${h[0]}</span><b>${h[1]}</b><p>${h[2]}</p></div>`).join('')}</div></section>
-<section><div class="sec-head"><h2>${Z.tipsh}</h2></div><div class="ypts">${Z.tips.map(t=>`<div class="card"><h3>${t[0]}</h3><p>${t[1]}</p></div>`).join('')}</div></section>
+<section id="y-str">${H('str','どんな強みがある？')}<div class="yz-str">${Z.str.map((x,i)=>`<div class="card"><span class="yz-sn">${i+1}</span><h3>${x[0]}</h3>${P(x[1])}</div>`).join('')}</div><p class="yz-classic"><b>古典では</b>${Z.classic}</p></section>
+${Z.signs?`<section id="y-sign">${H('sign',Z.signsh||'星座による違い',Z.signs[0])}<div class="yz-sg">${Z.signs[2].map(r=>`<div class="card"><b class="yz-sgn">${r[0]}</b><p>${r[1]}</p></div>`).join('')}</div></section>`:''}
+<section id="y-job">${H('job','力を生かしやすい仕事',`${Z.pl}の象徴を現代の仕事に置き換えると、次のような分野が挙げられます。`)}<div class="yz-jobs">${Z.jobs.map(r=>{const k=r[1].indexOf('。');return `<div class="card"><b>${r[0]}</b><span class="yz-jp">${k>0?r[1].slice(0,k):''}</span><p>${k>0?r[1].slice(k+1):r[1]}</p></div>`;}).join('')}</div><p class="note">${Z.jobsnote}</p></section>
+<section id="y-house">${H('house',`${Z.pl}があるハウスによる違い`,Z.houselead||`同じ${nm}でも、${Z.pl}がどこにあるかによって、力が向かう先は変わります。`)}<div class="yz-h4">${Z.houses.map(h=>{const n=parseInt(h[0]);return `<div class="card">${kendraSvg([n])}<div><span class="yz-hn">${h[0]}</span><b>${h[1]}</b><p>${h[2]}</p></div></div>`;}).join('')}</div></section>
+<section id="y-tips">${H('tips',Z.tipsh)}<ol class="yz-tips">${Z.tips.map(t=>`<li><b>${t[0]}</b><p>${t[1]}</p></li>`).join('')}</ol></section>
 <section class="card yend"><h2>このヨーガを読み解くには</h2><p>${Z.close[0]}</p><p class="yz-q">${Z.close[1].map(t=>`<span class="seg">${SEG(t)}</span>`).join('<br>')}</p><p>${Z.close[2]}</p><a class="btn" href="/chart/">魂の星図で、自分のヨーガを調べる</a></section>
-<div class="nkpn">${['ruchaka','bhadra','hamsa','malavya','shasha'].filter(k=>k!==id&&YDT[k]).map(k=>{const o=YOGA.find(x=>x.id===k);return `<a class="card tool" href="/yoga/${k}/"><span class="k">五大偉人ヨーガ</span><b>${o.name}</b><p>${esc(YDT[k].head)}</p></a>`;}).join('')}</div>
-<p class="note"><a href="/yoga/">← ヨーガ事典にもどる</a></p>
+<h2 class="yz-other">ほかの五大偉人ヨーガ</h2><div class="yz-others">${['ruchaka','bhadra','hamsa','malavya','shasha'].filter(k=>k!==id&&YDT[k]).map(k=>{const o=YOGA.find(x=>x.id===k),s2=SR.L.find(x=>x.pl===YDT[k].pl);return `<a class="card" href="/yoga/${k}/" style="--sc:${s2.color}"><img src="${SR.img(SR.king(k)||s2.id,true)}" alt="" width="72" height="72" loading="lazy"><span><b>${o.name}</b><small>${esc(YDT[k].head)}</small></span></a>`;}).join('')}</div>
+<p class="note"><a href="/yoga/">← ヨーガ事典にもどる</a></p></div>
 ${shareS(`${nm}とは｜${Z.head}`,`/yoga/${id}/`)}${cta}`});}
 
 /* ---------- はじめての方へ ---------- */
