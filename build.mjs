@@ -591,12 +591,12 @@ page('/privacy/',{title:'プライバシーポリシー',desc:`${C.siteName}の�
 <h2>改定</h2><p>本ポリシーは、必要に応じて改定することがあります。</p><p class="note">制定日：2026年11月</p></div>`});
 /* ---------- ショップ（PayPal） ---------- */
 {const SH=rd('content/shop.json'),SL=SH.seller||{},ready=!!C.paypalClientId,yen=v=>v?Number(v).toLocaleString('ja-JP')+'円（税込）':'準備中';
-page('/shop/',{title:'鑑定書のご購入｜インド占星術の鑑定書（PDF）',desc:'インド占星術ナヴァラトナの鑑定書（PDF）のご購入ページ。出生図・16種類の分割図・人生の時期を重ねて、ご相談に沿って読み解きます。お支払いはPayPal。',crumb:'鑑定書のご購入',scripts:['shop.js'],
+page('/shop/',{title:'鑑定書のご購入｜インド占星術の鑑定書（PDF）',desc:'インド占星術ナヴァラトナの鑑定書（PDF）のご購入ページ。出生図・16種類の分割図・人生の時期を重ねて、ご相談に沿って読み解きます。お支払いはPayPal。',crumb:'鑑定書のご購入',scripts:SH.soldout?[]:['shop.js'],
 inline:`window.SHOP=${JSON.stringify({currency:SH.currency,products:SH.products.map(p=>({id:p.id,name:p.name,price:p.price,days:p.days})),clientId:C.paypalClientId||''})};`,
 body:`<div class="phd"><span class="eyebrow">Shop</span><h1>鑑定書のご購入</h1><p class="th-s">あなたのご相談に沿って読み解き、PDFの鑑定書にまとめてお届けします。</p></div>
-${ready&&SH.products.some(p=>p.price)?'':'<p class="shop-wait"><b>ただいま、ご購入の受付を準備しています。</b>受付開始まで、もうしばらくお待ちください。</p>'}
-<section class="shop-items">${SH.products.map(p=>`<article class="card shop-item" id="p-${p.id}"><span class="eyebrow">PDF鑑定書</span><h2>${esc(p.name)}</h2><p>${esc(p.lead)}</p><h3>読み解く内容</h3><ul class="kt-l">${p.includes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><dl class="shop-dl"><div><dt>料金</dt><dd>${yen(p.price)}</dd></div><div><dt>お届け</dt><dd>${p.days?'お支払い確認から'+p.days+'日以内に、PDFをメールでお送りします':'準備中'}</dd></div></dl></article>`).join('')}</section>
-<section class="shop-form-sec" id="order"><div class="sec-head"><h2>ご注文フォーム</h2><p>出生情報とご相談内容を入力してから、PayPalでお支払いください。お支払いが完了すると、注文内容が鑑定士に届きます。</p></div>
+${SH.soldout?'<p class="shop-wait"><b>ただいま売り切れです。</b>次回の受付開始まで、もうしばらくお待ちください。</p>':ready&&SH.products.some(p=>p.price)?'':'<p class="shop-wait"><b>ただいま、ご購入の受付を準備しています。</b>受付開始まで、もうしばらくお待ちください。</p>'}
+<section class="shop-items">${SH.products.map(p=>`<article class="card shop-item" id="p-${p.id}"><span class="eyebrow">PDF鑑定書${SH.soldout?'　<span class="pill b">売り切れ</span>':''}</span><h2>${esc(p.name)}</h2><p>${esc(p.lead)}</p><h3>読み解く内容</h3><ul class="kt-l">${p.includes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><dl class="shop-dl"><div><dt>料金</dt><dd>${yen(p.price)}</dd></div><div><dt>お届け</dt><dd>${p.days?'お支払い確認から'+p.days+'日以内に、PDFをメールでお送りします':'準備中'}</dd></div></dl></article>`).join('')}</section>
+${SH.soldout?'':`<section class="shop-form-sec" id="order"><div class="sec-head"><h2>ご注文フォーム</h2><p>出生情報とご相談内容を入力してから、PayPalでお支払いください。お支払いが完了すると、注文内容が鑑定士に届きます。</p></div>
 <form class="f cform" id="sf" novalidate><fieldset><legend>ご注文の内容</legend>
 ${SH.products.length>1?`<label for="s-p">商品<select id="s-p">${SH.products.map(p=>`<option value="${p.id}">${esc(p.name)}（${yen(p.price)}）</option>`).join('')}</select></label>`:`<input type="hidden" id="s-p" value="${SH.products[0].id}">`}
 <label for="s-name">お名前（ニックネーム可）<input id="s-name" type="text" autocomplete="name" required></label>
@@ -608,7 +608,7 @@ ${SH.products.length>1?`<label for="s-p">商品<select id="s-p">${SH.products.ma
 <label class="inline" for="s-ok"><input id="s-ok" type="checkbox"><span><a href="/tokushoho/" target="_blank">特定商取引法に基づく表記</a>と<a href="/privacy/" target="_blank">プライバシーポリシー</a>に同意します</span></label>
 </fieldset>
 <div class="shop-sum" id="ssum" aria-live="polite"></div>
-<div id="paypal" class="shop-pay"></div><p class="status" id="sstatus" role="status"></p></form></section>
+<div id="paypal" class="shop-pay"></div><p class="status" id="sstatus" role="status"></p></form></section>`}
 <p class="note">ご注文やお届けについてのお問い合わせは、${SL.email?esc(SL.email):'Threads（@morino_kanako）のメッセージ'}で受け付けています。</p>`});
 const V=x=>x?esc(x):'<span class="tbd">【要設定】</span>';
 page('/tokushoho/',{title:'特定商取引法に基づく表記',desc:`${C.siteName}の特定商取引法に基づく表記。`,crumb:'特定商取引法に基づく表記',
