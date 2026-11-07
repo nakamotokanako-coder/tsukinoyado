@@ -74,7 +74,7 @@ const TARA_ROWS=[['1','ジャンマ','命','自分を整える'],['2','サンパ
 /* ---------- トップ ---------- */
 page('/',{title:'トップ',desc:'生年月日だけで、あなたを守る宝石の精霊と魂の星（アートマカラカ）がわかるインド占星術の無料占い。ホロスコープ作成、魂の星図、今日の運勢、相性占い、吉日カレンダーも無料で。',scripts:['seirei.js','ak.js','today.js','quick.js'],inline:NKINL(),
 body:`<div id="qback" class="qback-top" hidden></div>
-<section class="hero hero-top" id="quick"><span class="eyebrow">Jyotish · Vedic Astrology</span><h1>あなたの魂の星と、宝石の精霊</h1><p class="lead">生まれた日の星から、あなたを守る宝石の精霊と、人生を通して育てていく「魂の星」を読み解きます。</p>
+<section class="hero hero-top" id="quick"><span class="eyebrow">Jyotish · Vedic Astrology</span><h1><span class="seg">あなたの魂の星と、</span><span class="seg">宝石の精霊</span></h1><p class="lead"><span class="seg">生まれた日の星から、</span><span class="seg">あなたを守る宝石の精霊と、</span><span class="seg">人生を通して育てていく</span><span class="seg">「魂の星」を読み解きます。</span></p>
 <form class="f quick hq" id="qf" novalidate><label for="qbd">生年月日<input id="qbd" type="date" value="1990-05-15" min="1900-01-01" max="2099-12-31"></label><div class="actions"><button type="submit" class="big-btn">無料で調べる</button></div></form>
 <p class="note">生年月日だけでわかります。出生時刻がわかる方は<a href="/horoscope/">ホロスコープ（チャート）作成</a>で、本格的なチャートもすぐ作れます。計算はこの端末の中だけで行います。インド占星術がはじめての方は<a href="/jyotish/">はじめての方へ</a></p></section>
 <section class="sr-sec" aria-label="ナヴァラトナ 9つの宝石の精霊"><div class="sr-line" data-tap>${SR.L.map(x=>`<button type="button" data-id="${x.id}" aria-expanded="false" aria-controls="srd"><span class="sr-im"><img src="${SR.img(x.id,true)}" alt="" width="128" height="128"></span><span class="sr-nm">${x.name}</span><span class="sr-gm">${x.gem}</span></button>`).join('')}</div>
