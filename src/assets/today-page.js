@@ -54,6 +54,7 @@ function pick(p){var good=[],bad=[];for(var j=0;j<27;j++){var tt=JY.tara(j,p.nak
 
 /* ⑤ 暦 */
 function panch(p){var X=[['曜日','その日を受け持つ星',p.vara[0]+'（'+p.vara[1]+'）'],['月の星宿','月がいま泊まっている星宿','<a href="/nakshatra/'+p.nak.slug+'/">'+p.nak.name+'</a>'+(p.nakEnd?'<small>'+TK.jst(p.nakEnd,true)+'まで</small>':'')],['ティティ','月の満ち欠けで数える日付',p.tithi+'日目・'+p.tithiName+'<small>'+p.paksha+'</small>'],['ヨーガ（暦）','太陽と月の位置から決まる、その日の性質。出生図の「ヨーガ」とは別のものです',p.yoga],['日の出・日の入り','東京基準',(p.rise?hm(p.rise):'—')+' ／ '+(p.set?hm(p.set):'—')],['ラーフ・カーラ','大事な始めごとを避ける時間帯（東京基準）',p.rahu?hm(p.rahu.start)+'〜'+hm(p.rahu.end):'—']];
+  var VL=['太陽','月','火星','水星','木星','金星','土星'][new Date(Date.now()+9*36e5).getUTCDay()];X.push(['今日の色と宝石','曜日を受け持つ星（'+VL+'）の伝統的な色と宝石',SR.LUCK[VL].c+'／'+SR.BY[VL].gem]);
   $('tpc').innerHTML=X.map(function(x){return '<div><dt>'+x[0]+'<small>'+x[1]+'</small></dt><dd>'+x[2]+'</dd></div>';}).join('');}
 
 function draw(force){var now=Date.now(),m=Math.floor(now/6e4);if(!force&&m===st.lastMin)return;st.lastMin=m;

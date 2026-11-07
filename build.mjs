@@ -92,7 +92,7 @@ ${ad('mid')}
 ${shareS('インド占星術の無料占いサイト「ナヴァラトナ」。生年月日だけで、あなたの星宿と守ってくれる宝石の精霊がわかります。','/')}${cta}`});
 
 /* ---------- 今日の運勢 ---------- */
-page('/today/',{title:'今日の運勢（27星宿別）と今日の吉凶の時間帯',desc:'インド占星術の27星宿（ナクシャトラ）別に、今日の運勢を毎日自動で更新。いまの時間帯（チョーガディヤ）、次によい時間、今日の暦もひと目でわかります。',scripts:['today-page.js'],crumb:'今日の運勢',
+page('/today/',{title:'今日の運勢（27星宿別）と今日の吉凶の時間帯',desc:'インド占星術の27星宿（ナクシャトラ）別に、今日の運勢を毎日自動で更新。いまの時間帯（チョーガディヤ）、次によい時間、今日の暦もひと目でわかります。',scripts:['seirei.js','today-page.js'],crumb:'今日の運勢',
 body:`<div class="phd"><span class="eyebrow">Daily Tara</span><h1>今日の運勢</h1><p class="th-d"><span id="tdate"></span>　日本時間</p><p class="th-s">生まれた星宿と今日の月の巡りから読む、あなたの一日と、行動によい時間。</p></div>
 <div id="tlive" class="sr-only" aria-live="polite"></div>
 <section class="tc-wrap" id="tcard-wrap" tabindex="-1" aria-label="あなたの今日の運勢"><div id="tcard" class="tc"></div></section>
@@ -244,11 +244,12 @@ body:`<div class="nkz">
 <p class="nkh-lead">${SEG(n.lead)}</p><div class="nkh-poem">${n.poem.map(t=>`<p>${SEG(t)}</p>`).join('')}</div>
 <ul class="nkh-tr">${n.traits.map(t=>`<li>${t}</li>`).join('')}</ul>
 <p class="nkh-meta">支配星：${n.lord}　・　象徴：${n.symcap}</p></div></div>
-<nav class="nk-toc" aria-label="このページの内容">${[['p','性格'],['l','恋愛'],['w','仕事'],['s','強み'],['m','神話'],['letter','あなたへ'],['info','基本情報']].map(x=>`<a href="#nk-${x[0]}">${x[1]}</a>`).join('')}</nav>
+<nav class="nk-toc" aria-label="このページの内容">${[['p','性格'],['l','恋愛'],['w','仕事'],['s','強み'],['m','神話'],['luck','色と宝石'],['letter','あなたへ'],['info','基本情報']].map(x=>`<a href="#nk-${x[0]}">${x[1]}</a>`).join('')}</nav>
 <div class="nkt" id="nk-today" data-i="${i}"></div>
 ${[['p','性格',n.hp,n.personality],['l','恋愛とパートナーシップ',n.hl,n.love],['w','仕事と才能',n.hw,n.work]].map(([k,lab,h,ps],ix)=>{const t=(ps||[]).join('\n'),j=t.indexOf('。'),sum=j>0?t.slice(0,j+1):'',rest=(ps||[]).map((x,q)=>q===0&&j>0?x.slice(j+1):x).filter(x=>x.trim());return `<section class="nks" id="nk-${k}"><span class="nks-lab">${lab}</span><h2>${SEG(h)}</h2><p class="nks-sum">${esc(sum)}</p>${rest.map(x=>`<p>${esc(x)}</p>`).join('')}</section>${ix===0?ad('mid'):''}`;}).join('')}
 <section class="nks" id="nk-s"><span class="nks-lab">強みと課題</span><h2>${SEG(n.hs)}</h2><div class="nk-sc"><div><h3>強み</h3><ul>${(n.strengths||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div><h3>その力を生かすヒント</h3><ul>${(n.challenges||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div></section>
 <section class="nks" id="nk-m"><span class="nks-lab">神話とシンボル</span><h2>${n.deity.split('（')[0]}と、${n.symcap}</h2><div class="nk-myth"><img src="${SYM(n,1)}" alt="" width="96" height="96" loading="lazy"><p>${esc(n.myth)}</p></div></section>
+<section class="nks" id="nk-luck"><span class="nks-lab">ゆかりの色と宝石</span><h2>支配星・${n.lord}の色と宝石</h2><p>${n.name}の支配星は${n.lord}です。インド占星術で${n.lord}に結びつけられてきた色・宝石・曜日です。</p>${SR.luck(n.lord,{role:n.name+"の支配星"})}<p class="note">${SR.LUCKNOTE}</p></section>
 ${(()=>{const s2=SR.BY[n.lord];return `<section class="nk-letter" id="nk-letter" style="--sc:${s2.color}"><div class="nkl-txt"><span class="nk-tag">星宿からのメッセージ</span><h2>${n.name}のあなたへ</h2><p>${esc(n.advice)}</p></div><div class="nkl-sp"><span class="nk-tag sp">ナヴァラトナ・宝石の精霊</span><img src="${SR.img(s2.id)}" alt="${s2.gem}の精霊 ${s2.name}" width="320" height="320" loading="lazy"><b>${s2.name}</b><span class="note">${s2.gem}の精霊・${n.name}を守る</span><p class="nkl-word">「${s2.word}」</p><a class="note" href="/seirei/#${s2.id}">${s2.name}の紹介 →</a></div></section>`;})()}
 <section id="nk-info"><div class="sec-head"><h2>${n.name}の基本情報</h2></div><div class="nk-info"><div><span>範囲（サイデリアル）</span><b>${n.span}</b></div><div><span>支配星</span><b>${n.lord}</b></div><div><span>神格</span><b>${n.deity}</b></div><div><span>シンボル</span><b>${n.symbol}</b></div><div><span>ガナ（気質）</span><b>${n.gana}</b></div><div><span>ヨーニ（動物）</span><b>${n.yoni}</b></div></div></section>
 <details class="card nk-tara" id="nk-tara"><summary><b>ターラの9つの巡りを詳しく見る</b><span class="note">${n.name}の人にとって、その日の月がどの星宿にあるとよい日か</span></summary>${relTable(i).replace(/^<section>/,'<div>').replace(/<\/section>$/,'</div>')}</details>

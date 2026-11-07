@@ -20,6 +20,11 @@ var L=[
  {id:'duri',pl:'ケートゥ',name:'ドゥーリ',gem:'キャッツアイ',color:'#8C8A4E',mark:'流れ星の尾',catch:'ふしぎな夢見る子',
   char:'ぼんやりしているようで、本当のことを見抜く、ふしぎな精霊。欲がなく、目に見えないものの声を聞いています。',weak:'ぼーっとして、置いていかれる',word:'……いま、なにか聞こえた？'}];
 var BY={};L.forEach(function(s){BY[s.pl]=s;});
+/* 9つの星の伝統的な対応：色（パラーシャラの古典に描かれる星の色）・曜日・宝石（ナヴァラトナ） */
+var LUCK={太陽:{c:'赤・銅色',hex:['#B23A2B','#B87333'],d:'日曜日'},月:{c:'白',hex:['#F4F1EA'],d:'月曜日'},火星:{c:'赤',hex:['#C8102E'],d:'火曜日'},水星:{c:'緑',hex:['#2E8B57'],d:'水曜日'},木星:{c:'黄・金色',hex:['#E0B21B','#C9A227'],d:'木曜日'},金星:{c:'白・淡い色',hex:['#F7F3F0','#E9D9EE'],d:'金曜日'},土星:{c:'黒・濃い青',hex:['#1F2340','#1F3FA8'],d:'土曜日'},ラーフ:{c:'煙のような灰色',hex:['#7C7A80'],d:''},ケートゥ:{c:'まだらの灰色',hex:['#9A9580','#6E6A5C'],d:''}};
+function luck(pl,opt){opt=opt||{};var s=BY[pl],k=LUCK[pl];if(!s||!k)return '';
+  return '<div class="luck" style="--sc:'+s.color+'"><span class="luck-sw">'+k.hex.map(function(h){return '<i style="background:'+h+'"></i>';}).join('')+'</span><div class="luck-b">'+(opt.role?'<span class="luck-r">'+opt.role+'</span>':'')+'<b>'+pl+'</b><dl><div><dt>色</dt><dd>'+k.c+'</dd></div><div><dt>宝石</dt><dd>'+s.gem+'</dd></div>'+(k.d?'<div><dt>曜日</dt><dd>'+k.d+'</dd></div>':'')+'</dl></div></div>';}
+var LUCKNOTE='色・宝石・曜日は、インド占星術で9つの星に伝統的に結びつけられてきたものです。伝統では、宝石を身につけるかどうかは出生図全体を見て判断するもので、このサイトでは宝石の効果をうたっていません。好きな色や小物を選ぶときの、星との縁として楽しんでください。';
 /* 五大偉人ヨーガの特別な姿（画像がそろったものから） */
 var KING={ruchaka:'prava',bhadra:'panna',hamsa:'pushpa',malavya:'hira',shasha:'nila'},KIMG={prava:1,nila:1,panna:1,hira:1,pushpa:1};
 function img(id,small){return '/assets/seirei/'+id+(small?'-s':'')+'.webp';}
@@ -33,6 +38,6 @@ function lineup(){var box=document.querySelector('.sr-line[data-tap]');if(!box)r
     if(open){pane.hidden=true;return;}bt.setAttribute('aria-expanded','true');var s=L.filter(function(x){return x.id===bt.dataset.id;})[0];
     pane.style.setProperty('--sc',s.color);pane.innerHTML='<img src="'+img(s.id,true)+'" alt="" width="96" height="96"><div><b class="sname">'+s.name+'</b><span class="note">'+s.gem+'の精霊・受け持つ星は'+s.pl+'</span><p style="margin:4px 0 0">'+s.catch+'。「'+s.word+'」</p><a href="/seirei/#'+s.id+'">'+s.name+'のくわしい紹介 →</a></div>';pane.hidden=false;});});}
 if(typeof document!=='undefined')(document.readyState==='loading'?document.addEventListener('DOMContentLoaded',lineup):lineup());
-return {L:L,BY:BY,KING:KING,img:img,king:king,card:card};
+return {LUCK:LUCK,luck:luck,LUCKNOTE:LUCKNOTE,L:L,BY:BY,KING:KING,img:img,king:king,card:card};
 })();
 if(typeof module!=='undefined')module.exports=SR;
