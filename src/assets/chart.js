@@ -58,7 +58,7 @@ function render(b,mode){
      '<a class="more" href="/articles/houses/">12のハウスとアセンダントについて読む →</a></article>';
   if(sp)ess+='<aside class="rd-letter" style="--sc:'+sp.color+'"><img src="'+SR.img(sp.id)+'" alt="'+sp.gem+'の精霊 '+sp.name+'" width="320" height="320" loading="lazy"><div><span class="rd-role">あなたの心の星宿を守る精霊・'+sp.name+'より</span><p class="rd-say">「'+sp.word+'」</p><p>'+(mode==='sample'?'この星図の':'あなたの')+'心の星宿「'+moon.nak.name+'」を守っています。'+sp.catch+'の'+sp.name+'が、この先の章も一緒に案内します。</p><a class="note" href="/seirei/'+sp.id+'/">'+sp.name+'のこと →</a></div></aside>';
   var LL=['火星','金星','水星','月','太陽','水星','金星','火星','木星','土星','土星','木星'];
-  ess+='<section class="rd rd-luck"><span class="rd-role">ゆかりの色と宝石</span><h3 class="rd-v" style="font-size:22px">あなたの星の色と宝石</h3><div class="luck-g">'+SR.luck(lord,{role:'心の星宿の支配星'})+SR.luck(ak,{role:'魂の星'})+(b.unknown?'':SR.luck(LL[r.ascSign],{role:'アセンダント（'+S[r.ascSign]+'）の支配星'}))+'</div><p class="note">'+SR.LUCKNOTE+'</p></section>';
+  ess+='<section class="rd rd-luck"><span class="rd-role">星を大切にする過ごし方</span><h3 class="rd-v" style="font-size:22px">あなたの星を味方にする過ごし方</h3><div class="luck-g">'+SR.acts(lord,{role:'心の星宿の支配星',full:1})+(ak!==lord?SR.acts(ak,{role:'魂の星',full:1}):'')+'</div><p class="note">'+SR.ACTNOTE+'</p></section>';
   ess+='<details class="rd-sub"><summary><b>パートナーシップの配置</b><span class="note">マンガル・ドーシャ（火星の配置）</span></summary>'+(window.CX?CX.mangal(r,b):'')+'</details>';
   /* 章の扉のひとこと */
   $('m-ess').textContent='心は「'+moon.nak.name+'」、魂のテーマは「'+akt[0]+'」。';
