@@ -254,8 +254,34 @@ ${shareS(n.name+'｜'+n.lead+'（インド占星術の27星宿）','/nakshatra/'
 </div>${cta}`});});
 
 /* ---------- 読みもの ---------- */
-page('/articles/',{title:'読みもの｜はじめてのインド占星術',desc:'インド占星術（ジョーティッシュ）の基本をやさしく解説。27星宿、9つの星、12星座、ハウス、ダシャー、サディサティ、分割図、相性、暦まで。',crumb:'読みもの',
-body:`<div class="hero"><span class="eyebrow">Reading</span><h1>読みもの</h1><p class="lead">はじめての方にもわかるように、インド占星術のしくみを一つずつ解説します。</p></div>${artList(ARTS)}${ad('bottom')}`});
+const ACAT=[['basic','はじめての基本'],['self','自分を深く知る'],['love','恋愛・相性'],['days','日々の暦・吉日'],['time','人生の時期・運勢']];
+const ADISP={
+'what-is-jyotish':['basic','インド占星術とは？','西洋占星術とどこが違うのか、何を使って読むのかがわかります。',''],
+'nakshatra':['basic','あなたを知る、27の星宿','月の通り道を27に分けた「星宿」が、心のかたちをどう表すのかがわかります。','27星宿（ナクシャトラ）'],
+'planets':['basic','9つの星には、どんな意味がある？','太陽からラーフ・ケートゥまで、9つの星それぞれの役割と強弱の見方がわかります。','ナヴァグラハ'],
+'rashi':['basic','インドの12星座は、なぜずれる？','西洋の星座と約24度ずれる理由と、インド式で大切にされる月の星座がわかります。','12星座（ラーシ）'],
+'houses':['basic','12のハウスで読む、人生の分野','仕事・結婚・お金など、人生のどの分野をどのハウスで読むのかがわかります。','12ハウス（バーヴァ）'],
+'divisional-charts':['self','分割図で、出生図をさらに詳しく','結婚のD9、仕事のD10など、テーマごとの図で何がわかるのかを知る入門です。','分割図（ヴァルガ）'],
+'atmakaraka':['self','魂の星が示す、人生のテーマ','人生を通して向き合い、育てていくテーマを、7つの星ごとに読み解きます。','アートマカラカ'],
+'ashtakavarga':['self','星の強さと、人生の分野を点数で見る','星ごとの力と12ハウスの点数から、どの分野に追い風があるかを読む方法です。','アシュタカヴァルガ'],
+'compatibility':['love','相性の点数の意味を知りたいときに','インドで結婚相手を選ぶときに使われてきた、36点満点の相性のしくみがわかります。','アシュタクータ'],
+'mangal-dosha':['love','火星の配置と、パートナーシップ','結婚の相性で見られる火星の配置について、成り立ちと受けとめ方がわかります。','マンガル・ドーシャ'],
+'tara':['days','今日の運勢は、どう決まる？','生まれた星宿から今日の月までを数える、9つの巡りのしくみがわかります。','ターラ'],
+'panchang':['days','インドの暦で、今日を知る','暦の5つの要素と、慎重に過ごしたい時間「ラーフ・カーラ」の意味がわかります。','パンチャーンガ'],
+'choghadiya':['days','一日の中の、よい時間・注意の時間','物事を始める時刻を選ぶために、毎日使われている時間帯の見方がわかります。','チョーガディヤとホーラー'],
+'muhurta':['days','大切な日を選びたいときに','入籍・引っ越し・開業などによい日を、星宿と暦から選ぶ考え方がわかります。','ムフールタ'],
+'dasha':['time','人生の時期を知りたいときに','9つの星が順番に人生を受け持つしくみと、今がどの時期かの読み方がわかります。','ヴィムショッタリ・ダシャー'],
+'sade-sati':['time','土星の7年半を、前向きに過ごすには','月の星座から決まる土星の時期の3つの段階と、過ごし方の考え方がわかります。','サディサティ'],
+'gochara':['time','星の運行で読む、今月・今年','木星・土星などの今の位置から、ひと月・一年の流れを読む方法がわかります。','ゴーチャラ']};
+const AMIN=a=>{const t=JSON.stringify({l:a.lead,s:a.sections}).replace(/<[^>]+>|["{}\[\],:a-zA-Z_\\]/g,'');return Math.max(1,Math.round(t.length/500));};
+const ACARD=a=>{const D=ADISP[a.slug],c=ACAT.find(x=>x[0]===D[0]);return `<li data-cat="${D[0]}"><a class="acard ac-${D[0]}" href="/articles/${a.slug}/"><span class="ac-cat">${c[1]}</span><b class="ac-t">${esc(D[1])}</b>${D[3]?`<span class="ac-term">${esc(D[3])}</span>`:''}<span class="ac-d">${esc(D[2])}</span><span class="ac-go">記事を読む<span aria-hidden="true"> →</span><small>約${AMIN(a)}分</small></span></a></li>`;};
+page('/articles/',{title:'読みもの｜はじめてのインド占星術',desc:'インド占星術（ジョーティッシュ）の基本をやさしく解説。27星宿、9つの星、12星座、ハウス、ダシャー、サディサティ、分割図、相性、暦まで。',crumb:'読みもの',scripts:['articles.js'],
+body:`<div class="th"><span class="eyebrow">Reading</span><h1>読みもの</h1><p class="th-s">星宿、相性、人生の時期。<br>気になるテーマから、インド占星術をひとつずつ。</p></div>
+<section class="afirst"><h2 class="af-h">はじめてなら、この3本</h2><ol class="af-list">${['what-is-jyotish','nakshatra','planets'].map((s,i)=>{const a=ARTS.find(x=>x.slug===s),D=ADISP[s];return `<li><a href="/articles/${s}/"><span class="af-n">${String(i+1).padStart(2,'0')}</span><b>${esc(D[1])}</b><span class="ac-d">${esc(D[2])}</span><span class="ac-go">読む<span aria-hidden="true"> →</span></span></a></li>`;}).join('')}</ol></section>
+<section class="aall"><div class="sec-head"><h2>テーマから探す</h2></div>
+<div class="afil" role="group" aria-label="カテゴリーで絞り込む"><button type="button" class="ghost" data-cat="all" aria-pressed="true">すべて</button>${ACAT.map(c=>`<button type="button" class="ghost" data-cat="${c[0]}" aria-pressed="false">${c[1]}</button>`).join('')}</div>
+<p class="acount" id="acount" aria-live="polite">${ARTS.length}本の記事</p>
+<ul class="alist" id="alist">${[...ARTS].sort((x,y)=>ACAT.findIndex(c=>c[0]===ADISP[x.slug][0])-ACAT.findIndex(c=>c[0]===ADISP[y.slug][0])).map(ACARD).join('')}</ul></section>${ad('bottom')}`});
 
 /* 魂の星（アートマカラカ）の記事：専用レイアウト */
 const AK_SYM={太陽:'☉',月:'☽',火星:'♂',水星:'☿',木星:'♃',金星:'♀',土星:'♄'};
