@@ -36,7 +36,7 @@ function page(p,{title,desc,body,scripts=[],inline='',ld=null,crumb=null,og=null
 <title>${esc(full)}</title><meta name="description" content="${esc(desc)}"><link rel="canonical" href="${url}">
 <meta property="og:title" content="${esc(full)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="${p==='/'?'website':'article'}"><meta property="og:url" content="${url}"><meta property="og:site_name" content="${C.siteName}"><meta property="og:image" content="${C.siteUrl}${og||'/assets/og.png'}"><meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#FBF6EE"><link rel="icon" href="/assets/icon.svg" type="image/svg+xml"><link rel="icon" href="/assets/logo-192.png" sizes="192x192" type="image/png"><link rel="apple-touch-icon" href="/assets/logo-180.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="/assets/style.css?v=${V}">
 ${C.adsenseClient?`<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${C.adsenseClient}" crossorigin="anonymous"></script>`:''}
 ${ld?`<script type="application/ld+json">${JSON.stringify(ld)}</script>`:''}
@@ -74,7 +74,7 @@ const TARA_ROWS=[['1','ジャンマ','命','自分を整える'],['2','サンパ
 /* ---------- トップ ---------- */
 page('/',{title:'トップ',desc:'生年月日だけで、あなたを守る宝石の精と魂の星（アートマカラカ）がわかるインド占星術の無料占い。ホロスコープ作成、魂の星図、今日の運勢、相性占い、吉日カレンダーも無料で。',scripts:['seirei.js','ak.js','today.js','quick.js'],inline:NKINL(),
 body:`<div id="qback" class="qback-top" hidden></div>
-<section class="hero hero-top" id="quick"><span class="eyebrow">Jyotish · Vedic Astrology</span><h1>あなたの宝石の精と、<br>魂の星に出会う</h1><p class="lead"><span class="seg">生まれた日の星から、</span><span class="seg">あなたを守る宝石の精と、</span><span class="seg">人生を通して育てていく</span><span class="seg">「魂の星」を読み解きます</span></p>
+<section class="hero hero-top" id="quick"><span class="eyebrow">Jyotish · Vedic Astrology</span><h1>あなたの星と、宝石の精</h1><p class="lead"><span class="seg">生まれた日の星から、</span><span class="seg">あなたを守る宝石の精と、</span><span class="seg">人生を通して育てていく</span><span class="seg">「魂の星」を読み解きます</span></p>
 <form class="f quick hq" id="qf" novalidate><label for="qbd">生年月日<input id="qbd" type="date" value="1990-05-15" min="1900-01-01" max="2099-12-31"></label><div class="actions"><button type="submit" class="big-btn">無料で調べる</button></div></form>
 <p class="note">生年月日だけでわかります。出生時刻がわかる方は<a href="/horoscope/">ホロスコープ（チャート）作成</a>で、本格的なチャートもすぐ作れます。計算はこの端末の中だけで行います。インド占星術がはじめての方は<a href="/jyotish/">はじめての方へ</a></p></section>
 <section class="sr-sec" aria-label="ナヴァラトナ 9つの宝石の精"><div class="sr-line" data-tap>${SR.L.map(x=>`<button type="button" data-id="${x.id}" aria-expanded="false" aria-controls="srd"><span class="sr-im"><img src="${SR.img(x.id,true)}" alt="" width="128" height="128"></span><span class="sr-nm">${x.name}</span><span class="sr-gm">${x.gem}</span></button>`).join('')}</div>

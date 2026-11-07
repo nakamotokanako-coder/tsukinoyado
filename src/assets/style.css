@@ -2,9 +2,9 @@
 :root{
   --bg:#FBF6EE;--surface:#FFFFFF;--ink:#2B1F45;--muted:#584E70;--line:#E7DED0;
   --accent:#4B2E73;--accent-soft:#F2ECF7;--gold:#A9822F;--gold-soft:#F6EEDC;--planet:#4B2E73;--good:#2F7D5B;--warn:#A8452E;--night:#2B1F45;--on-night:#FBF6EE;
-  --f-display:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif;
-  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
-  --f-mono:"IBM Plex Mono",ui-monospace,monospace;color-scheme:light}
+  --f-display:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",serif;
+  --f-body:"Noto Sans JP","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  --f-mono:"Noto Sans JP","Hiragino Sans",system-ui,sans-serif;color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17122A;--surface:#221B3A;--ink:#F1ECF8;--muted:#BDB4D3;--line:#3A3158;--accent:#CDB4F2;--accent-soft:#2F2650;--gold:#D9B66A;--gold-soft:#3A3020;--planet:#CDB4F2;--good:#6FC39B;--warn:#E78A73;--night:#100C20;--on-night:#F1ECF8;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#17122A;--surface:#221B3A;--ink:#F1ECF8;--muted:#BDB4D3;--line:#3A3158;--accent:#CDB4F2;--accent-soft:#2F2650;--gold:#D9B66A;--gold-soft:#3A3020;--planet:#CDB4F2;--good:#6FC39B;--warn:#E78A73;--night:#100C20;--on-night:#F1ECF8;color-scheme:dark}
 *{box-sizing:border-box}[hidden]{display:none!important}
@@ -936,3 +936,18 @@ body{line-break:strict}
 /* テーマの扉 */
 .themes{gap:8px}.themes button{flex:1 1 140px;min-height:56px;border-radius:14px 14px 4px 4px;border:1px solid #E2CF9F;background:linear-gradient(180deg,var(--surface),var(--gold-soft));font-family:var(--f-display);font-weight:700}
 .themes button[aria-pressed=true]{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+
+/* 文字組み：上品で自然に（Noto Serif JP／Noto Sans JP） */
+.num{font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--f-body);font-weight:400;font-size:11.5px;letter-spacing:.07em;color:#9A7B3C}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .eyebrow{color:var(--gold)}}
+.hero-top h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,7.6vw,32px);line-height:1.5;letter-spacing:.01em;text-shadow:none}
+@media (min-width:760px){.hero-top h1{font-size:clamp(40px,4.2vw,46px)}}
+.hero-top .lead{font-family:var(--f-body);font-weight:400;font-size:16.5px;line-height:1.8;letter-spacing:.02em;color:var(--ink)}
+.hero-top .note{font-size:14px;line-height:1.8;letter-spacing:.02em;max-width:36em}
+form label,form legend{font-weight:500}
+.big-btn,form.hq button{font-family:var(--f-body);font-weight:500;letter-spacing:.03em}
+.sr-nm{font-family:var(--f-display);font-weight:500;font-size:15px;letter-spacing:0;line-height:1.4}
+.sr-gm{font-family:var(--f-body);font-size:10.5px;letter-spacing:0;line-height:1.35;display:block;-webkit-line-clamp:unset;overflow:visible;text-align:center;max-width:100%}
+.sr-line[data-tap] button{min-width:0}
+.sr-gm{white-space:nowrap;letter-spacing:-.02em}@media (min-width:640px){.sr-gm{font-size:10px}}
