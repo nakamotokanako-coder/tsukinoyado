@@ -55,10 +55,10 @@ ${scripts.length?`<script src="/assets/astronomy.min.js"></script><script src="/
 </body></html>`;
   const dir=path.join(OUT,p); fs.mkdirSync(dir,{recursive:true}); fs.writeFileSync(path.join(dir,'index.html'),html); pages.push(p);
 }
-const birthForm=(px,legend,{name=false,gender=false,def={}}={})=>`<fieldset><legend>${legend}</legend>
+const birthForm=(px,legend,{name=false,gender=false,def={},blank=false}={})=>`<fieldset><legend>${legend}</legend>
 ${name?`<label for="${px}nm">お名前（任意）<input id="${px}nm" type="text" placeholder="例：はなこ" autocomplete="off"></label>`:''}
-<label for="${px}bd">生年月日<input id="${px}bd" type="date" value="${def.bd||'1990-05-15'}" min="1900-01-01" max="2099-12-31"></label>
-<label for="${px}bt">生まれた時刻<input id="${px}bt" type="time" value="${def.bt||'10:30'}"></label>
+<label for="${px}bd">生年月日<input id="${px}bd" type="date" value="${blank?'':def.bd||'1990-05-15'}" min="1900-01-01" max="2099-12-31"></label>
+<label for="${px}bt">生まれた時刻<input id="${px}bt" type="time" value="${blank?'':def.bt||'10:30'}"></label>
 <label for="${px}pl">出生地<select id="${px}pl"></select></label>
 ${gender?`<label for="${px}g">性別（伝統的な計算に使用）<select id="${px}g"><option value="f"${def.g==='f'?' selected':''}>女性</option><option value="m"${def.g==='m'?' selected':''}>男性</option></select></label>`:''}
 <label class="inline" for="${px}unk"><input id="${px}unk" type="checkbox">時刻がわからない</label>
@@ -200,11 +200,11 @@ body:`<div id="hin" class="inwrap">
 
 /* ---------- 相性 ---------- */
 page('/aisho/',{title:'相性占い｜インド式アシュタクータ（36点満点）',desc:'二人の生年月日から、インド占星術の伝統的な相性占い「アシュタクータ」を36点満点で無料計算。ヴァルナ、ヨーニ、ガナ、ナーディなど8項目の意味も解説します。',scripts:['chart-extra.js','aisho.js'],crumb:'相性占い',
-body:`<div class="hero"><span class="eyebrow">Ashtakoota</span><h1>相性占い</h1><p class="lead">インドで結婚相手を選ぶときに使われてきた「アシュタクータ」は、二人の月の星宿と星座から、8つの項目で相性を点数にします。36点満点で、18点以上がひとつの目安です。</p></div>
-<form class="f" id="f" novalidate>${birthForm('a-','あなた',{gender:true,def:{g:'f'}})}${birthForm('b-','お相手',{gender:true,def:{bd:'1988-09-05',bt:'07:15',g:'m'}})}<div class="actions"><button type="submit">相性を見る</button><span class="status" id="status"></span></div></form>
-<section id="res"></section>
+body:`<div class="th"><span class="eyebrow">Ashtakoota</span><h1>相性占い</h1><p class="th-s">インドで結婚相手を選ぶときに使われてきた「アシュタクータ」。二人の月の星宿と星座から、8つの項目で相性を36点満点で見ます。</p></div>
+<form class="f" id="f" novalidate>${birthForm('a-','あなた',{gender:true,def:{g:'f'},blank:true})}${birthForm('b-','お相手',{gender:true,def:{g:'m'},blank:true})}<div class="actions"><button type="submit" class="big-btn">相性を見る</button><button type="button" class="ghost" id="asample">サンプルを見る</button></div><p class="status" id="status" role="status"></p><p class="note">入力した生年月日は、この端末の中だけで計算に使い、どこにも送信・保存しません。</p></form>
+<section id="res" aria-live="polite"></section>
 ${ad('mid')}
-<section><div class="sec-head"><h2>点数の読み方</h2></div><div class="prose"><p>アシュタクータは、月だけを使った相性の見方です。点数が低くても、二人の出生図全体の結びつきが強いことはよくあります。点数は「どこに気をつければいいか」を知る地図として使ってください。</p><p>8項目のくわしい意味は、<a href="/articles/compatibility/">アシュタクータの36点のしくみ</a>で解説しています。</p></div></section>
+<details class="card tara-how"><summary><b>点数の読み方</b></summary><div class="prose"><p>アシュタクータは、月だけを使った相性の見方です。点数が低くても、二人の出生図全体の結びつきが強いことはよくあります。点数は「どこに気をつければいいか」を知る地図として使ってください。</p><p>8項目のくわしい意味は、<a href="/articles/compatibility/">アシュタクータの36点のしくみ</a>で解説しています。</p></div></details>
 ${cta}`});
 
 /* ---------- サディサティ ---------- */
