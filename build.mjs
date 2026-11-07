@@ -315,12 +315,13 @@ const YCATD={'五大偉人ヨーガ':['ひとつの星が、人生の柱にな�
 '星の強さ':['同じ星を、ふたつの図から見る'],'解釈が分かれる配置':['ひとつの見方として、知っておく']};
 const YDET=YDT;
 const YRAR=id=>{const L=YLV(id),f=YST.freq[id];return `<span class="rar r${L}">${'★★★★'.slice(0,L)}<span class="mut">${'★★★★'.slice(L)}</span>${f!==undefined?` 試算上の出現率：約${Math.max(1,Math.round(f*100))}%`:''}</span>`;};
-page('/yoga/',{title:'ヨーガ事典｜五大偉人ヨーガからラージャ・ヨーガまで',desc:'インド占星術の「ヨーガ（星の組み合わせ）」27種の成立条件と意味。五大偉人ヨーガ（ルチャカ・バドラ・ハンサ・マーラヴィヤ・シャシャ）、ガジャケーサリ、ラージャ・ヨーガ、ダナ・ヨーガ、ニーチャ・バンガなど。',crumb:'ヨーガ事典',
+page('/yoga/',{og:'/assets/og/yoga-yoga.jpg',title:'ヨーガ事典｜五大偉人ヨーガからラージャ・ヨーガまで',desc:'インド占星術の「ヨーガ（星の組み合わせ）」27種の成立条件と意味。五大偉人ヨーガ（ルチャカ・バドラ・ハンサ・マーラヴィヤ・シャシャ）、ガジャケーサリ、ラージャ・ヨーガ、ダナ・ヨーガ、ニーチャ・バンガなど。',crumb:'ヨーガ事典',
 ld:{"@context":"https://schema.org","@type":"Article","headline":"ヨーガ事典","inLanguage":"ja"},
 body:`<div class="hero yhero"><span class="eyebrow">Yoga</span><h1>ヨーガ事典</h1><p class="yh-q"><span class="nobr">あなたの星に、</span><span class="nobr">どんな力が結ばれている？</span></p>
 <p class="lead">人を導く知恵、美しいものを生み出す感性、逆境から立ち上がる強さ。<br>生まれた瞬間の星の配置には、さまざまな才能や人生のテーマが読み取られます。</p>
 <p>インド占星術では、こうした特徴を表す星の組み合わせを「ヨーガ」と呼びます。この事典では、27種類のヨーガについて、成立する条件とその意味をご紹介します。自分の星図と照らし合わせながら、あなたらしい力の使い方を見つけてみてください。</p>
 <a class="btn" href="/chart/">自分のヨーガを調べる</a></div>
+<figure class="yz-land yidx"><img src="/assets/land/yoga.webp" srcset="/assets/land/yoga-s.webp 800w, /assets/land/yoga.webp 1600w" sizes="(max-width:800px) 100vw, 960px" alt="" width="1600" height="900"></figure>
 <section><div class="sec-head"><h2>ヨーガを読む、3つのポイント</h2></div><div class="ypts">
 <div class="card"><span class="ypn">1</span><h3>ある・ないだけでは決まらない</h3><p>同じヨーガでも、関わる星の強さや、ほかの星との関係によって表れ方が変わります。ひとつのヨーガから人生全体を決めつけず、星図全体の中で読み解くことが大切です。</p></div>
 <div class="card"><span class="ypn">2</span><h3>力が表れやすい時期がある</h3><p>インド占星術には、人生の時期を読む「ダシャー」という仕組みがあります。ヨーガに関わる星の時期には、その才能やテーマが、出来事として表れやすいと考えられています。</p></div>
@@ -343,11 +344,11 @@ for(const [id,Z] of Object.entries(YDT)){const y=YOGA.find(x=>x.id===id),sp=SR.L
 const SEC=[['cond','成立する条件'],['str','どんな強み？'],...(Z.signs?[['sign',Z.signsh||'星座による違い']]:[]),['job','生かしやすい仕事'],['house','ハウスによる違い'],['tips','上手に使うために']];
 const H=(k,t,sub)=>{const n=SEC.findIndex(x=>x[0]===k)+1;return `<div class="yz-sh"><span class="yz-n">${String(n).padStart(2,'0')}</span><h2>${t}</h2>${sub?`<p>${sub}</p>`:''}</div>`;};
 const signs=Z.sign.split(/、|または/).map(t=>t.trim()).filter(Boolean);
-page(`/yoga/${id}/`,{title:`${nm}とは｜成立条件・強み・向いている仕事（インド占星術）`,desc:Z.desc,crumb:`<a href="/yoga/">ヨーガ事典</a> › ${nm}`,
+page(`/yoga/${id}/`,{og:`/assets/og/yoga-${id}.jpg`,title:`${nm}とは｜成立条件・強み・向いている仕事（インド占星術）`,desc:Z.desc,crumb:`<a href="/yoga/">ヨーガ事典</a> › ${nm}`,
 ld:{"@context":"https://schema.org","@type":"Article","headline":`${nm}とは`,"inLanguage":"ja"},
 body:`<div class="yz" style="--sc:${sp.color}">
 <div class="yzhero"><figure><img src="${SR.img(SR.king(id)||sp.id)}" alt="${Z.pl}の王・${sp.name}" width="320" height="320"><figcaption>${Z.pl}の王・${sp.name}</figcaption></figure><div><span class="eyebrow">${Z.en} ・ ${y.cat}</span><h1>${nm}</h1><p class="yz-h">${esc(Z.head)}</p>${YRAR(id)}</div></div>
-<div class="yz-poem">${Z.poem.map(t=>`<p>${SEG(t)}</p>`).join('')}</div>
+<figure class="yz-land"><img src="/assets/land/${id}.webp" srcset="/assets/land/${id}-s.webp 800w, /assets/land/${id}.webp 1600w" sizes="(max-width:800px) 100vw, 960px" alt="" width="1600" height="900"><figcaption class="yz-poem">${Z.poem.map(t=>`<p>${SEG(t)}</p>`).join('')}</figcaption></figure>
 <div class="yz-intro">${P(Z.intro)}</div>
 <nav class="yz-toc" aria-label="このページの内容">${SEC.map((x,i)=>`<a href="#y-${x[0]}"><span>${String(i+1).padStart(2,'0')}</span>${x[1]}</a>`).join('')}</nav>
 ${Z.extra?`<section class="yz-extra"><h2>${Z.extra[0]}</h2>${P(Z.extra[1])}</section>`:''}

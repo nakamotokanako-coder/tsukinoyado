@@ -658,3 +658,9 @@ form input[type=time]::-webkit-date-and-time-value{text-align:left}
 .yz-others{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
 .yz-others a{flex-direction:row;align-items:center;gap:12px;text-decoration:none;color:var(--ink);border-left:4px solid var(--sc)}
 .yz-others img{width:64px;height:64px;object-fit:contain;flex:none}.yz-others span{display:flex;flex-direction:column}.yz-others small{color:var(--muted);font-size:13px}
+/* ヨーガの風景 */
+.yz-land{margin:8px -16px 18px;position:relative}
+.yz-land img{display:block;width:100%;height:auto;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 8%,#000 78%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 8%,#000 78%,transparent 100%)}
+.yz-land .yz-poem{margin:-18px 16px 0;position:relative}
+.yz-land.yidx{margin-top:4px}
+@media (min-width:760px){.yz-land{margin:10px 0 22px}.yz-land img{border-radius:16px;-webkit-mask-image:radial-gradient(ellipse 72% 70% at 50% 46%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 72% 70% at 50% 46%,#000 60%,transparent 100%)}.yz-land .yz-poem{margin-top:-30px}}
