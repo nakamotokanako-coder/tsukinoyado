@@ -476,14 +476,20 @@ ${ad('mid')}
 ${cta}`});});
 
 /* ---------- 星宿の円盤 ---------- */
-page('/wheel/',{title:'星宿の円盤｜27星宿とターラを回して見る',desc:'27星宿（ナクシャトラ）の円盤を回して、あなたの星宿から見た9つのターラ（星の巡り）を色で見られます。今日の月と星の位置も表示。',scripts:['wheel.js'],crumb:'星宿の円盤',
-body:`<div class="hero"><span class="eyebrow">Nakshatra Wheel</span><h1>星宿の円盤</h1><p class="lead">27の星宿を円にならべた円盤です。上に来た星宿から数えて、ほかの星宿が9つのターラ（星の巡り）のどれにあたるかが色でわかります。円盤をドラッグして回したり、星宿を押したりしてみてください。内側の丸は、今の星の位置です。</p></div>
-<div class="wctl"><button type="button" class="ghost" id="wprev" aria-label="前の星宿">◀</button><select id="wsel" aria-label="基準の星宿"></select><button type="button" class="ghost" id="wnext" aria-label="次の星宿">▶</button><button type="button" class="ghost" id="wtoday">今日の月</button></div>
-<div class="wbox"><svg id="wheel" role="img" aria-label="27星宿の円盤"></svg></div>
-<div class="wleg"><span><i style="background:var(--accent)"></i>ジャンマ（自分の星宿）</span><span><i style="background:#3E9B6B"></i>よい巡り</span><span><i style="background:#C9584A"></i>注意の巡り</span></div>
-<div id="winfo"></div><div id="shr"></div>
+page('/wheel/',{title:'星宿の円盤｜あなたの星宿から見た27星宿の巡り（ターラ）',desc:'あなたの星宿から、今日の月はどんな巡りにある？27星宿（ナクシャトラ）の円盤を回して、9つのターラ（星の巡り）を色とラベルで見られます。',scripts:['wheel.js'],crumb:'星宿の円盤',
+body:`<div class="th"><span class="eyebrow">Nakshatra Wheel</span><h1>星宿の円盤</h1><p class="th-s">あなたの星宿から、今日の月はどんな巡りにある？<br>円盤を回して、27星宿とのつながりを見てみましょう</p></div>
+<p class="wsteps"><span>① 自分の星宿を選ぶ</span><span>→</span><span>② 今日の月を見る／気になる星宿を選ぶ</span></p>
+<div class="wform"><label for="wme">自分の星宿<small>数え始める基準</small><select id="wme"></select></label><label for="wtg">調べる星宿<small>巡りを知りたい星宿</small><select id="wtg"></select></label></div>
+<p class="note wnote" id="wnote" hidden>自分の星宿がまだ選ばれていないため、<b>お試し表示</b>（今日の月の星宿を基準）です。わからない方は<a href="/#quick">生年月日で星宿を調べる</a>。</p>
+<div class="wlay"><div class="wleft">
+<div class="wctl"><button type="button" class="ghost" id="wprev" aria-label="調べる星宿を前へ">◀ 前へ</button><button type="button" class="ghost" id="wtoday">☾ 今日の月を見る</button><button type="button" class="ghost" id="wnext" aria-label="調べる星宿を次へ">次へ ▶</button></div>
+<div class="wbox"><svg id="wheel" role="img" tabindex="0" aria-label="27星宿の円盤。左右の矢印キーで調べる星宿を変えられます"></svg></div>
+<div class="wleg"><span><i style="background:var(--accent)"></i>1 自分と同じ星宿</span><span><i style="background:#3E9B6B"></i>よい巡り</span><span><i style="background:#C9584A"></i>注意の巡り</span><span><b class="wleg-s">★</b>あなたの星宿</span><span><b class="wleg-m">☾</b>今日の月</span><span><b class="wleg-p">▼</b>調べている星宿</span></div>
+<label class="wpl" for="wpl"><input type="checkbox" id="wpl">惑星の位置を表示</label>
+<p class="note wpleg" id="wpleg" hidden>内側の丸（今の位置）：<span class="nobr">☾＝月</span>　<span class="nobr">日＝太陽</span>　<span class="nobr">火＝火星</span>　<span class="nobr">水＝水星</span>　<span class="nobr">木＝木星</span>　<span class="nobr">金＝金星</span>　<span class="nobr">土＝土星</span>　<span class="nobr">ラ＝ラーフ</span>　<span class="nobr">ケ＝ケートゥ</span></p>
+</div><div class="wright"><div id="winfo"></div><div id="shr"></div></div></div>
 ${ad('mid')}
-<section><div class="sec-head"><h2>円盤の見方</h2></div><div class="prose"><p>自分の星宿を1番目（ジャンマ）として数えると、ほかの星宿は、サンパット（実り）、ヴィパット（つまずき）、クシェーマ（安らぎ）、プラティヤク（障害）、サーダナ（達成）、ナイダナ（休息）、ミトラ（友）、パラマ・ミトラ（最良の縁）の9つの巡りのどれかにあたります。27星宿なので、この巡りが3回繰り返されます。</p><p>今日の月がどの色の星宿にあるかを見ると、今日があなたにとってどんな日かがわかります。外側の文字は星宿の名前、内側の小さな数字は巡りの番号です。星宿の「前」「後」は、プールヴァ（前の）・ウッタラ（後の）の略です。いちばん外の輪は、インド式の12星座です。</p><p>二人の相性をくわしく知りたいときは<a href="/aisho/">相性占い</a>へ。</p></div></section>
+<details class="card tara-how"><summary><b>円盤の見方と、9つの巡り</b></summary><div class="prose"><p>自分の星宿を1番目（ジャンマ）として数えると、ほかの星宿は、サンパット（実り）、ヴィパット（つまずき）、クシェーマ（安らぎ）、プラティヤク（障害）、サーダナ（達成）、ナイダナ（休息）、ミトラ（友）、パラマ・ミトラ（最良の縁）の9つの巡りのどれかにあたります。27星宿なので、この巡りが3回繰り返されます。</p><p>円盤を回しても、数え始める基準（あなたの星宿）は変わりません。色と数字は固定で、上の▼の位置に来た星宿が「調べている星宿」になります。外側の文字は星宿の名前（「前」「後」はプールヴァ・ウッタラの略）、いちばん外の輪はインド式の12星座です。</p><p>二人の相性をくわしく知りたいときは<a href="/aisho/">相性占い</a>へ。</p></div></details>
 ${cta}`});
 
 /* ---------- 有名人の星宿 ---------- */
