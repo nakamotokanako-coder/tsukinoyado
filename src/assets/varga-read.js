@@ -55,13 +55,14 @@ var SEV=['太陽','月','火星','水星','木星','金星','土星'],ALL=SEV.co
 function strong(r,D){return SEV.filter(function(k){var d=JY.dignity(k,JY.varga(r.P[k].lon,D));return d==='高揚'||d==='自室';}).map(function(k){return k+'（'+JY.dignity(k,JY.varga(r.P[k].lon,D))+'）';});}
 function inHouses(r,D,hs){var A=JY.varga(r.asc,D);return ALL.filter(function(k){return hs.indexOf((JY.varga(r.P[k].lon,D)-A+12)%12+1)>=0;});}
 function p(t){return '<p class="note" style="color:inherit;margin:6px 0 0">'+t+'</p>';}
-function html(r,b,sens){var unk=b.unknown,h='';
+function parts(r,b,sens){var unk=b.unknown,h='',P={};
   /* D9 */
   var a9=JY.varga(r.asc,9),v9=JY.varga(r.P['金星'].lon,9),s9=strong(r,9);
-  h+='<div class="card"><span class="eyebrow">D9 ナヴァムシャ（結婚・後半生）</span>'+
+  h='';h+='<div class="card"><span class="eyebrow">D9 ナヴァムシャ（結婚・後半生）</span>'+
    (unk?'':'<h3>D9のアセンダントは'+S[a9]+' '+sens(9)+'</h3>'+p(L9[a9]))+
    '<h3 style="margin-top:8px">D9の金星は'+S[v9]+'</h3>'+p(V9[v9])+
    (s9.length?p('<b>後半生に強まる星：</b>'+s9.join('・')+'。'+s9.map(function(x){return PK[x.split('（')[0]];}).join('、')+'が、年齢とともに頼れる力になっていきます。'):'')+'</div>';
+  P[9]=h;h='';
   /* D10 */
   var a10=JY.varga(r.asc,10),s10=strong(r,10),k10=unk?[]:inHouses(r,10,[1,10]);
   h+='<div class="card"><span class="eyebrow">D10 ダシャムシャ（仕事・天職）</span>'+
@@ -69,11 +70,13 @@ function html(r,b,sens){var unk=b.unknown,h='';
    (k10.length?p('<b>仕事の顔になる星（D10の1室・10室）：</b>'+k10.map(function(k){return k+'＝'+CK[k];}).join('、')+'。'):'')+
    (s10.length?p('<b>仕事で強く働く星：</b>'+s10.map(function(x){var k=x.split('（')[0];return x+'＝'+CK[k];}).join('、')+'。'):'')+
    (unk?p('時刻がわからないため、D10のアセンダントは表示していません。'):'')+'</div>';
+  P[10]=h;h='';
   /* D7 */
   var a7=JY.varga(r.asc,7),j7=JY.dignity('木星',JY.varga(r.P['木星'].lon,7));
   h+='<div class="card"><span class="eyebrow">D7 サプタムシャ（子ども・生み出すもの）</span>'+
    (unk?p('時刻がわからないため、D7のアセンダントは表示していません。'):'<h3>D7のアセンダントは'+S[a7]+' '+sens(7)+'</h3>'+p('子どもや、あなたが生み出し育てるもの（作品・弟子・事業）との関わり方を表します。'+L7[a7]))+
    (j7==='高揚'||j7==='自室'?p('<b>D7の木星が'+j7+'：</b>子どもや弟子、育てるものに恵まれやすい、心強い配置です。'):j7==='減衰'?p('<b>D7の木星が減衰：</b>育てることに時間や手間がかかりやすい配置。そのぶん、関わりの深さが実りになります。'):'')+'</div>';
-  return h;}
-return {html:html};
+  P[7]=h;return P;}
+function html(r,b,sens){var P=parts(r,b,sens);return P[9]+P[10]+P[7];}
+return {html:html,parts:parts};
 })();

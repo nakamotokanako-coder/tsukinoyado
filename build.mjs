@@ -13,7 +13,7 @@ const FAM=FAMOUS.map(f=>{const [y,m,d]=f.date.split('-').map(Number),ds=Date.UTC
 const YOGA=rd('content/yoga.json');
 const YST=fs.existsSync('content/yoga_stats.json')?JSON.parse(fs.readFileSync('content/yoga_stats.json','utf8')):{freq:{},pct:[]};
 const YLV=id=>{const f=YST.freq[id];return f===undefined?2:f<0.10?4:f<0.25?3:f<0.45?2:1;};const YLN=['','よくある','ときどき','珍しい','とても珍しい'];
-const YMAP=Object.fromEntries(YOGA.map(y=>[y.id,{name:y.name,cat:y.cat,m:y.meaning.split('。').filter(Boolean).slice(0,2).join('。')+'。'}]));
+const YMAP=Object.fromEntries(YOGA.map(y=>[y.id,{name:y.name,cat:y.cat,c:y.cond,m:y.meaning.split('。').filter(Boolean).slice(0,2).join('。')+'。'}]));
 const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 fs.cpSync('src/assets',OUT+'/assets',{recursive:true});
 const astro='node_modules/astronomy-engine/astronomy.browser.min.js';
@@ -103,21 +103,52 @@ ${ad('top')}
 ${ad('bottom')}${cta}`});
 
 /* ---------- 魂の星図 ---------- */
-page('/chart/',{title:'魂の星図｜インド占星術の無料ホロスコープ（出生図・分割図・ダシャー）',desc:'生年月日・時刻・出生地から、インド占星術の出生図（南インド式）、魂の星（アートマカラカ）、月の星宿、ヴィムショッタリ・ダシャー、サディサティ、分割図D9・D10・D60を無料で計算します。',scripts:['seirei.js','varga-read.js','chart-extra.js','chart.js'],crumb:'魂の星図',
-inline:`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.YOGA=${JSON.stringify(YMAP)};window.YSTAT=${JSON.stringify(YST)};`,
-body:`<div class="hero"><span class="eyebrow">Free Birth Chart</span><h1>魂の星図</h1><p class="lead">出生図、魂の目的を示す星、心の星宿、人生の時期、結婚・天職・過去世の分割図まで。生まれた時刻がわかると、より正確になります。</p></div>
-<form class="f" id="f" novalidate>${birthForm('a-','生まれたときのこと',{name:true})}<div class="actions"><button type="submit">星図を出す</button><span class="status" id="status"></span></div></form>
-<div id="result" style="display:flex;flex-direction:column;gap:36px">
-<section><div class="sec-head"><h2>あなたの核</h2><p>魂の目的・心・生まれ持った性質</p></div><div class="grid" id="readings"></div><div id="shr"></div></section>
-<section><div class="sec-head"><h2>あなたのヨーガ</h2><p>星の組み合わせが生む、特別な配置。五大偉人ヨーガ、ラージャ・ヨーガなどを自動で見つけます。</p></div><div class="card now" id="ytop"></div><div class="grid" id="yogas"></div><p class="note" id="yoganote"></p></section>
-<section><div class="sec-head"><h2>星の強さ</h2><p>シャドバラとアシュタカヴァルガ。インド占星術で、星の強さを数字で見る2つの代表的な方法です。</p></div><div id="stren" style="display:flex;flex-direction:column;gap:14px"></div></section>
-${ad('top')}
-<section><div class="sec-head"><h2>出生図（ラーシ・チャート）</h2><p id="stylenote"></p><div class="stylesw" role="group" aria-label="図の形"><span>図の形</span><button type="button" class="ghost" data-style="s">南インド式</button><button type="button" class="ghost" data-style="n">北インド式</button></div></div><figure class="chart l" id="d1"></figure><div class="tbl"><table id="ptable"></table></div><p class="note" id="ascnote"></p></section>
-<section><div class="sec-head"><h2>人生の時期</h2><p>ヴィムショッタリ・ダシャーと、土星の7年半（サディサティ）</p></div><div class="card now" id="now"></div><div class="timeline" id="dasha"></div><div class="card"><h3>サディサティ（土星の7年半）</h3><ul id="ss" style="margin:0;padding-left:1.2em"></ul></div></section>
-${ad('mid')}
-<section><div class="sec-head"><h2>分割図（16種類）</h2><p>パラーシャラが説いた16の分割図すべて。人生のテーマごとに星を細かく見る図で、D1で弱い星も、ここで強さを取り戻すことがあります。</p></div><h3 style="margin:4px 0 0">まず読みたい3枚</h3><div class="grid" id="vread"></div>
-<p class="note">ここに出ているのは、それぞれの図の「入口」です。16枚の分割図と人生の時期（ダシャー）を重ねると、いつ・どの分野で力が開くのかまで読めます。<a href="${C.ctaUrl}" target="_blank" rel="noopener">個人鑑定のご案内</a></p>
-<h3 style="margin:8px 0 0">16枚の分割図</h3><div class="charts" id="vargas"></div><p class="note" id="vnote"></p></section>
+page('/chart/',{title:'魂の星図｜インド占星術の無料ホロスコープ（出生図・分割図・ダシャー）',desc:'生年月日・時刻・出生地から、インド占星術の出生図、魂の星（アートマカラカ）、心の星宿と宝石の精、ヨーガ、星の強さ、ヴィムショッタリ・ダシャー、16の分割図を無料で計算します。',scripts:['seirei.js','varga-read.js','chart-extra.js','chart.js'],crumb:'魂の星図',
+inline:`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.NKCATCH=${JSON.stringify(NAK.map(n=>n.catch||''))};window.YOGA=${JSON.stringify(YMAP)};window.YSTAT=${JSON.stringify(YST)};`,
+body:`<div id="inwrap" class="inwrap">
+<div class="hero"><span class="eyebrow">Free Birth Chart</span><h1>魂の星図</h1><p class="lead">宝石の精たちが案内する、あなただけの鑑定書。心の星宿、魂の星、生まれ持った性質から、才能、人生の時期、結婚や仕事のテーマまで読めます。</p></div>
+<form class="f cform" id="f" novalidate><fieldset><legend>生まれたときのこと</legend>
+<label for="a-bd">生年月日<input id="a-bd" type="date" value="" min="1900-01-01" max="2099-12-31"></label>
+<div class="tgroup"><label for="a-bt">出生時刻<input id="a-bt" type="time" value=""></label>
+<label class="inline" for="a-unk"><input id="a-unk" type="checkbox">時刻がわからない</label>
+<p class="note">時刻がわからなくても、心の星宿・魂の星・ダシャー・サディサティは見られます。アセンダント、ハウス、星の強さ、アセンダントを使うヨーガと分割図の読みは表示されません。</p></div>
+<label for="a-pl">出生地<select id="a-pl"></select></label>
+<div class="custom" id="a-custom" hidden><label for="a-la">緯度（北緯はプラス）<input id="a-la" type="number" step="0.01" value="35.69"></label><label for="a-lo">経度（東経はプラス）<input id="a-lo" type="number" step="0.01" value="139.69"></label><label for="a-tz">時差（UTC＋時間）<input id="a-tz" type="number" step="0.5" value="9"></label></div>
+<label for="a-nm">お名前（任意）<input id="a-nm" type="text" placeholder="例：はなこ" autocomplete="off"></label></fieldset>
+<div class="actions"><button type="submit" class="big-btn">私の星図をひらく</button><button type="button" class="ghost" id="sample">サンプルの星図を見る</button></div>
+<p class="status" id="status" role="status"></p><p class="note">入力した生年月日は、この端末の中だけで計算に使い、どこにも送信しません。</p></form>
+</div>
+<div id="result" class="result" hidden tabindex="-1">
+<div class="rbanner" id="rbanner"></div>
+<div id="scard"></div>
+<div class="tabs" role="tablist" aria-label="星図の内容">
+<button role="tab" id="t-ess" aria-controls="p-ess" aria-selected="true">わたしの本質</button><button role="tab" id="t-tal" aria-controls="p-tal" aria-selected="false" tabindex="-1">才能と強み</button><button role="tab" id="t-tim" aria-controls="p-tim" aria-selected="false" tabindex="-1">今の人生の時期</button><button role="tab" id="t-thm" aria-controls="p-thm" aria-selected="false" tabindex="-1">テーマ別に読む</button><button role="tab" id="t-dat" aria-controls="p-dat" aria-selected="false" tabindex="-1">星図とデータ</button></div>
+<section class="panel" role="tabpanel" id="p-ess" aria-labelledby="t-ess"><div id="essence" class="stack"></div></section>
+<section class="panel" role="tabpanel" id="p-tal" aria-labelledby="t-tal" hidden>
+<div class="sec-head"><h2>才能と強み</h2><p>星の組み合わせ（ヨーガ）と、星の強さから見るあなたの持ち味。</p></div>
+<div id="kings" class="stack"></div>
+<h3 class="subh">あなたのヨーガ</h3><div class="grid" id="yogas"></div><p class="note" id="yoganote"></p>
+<details class="card" id="ytopw"><summary><b>ヨーガの珍しさと数え方</b></summary><div id="ytop"></div></details>
+<h3 class="subh">星の強さ</h3><p class="note">シャドバラとアシュタカヴァルガは、別々のものさしです。数字どうしを比べず、それぞれの基準で見てください。</p><div id="stren" class="stack"></div></section>
+<section class="panel" role="tabpanel" id="p-tim" aria-labelledby="t-tim" hidden>
+<div class="sec-head"><h2>今の人生の時期</h2><p>ヴィムショッタリ・ダシャー。月の星宿から決まる、星が順番に人生を受け持つ時期です。</p></div>
+<div id="now"></div><div class="tl" id="dasha"></div>
+<div class="card" id="sswrap"><h3>サディサティ（土星の7年半）</h3><p class="note">土星が月の星座の前後3つの星座を通る約7年半。ダシャーとは別のしくみで、見直しと土台づくりの時期とされます。<a href="/sadesati/">くわしく</a></p><ul id="ss" class="sslist"></ul></div></section>
+<section class="panel" role="tabpanel" id="p-thm" aria-labelledby="t-thm" hidden>
+<div class="sec-head"><h2>テーマ別に読む</h2><p>知りたいテーマを選ぶと、対応する分割図（人生のテーマごとに星を細かく見る図）と解説が出ます。</p></div>
+<div class="themes" role="group" aria-label="テーマ" id="themes"></div><div id="theme" class="stack"></div>
+<p class="note">16枚の分割図と人生の時期を重ねると、いつ・どの分野で力が開くのかまで読めます。<a href="${C.ctaUrl}" target="_blank" rel="noopener">個人鑑定のご案内</a></p></section>
+<section class="panel" role="tabpanel" id="p-dat" aria-labelledby="t-dat" hidden>
+<div class="sec-head"><h2>出生図（ラーシ・チャート）</h2><p id="stylenote"></p></div>
+<div class="stylesw" role="group" aria-label="図の形"><span>図の形</span><button type="button" class="ghost" data-style="s" aria-pressed="true">南インド式</button><button type="button" class="ghost" data-style="n" aria-pressed="false">北インド式</button></div>
+<figure class="chart l big-chart" id="d1"></figure>
+<p class="note legend">凡例：<b>Asc</b>＝アセンダント（1室）　<b>日</b>太陽　<b>月</b>月　<b>火</b>火星　<b>水</b>水星　<b>木</b>木星　<b>金</b>金星　<b>土</b>土星　<b>ラ</b>ラーフ　<b>ケ</b>ケートゥ　<b><sup>R</sup></b>＝逆行</p>
+<h3 class="subh">天体の一覧</h3><div class="tbl"><table id="ptable"></table></div><p class="note" id="ascnote"></p>
+<h3 class="subh">16種類の分割図</h3><p class="note">図を押すと、大きく表示します。</p>
+<div class="vsel"><label for="vpick">分割図を選ぶ<select id="vpick"></select></label></div><div id="vbig"></div>
+<div class="charts" id="vargas"></div><p class="note" id="vnote"></p></section>
+<div id="shr"></div>
+<p class="note" style="text-align:center"><button type="button" class="ghost" data-edit>入力内容を変更</button></p>
 </div>
 <section><div class="sec-head"><h2>この星図の見方</h2></div><div class="prose"><p>インド占星術では、星座を実際の星の位置に合わせる「サイデリアル方式」を使うため、西洋占星術とは星座が約1つずれることがあります。くわしくは<a href="/articles/what-is-jyotish/">インド占星術とは</a>、<a href="/articles/divisional-charts/">分割図の読み方</a>、<a href="/articles/atmakaraka/">魂の星（アートマカラカ）とは</a>をどうぞ。</p></div></section>
 ${cta}`});
