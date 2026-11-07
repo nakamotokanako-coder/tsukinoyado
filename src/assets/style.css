@@ -449,3 +449,7 @@ h1,h2,h3,.lead.gl,.poem{font-feature-settings:"palt" 1}
 .ablk{display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;padding:16px 18px}
 .ablk h3{font-family:var(--f-display);font-size:18px;line-height:1.5}
 .ablk p{margin:0}.ablk p:last-child{color:var(--accent);font-weight:500;padding-top:8px;border-top:1px dashed var(--line)}
+.ess-g{color:var(--accent);padding-top:8px;border-top:1px dashed var(--line)}.ess-g b{display:block;font-size:12.5px;color:var(--gold);letter-spacing:.1em;background:none}
+.ablk.wimg{position:relative;padding-right:92px;min-height:100px}
+.ablk.wimg img{position:absolute;top:12px;right:12px;width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(60,40,20,.15))}
+@media (max-width:420px){.ablk.wimg{padding-right:18px}.ablk.wimg img{position:static;align-self:flex-start;width:64px;height:64px}}
