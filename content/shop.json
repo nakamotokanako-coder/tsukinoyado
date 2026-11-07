@@ -13,7 +13,7 @@
     "ご相談への答え"
    ],
    "price": null,
-   "days": null
+   "days": 5
   },
   {
    "id": "mini",
@@ -25,7 +25,7 @@
     "これからの過ごし方のヒント"
    ],
    "price": null,
-   "days": null,
+   "days": 5,
    "options": [
     "恋愛・結婚",
     "仕事・天職",
