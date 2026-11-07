@@ -415,3 +415,34 @@ form.cform .actions .ghost{min-height:48px}
 .tool.feat b:first-of-type{font-family:var(--f-display);font-size:22px}
 .cta .poem{font-family:var(--f-display);line-height:2}
 .ka{word-break:keep-all;overflow-wrap:anywhere}
+/* はじめての方へ：読みやすく */
+h1,h2,h3,.lead.gl,.poem{font-feature-settings:"palt" 1}
+.nw{white-space:nowrap}
+.g-intro{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:26px 16px;border-top:1px solid #E6D6B4;border-bottom:1px solid #E6D6B4;background:radial-gradient(circle at 50% 30%,#FFF9EE,transparent 70%)}
+.g-logo{width:88px;height:88px;object-fit:contain}
+.g-intro .poem{margin:0;font-size:18px;line-height:2.1}
+.guide b,.hint b{background:linear-gradient(transparent 62%,var(--gold-soft) 62%);font-weight:700}
+.hints{gap:16px}
+.hint{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+@media (min-width:760px){.hint{grid-template-columns:300px minmax(0,1fr);align-items:center;gap:24px;padding:24px}}
+.h-vis{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--bg);border-radius:12px;padding:14px}
+.h-cap{margin:0;font-size:12.5px;color:var(--muted);text-align:center}
+.h-txt{display:flex;flex-direction:column;gap:10px}
+.h-txt p{margin:0}
+.h-txt h3{font-family:var(--f-display);font-size:20px;line-height:1.5}
+.h-no{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--f-display);font-weight:800}
+.poem.sm{font-size:16px;line-height:1.9;color:var(--accent);margin:0}
+.dg{width:100%;max-width:320px;height:auto}
+.dg-r{fill:var(--surface);stroke:var(--line)}.dg-t{font-size:12px;text-anchor:middle;fill:var(--ink)}.dg-l{font-size:12px;fill:var(--muted);font-weight:700}
+.dg-sun{stroke:#C9A04A;stroke-width:2;stroke-dasharray:3 3}.dg-sd{fill:#E8A04C}.dg-st{font-size:10px;text-anchor:middle;fill:#fff;font-weight:700}.dg-n{font-size:11px;fill:var(--gold);font-weight:700}
+.moonv{position:relative;width:170px;height:170px}.moonv svg{position:absolute;inset:0;width:100%;height:100%}
+.moonv img{position:absolute;inset:22%;width:56%;height:56%;object-fit:contain}
+.dg-dot{fill:var(--line)}.dg-on2{fill:var(--gold)}
+.dashav{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;max-width:280px}
+.dashav span{position:relative;width:52px;height:52px;opacity:.45}
+.dashav span.on{opacity:1;transform:scale(1.15)}
+.dashav img{width:100%;height:100%;object-fit:contain}
+.dashav i{position:absolute;top:-8px;right:-4px;font-style:normal;font-size:10px;font-weight:700;background:var(--accent);color:#fff;border-radius:99px;padding:0 6px}
+.dg-hl{fill:var(--gold-soft);stroke:var(--gold)}.dg-ar{display:none}
+.facts.f3{grid-template-columns:repeat(3,minmax(0,1fr))}@media (max-width:520px){.facts.f3{grid-template-columns:1fr}}
+.guide p,.h-txt p{line-height:1.95}

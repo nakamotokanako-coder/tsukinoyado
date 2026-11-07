@@ -232,31 +232,29 @@ const ORDER_ART=['what-is-jyotish','nakshatra','planets','rashi','houses','dasha
 const GUIDE_T={'what-is-jyotish':['インド占星術の基本','西洋占星術との違いや、星図を読むための基本を紹介します。'],nakshatra:['27星宿（ナクシャトラ）','生まれたときの月が宿る場所から、心の傾向や感性を読み解きます。'],planets:['9つの星（ナヴァグラハ）','太陽から土星、ラーフ・ケートゥまで。それぞれの星が表すテーマを知りましょう。'],rashi:['12星座（ラーシ）','インド式の星座の意味と、西洋占星術とは星座がずれる理由を解説します。'],houses:['12のハウス（バーヴァ）','仕事、お金、恋愛、家族。星図の12の場所が表す、人生のテーマを紹介します。'],dasha:['人生の時期（ダシャー）','今はどの星が受け持つ時期なのか。人生の流れを読む方法を解説します。'],'divisional-charts':['分割図','結婚や仕事など、テーマごとに星の配置を詳しく見るための図を紹介します。'],atmakaraka:['魂の星（アートマカラカ）','伝統的に、魂の課題を読む手がかりとされる星。その求め方と意味を紹介します。'],ashtakavarga:['アシュタカヴァルガ','星からの支えを点数で表す方法と、その数字の読み方を解説します。'],'sade-sati':['サディサティ（土星の7年半）','どんな時期を指すのか、いつ巡るのか。意味と過ごし方を紹介します。'],gochara:['星の運行（ゴーチャラ）','今動いている星を、生まれたときの配置と重ねて読む方法を解説します。'],compatibility:['インド式の相性占い','36点満点の相性は、何を見ているのでしょう。8つの項目と点数の受け止め方を紹介します。'],'mangal-dosha':['マンガル・ドーシャ','結婚の相性で注目される火星の配置について、基本の考え方を解説します。'],tara:['9つのターラ','生まれた星宿と今日の月の星宿から、一日の流れを読むしくみを紹介します。'],panchang:['インドの暦（パンチャーンガ）','月の満ち欠けや星宿など、インドの暦をつくる5つの要素を解説します。'],choghadiya:['チョーガディヤとホーラー','一日の中に巡る時間帯の意味と、日常への取り入れ方を紹介します。'],muhurta:['吉日選び（ムフールタ）','入籍、引っ越し、開業など、大切な一歩を踏み出す日を選ぶ考え方を紹介します。']};
 page('/jyotish/',{title:'インド占星術（ジョーティッシュ）とは｜はじめての方へ',desc:'インド占星術（ジョーティッシュ）は、生まれた瞬間の星の配置から、あなたらしさと人生のタイミングを読み解く占星術です。西洋占星術との違い、月とナクシャトラ、ダシャー、このサイトの計算方式と読む順番を紹介します。',crumb:'はじめての方へ',
 ld:{"@context":"https://schema.org","@type":"Article","headline":"インド占星術（ジョーティッシュ）とは","inLanguage":"ja"},
-body:`<div class="hero"><span class="eyebrow">Beginner's Guide</span><h1 class="ka">インド占星術<wbr>（ジョーティッシュ）とは</h1><p class="lead gl ka">あなたらしさと、人生のタイミングを知る。</p></div>
+body:`<div class="hero"><span class="eyebrow">Beginner's Guide</span><h1 class="ka">インド占星術<wbr>（ジョーティッシュ）とは</h1><p class="lead gl">あなたらしさと、<span class="nw">人生のタイミングを知る。</span></p></div>
+<section class="g-intro"><img src="/assets/logo.webp" alt="" width="120" height="120" class="g-logo"><p class="poem">自然にできること。<br>なぜか繰り返してしまうこと。<br>そして、これから育てていきたいこと。</p></section>
 <section class="prose guide">
-<p class="poem">自然にできること。<br>なぜか繰り返してしまうこと。<br>そして、これから育てていきたいこと。</p>
-<p>生まれた瞬間の星の配置を手がかりに、あなたの性質や人生の流れを読み解く。それが、インド占星術「ジョーティッシュ」です。</p>
-<p>ジョーティッシュは、サンスクリット語で「光の学問」と訳されます。インドでは古くから、結婚や仕事、新しいことを始める日取りなど、暮らしの節目に役立てられてきました。</p>
+<p>生まれた瞬間の星の配置を手がかりに、あなたの性質や人生の流れを読み解く。それが、<b>インド占星術「ジョーティッシュ」</b>です。</p>
+<p>ジョーティッシュは、サンスクリット語で<b>「光の学問」</b>と訳されます。インドでは古くから、結婚や仕事、新しいことを始める日取りなど、暮らしの節目に役立てられてきました。</p>
 <p>自分の持ち味を知り、今という時期をどう過ごすか考えるために。あなたの星図を、ひらいてみませんか。</p>
-<p><a class="btn" href="/chart/">魂の星図をひらく</a></p>
-<h2 class="ka">インド占星術を知る、<wbr>3つの手がかり</h2>
-<h3 class="gh"><span>1</span>いつもと違う星座に、出会うかもしれません</h3>
-<p>一般的な西洋占星術が春分点を基準にするのに対し、インド占星術では、恒星を基準にした「サイデリアル方式」を使います。</p>
-<p>二つの方式には現在およそ24度の差があるため、西洋占星術で牡牛座だった太陽が、インド占星術では牡羊座になることもあります。</p>
-<p>星座の名前が変わるのは、星を読むための基準が違うから。慣れ親しんだ自分像に、新しい一面が加わるかもしれません。</p>
-<h3 class="gh"><span>2</span>月の位置から、心の動きを読み解きます</h3>
-<p class="poem">何に安心し、どんなことに心が揺れるのか。</p>
-<p>インド占星術では、生まれたときの月の位置を大切にします。特に、月の通り道を27に分けた「ナクシャトラ（星宿）」は、心の傾向や、その人らしい感性を読む手がかりです。</p>
-<p>さらに、生まれた瞬間に東の地平線に昇っていた星座「ラグナ」や、太陽、ほかの星も重ね合わせ、あなたの全体像を読み解いていきます。</p>
-<h3 class="gh"><span>3</span>性質だけでなく、人生の「時期」も見ていきます</h3>
-<p class="poem">自分の力を外へ広げたいとき。<br>学びを深めたいとき。<br>暮らしや人間関係を見直したいとき。</p>
-<p>インド占星術には、「ダシャー」という独自の時期の読み方があります。人生を星が受け持つ期間に分け、その時期にどんなテーマが表れやすいかを考えます。</p>
-<p>生まれ持った性質と、今巡っている時期。その両方を見ることで、これからの過ごし方を考えるヒントが得られます。</p>
-<h2>このサイトの計算方式</h2>
-<p>ナヴァラトナでは、伝統的なパラーシャラ式を基本に、次の設定で星図を作成しています。</p>
-<ul><li>星座の基準：サイデリアル方式</li><li>アヤナムシャ：ラーヒリー</li><li>ハウスの区切り方：ホールサイン</li></ul>
-<p>アヤナムシャは、春分点を基準にした位置を、恒星を基準にした位置へ換算するための補正値です。</p>
-<p>専門用語は、最初から覚えなくても大丈夫。まずは、ご自身の星図で気になるところから見てみてください。</p></section>
+<p><a class="btn" href="/chart/">魂の星図をひらく</a></p></section>
+<section class="hints"><div class="sec-head"><h2 class="ka">インド占星術を知る、<wbr>3つの手がかり</h2></div>
+<article class="hint"><div class="h-vis"><svg class="dg" viewBox="0 0 430 124" role="img" aria-label="西洋とインドで星座の区切りが約24度ずれ、同じ太陽が牡牛座と牡羊座になる図"><defs><clipPath id="cp"><rect x="64" y="0" width="366" height="124"/></clipPath></defs><g clip-path="url(#cp)"><rect x="-20" y="12" width="90" height="28" rx="4" class="dg-r"/><text x="25" y="31" class="dg-t">魚座</text><rect x="70" y="12" width="90" height="28" rx="4" class="dg-r"/><text x="115" y="31" class="dg-t">牡羊座</text><rect x="160" y="12" width="90" height="28" rx="4" class="dg-r dg-hl"/><text x="205" y="31" class="dg-t">牡牛座</text><rect x="250" y="12" width="90" height="28" rx="4" class="dg-r"/><text x="295" y="31" class="dg-t">双子座</text><rect x="340" y="12" width="90" height="28" rx="4" class="dg-r"/><text x="385" y="31" class="dg-t">蟹座</text><rect x="430" y="12" width="90" height="28" rx="4" class="dg-r"/><text x="475" y="31" class="dg-t">獅子座</text><rect x="52" y="80" width="90" height="28" rx="4" class="dg-r"/><text x="97" y="99" class="dg-t">魚座</text><rect x="142" y="80" width="90" height="28" rx="4" class="dg-r dg-hl"/><text x="187" y="99" class="dg-t">牡羊座</text><rect x="232" y="80" width="90" height="28" rx="4" class="dg-r"/><text x="277" y="99" class="dg-t">牡牛座</text><rect x="322" y="80" width="90" height="28" rx="4" class="dg-r"/><text x="367" y="99" class="dg-t">双子座</text><rect x="412" y="80" width="90" height="28" rx="4" class="dg-r"/><text x="457" y="99" class="dg-t">蟹座</text><rect x="502" y="80" width="90" height="28" rx="4" class="dg-r"/><text x="547" y="99" class="dg-t">獅子座</text></g><text x="2" y="31" class="dg-l">西洋</text><text x="2" y="99" class="dg-l">インド</text><line x1="205" y1="4" x2="205" y2="116" class="dg-sun"/><circle cx="205" cy="62" r="10" class="dg-sd"/><text x="205" y="66" class="dg-st">日</text><path d="M160 62 H142" class="dg-ar"/><text x="248" y="66" class="dg-n">約24度ずれる</text></svg><p class="h-cap">同じ太陽でも、基準が違うと星座が変わる</p></div><div class="h-txt"><span class="h-no">1</span><h3 class="ka">いつもと違う星座に、<wbr>出会うかもしれません</h3>
+<p>一般的な西洋占星術が春分点を基準にするのに対し、インド占星術では、恒星を基準にした<b>「サイデリアル方式」</b>を使います。</p>
+<p>二つの方式には現在<b>およそ24度の差</b>があるため、西洋占星術で牡牛座だった太陽が、インド占星術では牡羊座になることもあります。</p>
+<p>星座の名前が変わるのは、星を読むための基準が違うから。慣れ親しんだ自分像に、新しい一面が加わるかもしれません。</p></div></article>
+<article class="hint"><div class="h-vis"><div class="moonv"><img src="${SR.img('moti')}" alt="月の精モティ" width="150" height="150"><svg viewBox="0 0 200 200" aria-hidden="true">${Array.from({length:27},(_,k)=>{const a=(k/27)*Math.PI*2-Math.PI/2;return `<circle cx="${(100+86*Math.cos(a)).toFixed(1)}" cy="${(100+86*Math.sin(a)).toFixed(1)}" r="${k===0?6:3.4}" class="${k===0?'dg-on2':'dg-dot'}"/>`;}).join('')}</svg></div><p class="h-cap">月の通り道を27に分けた星宿</p></div><div class="h-txt"><span class="h-no">2</span><h3 class="ka">月の位置から、<wbr>心の動きを読み解きます</h3>
+<p class="poem sm">何に安心し、どんなことに心が揺れるのか。</p>
+<p>インド占星術では、生まれたときの<b>月の位置</b>を大切にします。特に、月の通り道を27に分けた<b>「ナクシャトラ（星宿）」</b>は、心の傾向や、その人らしい感性を読む手がかりです。</p>
+<p>さらに、生まれた瞬間に東の地平線に昇っていた星座<b>「ラグナ」</b>や、太陽、ほかの星も重ね合わせ、あなたの全体像を読み解いていきます。</p></div></article>
+<article class="hint"><div class="h-vis"><div class="dashav">${['duri','hira','mani','moti','prava','gome','pushpa','nila','panna'].map((id,k)=>`<span class="${k===4?'on':''}"><img src="${SR.img(id,true)}" alt="" width="56" height="56">${k===4?'<i>今</i>':''}</span>`).join('')}</div><p class="h-cap">星が順番に人生を受け持つ「ダシャー」</p></div><div class="h-txt"><span class="h-no">3</span><h3 class="ka">性質だけでなく、<wbr>人生の「時期」も<wbr>見ていきます</h3>
+<p class="poem sm">自分の力を外へ広げたいとき。<br>学びを深めたいとき。<br>暮らしや人間関係を見直したいとき。</p>
+<p>インド占星術には、<b>「ダシャー」</b>という独自の時期の読み方があります。人生を星が受け持つ期間に分け、その時期にどんなテーマが表れやすいかを考えます。</p>
+<p>生まれ持った性質と、今巡っている時期。その両方を見ることで、これからの過ごし方を考えるヒントが得られます。</p></div></article></section>
+<section><div class="sec-head"><h2>このサイトの計算方式</h2><p>ナヴァラトナでは、伝統的なパラーシャラ式を基本に、次の設定で星図を作成しています。</p></div>
+<div class="facts f3"><div><span>星座の基準</span><b>サイデリアル方式</b></div><div><span>アヤナムシャ</span><b>ラーヒリー</b></div><div><span>ハウスの区切り方</span><b>ホールサイン</b></div></div>
+<p class="note">アヤナムシャは、春分点を基準にした位置を、恒星を基準にした位置へ換算するための補正値です。専門用語は、最初から覚えなくても大丈夫。まずは、ご自身の星図で気になるところから見てみてください。</p></section>
 ${ad('mid')}
 <section><div class="sec-head"><h2 class="ka">まずは、<wbr>あなたの星を<wbr>知ることから</h2><p>このサイトの占い・星図・事典は、すべて無料で利用できます。はじめての方には「魂の星図」がおすすめです。生年月日・出生時刻・出生地を入力して、あなたの星の配置を見てみましょう。出生時刻がわからない場合も利用できますが、読み取れる範囲や計算の精度が変わります。</p></div>
 <a class="card tool feat" href="/chart/"><span class="k">はじめての方におすすめ</span><b>魂の星図</b><b class="tc">あなたの性質と、人生の流れを知る</b><p>出生図、心の星宿、魂の星、人生の時期、16種類の分割図をまとめて確認できます。まずは「わたしの本質」から読んでみてください。</p></a>
