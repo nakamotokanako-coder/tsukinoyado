@@ -91,17 +91,27 @@ ${ad('mid')}
 ${shareS('インド占星術の無料占いサイト「ナヴァラトナ」。生年月日だけで、あなたの星宿と守ってくれる宝石の精がわかります。','/')}${cta}`});
 
 /* ---------- 今日の運勢 ---------- */
-page('/today/',{title:'今日の運勢（27星宿別）と今日の暦',desc:'インド占星術の27星宿（ナクシャトラ）別に、今日の運勢を毎日自動で更新。月の星宿、ティティ、ヨーガ、ラーフ・カーラの時間帯もわかります。',scripts:['today.js'],crumb:'今日の運勢',
-body:`<div class="hero"><span class="eyebrow">Daily Tara</span><h1>今日の運勢 <span id="today-date" style="font-size:.55em"></span></h1><p class="lead">生まれたときの月の星宿から、今日の月の星宿までを数えた「ターラ（星の巡り）」で、27星宿それぞれの一日を読みます。</p></div>
-<div class="card now" id="mine"></div><div class="grid" id="pick"></div>
+page('/today/',{title:'今日の運勢（27星宿別）と今日の吉凶の時間帯',desc:'インド占星術の27星宿（ナクシャトラ）別に、今日の運勢を毎日自動で更新。いまの時間帯（チョーガディヤ）、次によい時間、今日の暦もひと目でわかります。',scripts:['today-page.js'],crumb:'今日の運勢',
+body:`<div class="th"><span class="eyebrow">Daily Tara</span><h1>今日の運勢</h1><p class="th-d"><span id="tdate"></span>　日本時間</p><p class="th-s">生まれた星宿と今日の月の巡りから読む、あなたの一日と、行動によい時間。</p></div>
+<div id="tlive" class="sr-only" aria-live="polite"></div>
+<section class="tc-wrap" id="tcard-wrap" tabindex="-1" aria-label="あなたの今日の運勢"><div id="tcard" class="tc"></div></section>
+<section class="tn-wrap" aria-label="いまの時間帯"><div id="tnow" class="tn"></div>
+<details class="tl-wrap"><summary>今日の時間帯をすべて見る</summary>
+<div class="tl-tabs" role="group" aria-label="昼と夜"><button type="button" class="ghost" id="tl-d" aria-pressed="true">昼</button><button type="button" class="ghost" id="tl-n" aria-pressed="false">夜</button></div>
+<p class="note">時刻は東京基準です。日の出から日の入りまで、日の入りから次の日の出までを、それぞれ8つに分けています（チョーガディヤ）。</p>
+<ol class="tq-list" id="tlist"></ol>
+<details class="tl-hora"><summary>ホーラー（1時間ごとの星の受け持ち）を見る</summary><ol class="tq-list" id="thora"></ol></details></details></section>
 ${ad('top')}
-<section><div class="sec-head"><h2>27星宿別の今日の運勢</h2><p>星宿名を押すと、くわしい性格と今日のアドバイスが見られます。</p></div><div class="tara" id="tara"></div></section>
-<section id="cho-sec"><div class="sec-head"><h2 id="cho-h">今日の吉凶の時間帯（チョーガディヤ）</h2><p>日の出から日の入りまでと、日の入りから次の日の出までを、それぞれ8つに分けた時間帯です。インドでは、出かける時刻や物事を始める時刻を選ぶのに、毎日使われています。時刻は東京の値です。</p></div><div id="cho" style="display:flex;flex-direction:column;gap:14px"></div>
-<p class="note"><span class="pill g">アムリタ・シュバ・ラーバ</span>はよい時間、<span class="pill">チャラ</span>は移動によい時間、<span class="pill b">ウドヴェーガ・カーラ・ローガ</span>は大事な始めごとを避ける時間です。ホーラーは、昼と夜をそれぞれ12に分け、7つの星が順番に受け持つ時間です。</p></section>
-<section><div class="sec-head"><h2>今日の暦（パンチャーンガ）</h2><p>時刻は東京の値です。</p></div><div class="facts" id="pc"></div></section>
-<section><div class="sec-head"><h2>9つのターラの意味</h2><p>生まれた星宿から今日の月の星宿までを数えると、9つの巡りのどこかにあたります。星宿は27あるので、この巡りが3回繰り返されます。</p></div>
-<div class="tbl"><table style="min-width:420px"><thead><tr><th>順番</th><th>ターラ</th><th>この日の性質</th></tr></thead><tbody>${TARA_ROWS.map(r=>`<tr><td class="num">${r[0]}</td><td>${r[1]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div>
-<p class="note"><a href="/articles/tara/">今日の運勢のしくみをくわしく読む →</a></p></section>
+<section id="others-sec"><div class="sec-head"><h2>ほかの星宿の運勢を見る</h2><p>星宿を選ぶと、上のカードがその星宿の今日の運勢に切り替わります。</p></div>
+<div class="tpick" id="tpick"></div>
+<details class="card ow" id="others"><summary><b>27星宿の一覧をひらく</b></summary>
+<label class="oq" for="nkq">星宿名でさがす<input id="nkq" type="search" placeholder="例：ローヒニー" autocomplete="off"></label>
+<ul class="olist" id="olist"></ul><div id="oempty" class="oempty" hidden><p>その名前の星宿は見つかりませんでした。</p><button type="button" class="ghost" data-q-clear>検索をクリア</button></div></details></section>
+<section><div class="sec-head"><h2>今日の暦（パンチャーンガ）</h2><p>インドの暦で見る、今日という日の性質。</p></div><dl class="tpc" id="tpc"></dl></section>
+<details class="card tara-how" id="tara-how"><summary><b>ターラ（9つの巡り）のしくみ</b></summary>
+<p>生まれた星宿から今日の月の星宿までを数えると、9つの巡りのどこかにあたります。星宿は27あるので、この巡りが3回くり返されます。月はおよそ1日で次の星宿へ移るため、運勢は午前0時ではなく、月が星宿を移る時刻に切り替わります。</p>
+<div class="tbl"><table style="min-width:0"><thead><tr><th>順番</th><th>ターラ</th><th>この日の性質</th></tr></thead><tbody>${TARA_ROWS.map(r=>`<tr><td class="num">${r[0]}</td><td>${r[1]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div>
+<p class="note"><a href="/articles/tara/">今日の運勢のしくみをくわしく読む →</a>　<a href="/articles/choghadiya/">時間帯（チョーガディヤ）について →</a></p></details>
 ${ad('bottom')}${cta}`});
 
 /* ---------- 魂の星図 ---------- */
