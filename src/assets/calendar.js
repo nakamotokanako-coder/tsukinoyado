@@ -10,7 +10,7 @@ var TAG={guru:['グル・プシュヤ','木曜日に月がプシュヤにある�
  purnima:['満月（プールニマー）','月が満ちる日。祈りや感謝、物事の仕上げに向くとされます。','s'],
  amavasya:['新月（アマーヴァーシャー）','月が隠れる日。先祖を思い、静かに過ごす日。新しい始めごとは、新月の翌日からが伝統的です。','s'],
  sankranti:['サンクラーンティ','太陽が次の星座に移る日。季節の節目で、祈りや施しの日とされます。','s']};
-var ROLE=['命','栄','衰','安','危','成','壊','友','親'],GOOD=[0,1,0,1,0,1,0,1,1],BAD=[0,0,1,0,1,0,1,0,0];
+var ROLE=['・','◎','△','◎','△','◎','△','◎','◎'],GOOD=[0,1,0,1,0,1,0,1,1],BAD=[0,0,1,0,1,0,1,0,0];
 var cur=null,mine=TK.loadNak(),sel=null;
 function jstParts(ms){var d=new Date(ms+9*H);return [d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate(),d.getUTCDay()];}
 function hm(ms){var d=new Date(ms+9*H);return String(d.getUTCHours()).padStart(2,'0')+':'+String(d.getUTCMinutes()).padStart(2,'0');}
@@ -30,7 +30,7 @@ function cell(x){var r=mine===null?null:JY.tara(mine,x.nk),cls='cd'+(x.tags.some
 function isToday(x){var p=jstParts(Date.now());return p[0]===cur.y&&p[1]===cur.m&&p[2]===x.d;}
 function detail(x){var r=mine===null?null:JY.tara(mine,x.nk),T=r===null?null:TK.TARA_T[r];
   return '<div class="card"><span class="eyebrow">'+(cur.m+1)+'月'+x.d+'日（'+WK[x.wd]+'）</span><h3>月の星宿：<a href="/nakshatra/'+JY.NKSLUG[x.nk]+'/">'+JY.NK[x.nk]+'</a></h3><p class="note" style="margin:0">ティティ '+(x.ti+1)+'日目（'+(x.ti<15?'満ちていく月':'欠けていく月')+'）・日の出 '+hm(x.sr)+'（東京）</p>'+
-   (T?'<p style="margin:8px 0 0"><span class="pill '+(GOOD[r]?'g':BAD[r]?'b':'')+'">'+JY.TARA[r][1]+'</span> <b>'+T.tag+'</b>　'+T.all+'</p>':'<p class="note">下で「あなたの星宿」を選ぶと、あなたにとっての運勢も出ます。</p>')+
+   (T?'<p style="margin:8px 0 0"><span class="pill '+(GOOD[r]?'g':BAD[r]?'b':'')+'">'+JY.TARA[r][0]+'</span> <b>'+T.tag+'</b>　'+T.all+'</p>':'<p class="note">下で「あなたの星宿」を選ぶと、あなたにとっての運勢も出ます。</p>')+
    x.tags.map(function(t){return '<p style="margin:8px 0 0"><span class="pill '+TAG[t][2]+'">'+TAG[t][0]+'</span> '+TAG[t][1]+'</p>';}).join('')+'</div>';}
 function draw(){var M=cur,first=M.days[0].wd,h='<div class="cal">'+WK.map(function(w,i){return '<span class="wh'+(i===0?' su':i===6?' sa':'')+'">'+w+'</span>';}).join('');
   for(var i=0;i<first;i++)h+='<span></span>';M.days.forEach(function(x){h+=cell(x);});$('cal').innerHTML=h+'</div>';
@@ -41,9 +41,9 @@ function draw(){var M=cur,first=M.days[0].wd,h='<div class="cal">'+WK.map(functi
   var L=[];M.days.forEach(function(z){z.tags.forEach(function(t){L.push('<li><span class="num">'+(M.m+1)+'/'+z.d+'（'+WK[z.wd]+'）</span> <span class="pill '+TAG[t][2]+'">'+TAG[t][0]+'</span>'+(t==='sankranti'?' 太陽が'+JY.SIGNS[z.sun]+'へ':'')+'</li>');});});
   M.phases.forEach(function(p){L.push('<li><span class="num">'+(new Date(p.ms+9*H).getUTCMonth()+1)+'/'+new Date(p.ms+9*H).getUTCDate()+' '+hm(p.ms)+'</span> '+(p.a===180?'満月の瞬間':'新月の瞬間')+'</li>');});
   $('list').innerHTML='<ul class="clist">'+L.join('')+'</ul>';
-  if(mine!==null){var g=M.days.filter(function(z){var r=JY.tara(mine,z.nk);return r===5||r===8||r===1;}).map(function(z){return (M.m+1)+'/'+z.d+'（'+ROLE[JY.tara(mine,z.nk)]+'）';}),
+  if(mine!==null){var g=M.days.filter(function(z){var r=JY.tara(mine,z.nk);return r===5||r===8||r===1;}).map(function(z){return (M.m+1)+'/'+z.d+'（'+JY.TARA[JY.tara(mine,z.nk)][0]+'）';}),
     b=M.days.filter(function(z){return JY.tara(mine,z.nk)===6;}).map(function(z){return (M.m+1)+'/'+z.d;});
-    $('mylist').innerHTML='<div class="grid"><div class="card"><span class="eyebrow">'+JY.NK[mine]+'のあなたの好調日</span><b>'+g.join('　')+'</b><p class="note">栄・成・親の日。始めごとや大切な約束に。</p></div><div class="card"><span class="eyebrow">休息を大切にしたい日</span><b>'+(b.join('　')||'今月はありません')+'</b><p class="note">壊の日。大きな決断は別の日に。</p></div></div>';}
+    $('mylist').innerHTML='<div class="grid"><div class="card"><span class="eyebrow">'+JY.NK[mine]+'のあなたの好調日</span><b>'+g.join('　')+'</b><p class="note">サンパット（実り）・サーダナ（達成）・パラマ・ミトラ（最良の縁）の日。始めごとや大切な約束に。</p></div><div class="card"><span class="eyebrow">休息を大切にしたい日</span><b>'+(b.join('　')||'今月はありません')+'</b><p class="note">ナイダナ（破壊）の日。大きな決断は別の日に。</p></div></div>';}
   else $('mylist').innerHTML='';
 }
 function go(y,m){if(m<0){y--;m=11;}if(m>11){y++;m=0;}sel=null;$('cal').innerHTML='<p class="note">計算中…</p>';setTimeout(function(){cur=month(y,m);draw();},10);}

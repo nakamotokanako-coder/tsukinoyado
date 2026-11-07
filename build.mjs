@@ -9,7 +9,7 @@ const FAMOUS=rd('content/famous.json');
 const VMX={Astronomy:createRequire(import.meta.url)('astronomy-engine'),console,Date,Math};vm.createContext(VMX);
 vm.runInContext(fs.readFileSync('src/assets/calc.js','utf8')+';this.JY=JY;',VMX);vm.runInContext(fs.readFileSync('src/assets/fortune-data.js','utf8')+';this.FD=FD;',VMX);
 const JY=VMX.JY,FD=VMX.FD;
-const FAM=FAMOUS.map(f=>{const [y,m,d]=f.date.split('-').map(Number),ds=Date.UTC(y,m-1,d)-f.tz*36e5,a=JY.nak(JY.moonSid(ds)).i,b=JY.nak(JY.moonSid(ds+864e5-6e4)).i;return {...f,y,m,d,n:a,n2:a===b?null:b,hm:JY.honmei(y,m,d).name};});
+const FAM=FAMOUS.map(f=>{const [y,m,d]=f.date.split('-').map(Number),ds=Date.UTC(y,m-1,d)-f.tz*36e5,a=JY.nak(JY.moonSid(ds)).i,b=JY.nak(JY.moonSid(ds+864e5-6e4)).i;return {...f,y,m,d,n:a,n2:a===b?null:b,hm:''};});
 const YOGA=rd('content/yoga.json');
 const YST=fs.existsSync('content/yoga_stats.json')?JSON.parse(fs.readFileSync('content/yoga_stats.json','utf8')):{freq:{},pct:[]};
 const YLV=id=>{const f=YST.freq[id];return f===undefined?2:f<0.10?4:f<0.25?3:f<0.45?2:1;};const YLN=['','よくある','ときどき','珍しい','とても珍しい'];
@@ -57,13 +57,13 @@ ${gender?`<label for="${px}g">性別（伝統的な計算に使用）<select id=
 <div class="custom" id="${px}custom" hidden><label for="${px}la">緯度（北緯はプラス）<input id="${px}la" type="number" step="0.01" value="35.69"></label><label for="${px}lo">経度（東経はプラス）<input id="${px}lo" type="number" step="0.01" value="139.69"></label><label for="${px}tz">時差（UTC＋時間）<input id="${px}tz" type="number" step="0.5" value="9"></label></div></fieldset>`;
 const cta=`<aside class="cta"><h2>星図を、あなただけの物語に</h2><p>無料の星図でわかるのは、星の配置という「地図」までです。16枚の分割図と人生の時期を重ねて読み、あなたの流れとこれからの指針を一冊の鑑定書にまとめる個人鑑定を受け付けています。</p><a href="${C.ctaUrl}" target="_blank" rel="noopener">${C.ctaLabel}</a></aside>`;
 const toolCards=keys=>`<div class="grid">${keys.map(k=>{const t=TOOLS[k];return `<a class="card tool" href="${t[0]}"><span class="k">FREE</span><b>${t[1]}</b><p>${t[2]}</p></a>`;}).join('')}</div>`;
-const nakChips=()=>`<div class="grid sm">${NAK.map(n=>`<a class="card tool" href="/nakshatra/${n.slug}/"><span class="k">${n.id}　${n.sukuyo}</span><b>${n.name}</b><p>${esc(n.catch||n.span)}</p></a>`).join('')}</div>`;
+const nakChips=()=>`<div class="grid sm">${NAK.map(n=>`<a class="card tool" href="/nakshatra/${n.slug}/"><span class="k">${n.id}　${n.lord}</span><b>${n.name}</b><p>${esc(n.catch||n.span)}</p></a>`).join('')}</div>`;
 const artList=list=>`<div class="list">${list.map(a=>`<a href="/articles/${a.slug}/"><b>${esc(a.title)}</b><span>${esc(a.description)}</span></a>`).join('')}</div>`;
 const TARA_ROWS=[['1','ジャンマ','命','自分を整える'],['2','サンパット','栄','実り・豊かさ'],['3','ヴィパット','衰','つまずきに注意'],['4','クシェーマ','安','穏やか・安定'],['5','プラティヤク','危','無理をしない'],['6','サーダナ','成','願いが形になる'],['7','ナイダナ','壊','休息を大切に'],['8','ミトラ','友','人の縁'],['9','パラマ・ミトラ','親','最良の縁']];
 
 /* ---------- トップ ---------- */
 page('/',{title:'トップ',desc:'インド占星術（ジョーティッシュ）の無料占いサイト。生年月日だけでわかる27星宿、今日の運勢、今月の運勢、吉日カレンダー、魂の星図、相性占いを無料で。',scripts:['today.js','quick.js'],inline:NKINL(),
-body:`<div class="hero"><span class="eyebrow">Jyotish · Vedic Astrology</span><h1>月の宿に、<br>あなたの星を訪ねる。</h1><p class="lead">インド占星術（ジョーティッシュ）は、生まれた瞬間の月が宿っていた「星宿」から、人の性質と人生の時期を読む占星術です。日本の宿曜のルーツでもあるこの智慧を、すべて無料でどうぞ。</p></div>
+body:`<div class="hero"><span class="eyebrow">Jyotish · Vedic Astrology</span><h1>月の宿に、<br>あなたの星を訪ねる。</h1><p class="lead">インド占星術（ジョーティッシュ）は、生まれた瞬間の月が宿っていた「星宿」から、人の性質と人生の時期を読む占星術です。インドで数千年受け継がれてきたこの智慧を、すべて無料でどうぞ。</p></div>
 ${quickForm}
 <section><div class="sec-head"><h2>今日の運勢 <span id="today-date" class="note"></span></h2><p>生まれた星宿と、今日の月の星宿の巡り（ターラ）から読む毎日の運勢です。</p></div>
 <div class="card now" id="mine"></div><div class="grid" id="pick"></div><div class="card" id="nowslot"></div><p class="note"><a href="/today/">27星宿すべての今日の運勢を見る →</a></p></section>
@@ -84,8 +84,8 @@ ${ad('top')}
 <section id="cho-sec"><div class="sec-head"><h2 id="cho-h">今日の吉凶の時間帯（チョーガディヤ）</h2><p>日の出から日の入りまでと、日の入りから次の日の出までを、それぞれ8つに分けた時間帯です。インドでは、出かける時刻や物事を始める時刻を選ぶのに、毎日使われています。時刻は東京の値です。</p></div><div id="cho" style="display:flex;flex-direction:column;gap:14px"></div>
 <p class="note"><span class="pill g">アムリタ・シュバ・ラーバ</span>はよい時間、<span class="pill">チャラ</span>は移動によい時間、<span class="pill b">ウドヴェーガ・カーラ・ローガ</span>は大事な始めごとを避ける時間です。ホーラーは、昼と夜をそれぞれ12に分け、7つの星が順番に受け持つ時間です。</p></section>
 <section><div class="sec-head"><h2>今日の暦（パンチャーンガ）</h2><p>時刻は東京の値です。</p></div><div class="facts" id="pc"></div></section>
-<section><div class="sec-head"><h2>9つのターラの意味</h2><p>星宿は9つごとに同じ性質の巡りを繰り返します。日本の宿曜の「三九の秘法」と同じ構造です。</p></div>
-<div class="tbl"><table style="min-width:420px"><thead><tr><th>順番</th><th>ターラ</th><th>宿曜</th><th>この日の性質</th></tr></thead><tbody>${TARA_ROWS.map(r=>`<tr><td class="num">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div>
+<section><div class="sec-head"><h2>9つのターラの意味</h2><p>生まれた星宿から今日の月の星宿までを数えると、9つの巡りのどこかにあたります。星宿は27あるので、この巡りが3回繰り返されます。</p></div>
+<div class="tbl"><table style="min-width:420px"><thead><tr><th>順番</th><th>ターラ</th><th>この日の性質</th></tr></thead><tbody>${TARA_ROWS.map(r=>`<tr><td class="num">${r[0]}</td><td>${r[1]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div>
 <p class="note"><a href="/articles/tara/">今日の運勢のしくみをくわしく読む →</a></p></section>
 ${ad('bottom')}${cta}`});
 
@@ -129,23 +129,23 @@ ${ad('mid')}
 ${cta}`});
 
 /* ---------- 27星宿 ---------- */
-page('/nakshatra/',{title:'27星宿（ナクシャトラ）一覧',desc:'インド占星術の27星宿（ナクシャトラ）の一覧。各星宿の性格、恋愛、仕事、神話と、日本の宿曜27宿との対応をまとめています。',crumb:'27星宿',scripts:['quick.js'],inline:NKINL(),
-body:`<div class="hero"><span class="eyebrow">27 Nakshatras</span><h1>27星宿（ナクシャトラ）</h1><p class="lead">ナクシャトラは、月がひと晩ずつ泊まる27の「月の宿」。インドから中国を経て日本に伝わり、宿曜の27宿になりました。あなたの星宿は<a href="/chart/">魂の星図</a>で調べられます。</p></div>
+page('/nakshatra/',{title:'27星宿（ナクシャトラ）一覧',desc:'インド占星術の27星宿（ナクシャトラ）の一覧。各星宿の性格、恋愛、仕事、神話をまとめています。',crumb:'27星宿',scripts:['quick.js'],inline:NKINL(),
+body:`<div class="hero"><span class="eyebrow">27 Nakshatras</span><h1>27星宿（ナクシャトラ）</h1><p class="lead">ナクシャトラは、月がひと晩ずつ泊まる27の「月の宿」。あなたの星宿は<a href="/chart/">魂の星図</a>で調べられます。</p></div>
 ${quickForm}
 <div class="grid"><a class="card tool" href="/wheel/"><span class="k">回して見る</span><b>星宿の円盤</b><p>27星宿の関係を、円盤を回して色で見る</p></a><a class="card tool" href="/famous/"><span class="k">あの人は？</span><b>有名人の星宿</b><p>${FAM.length}人の有名人の月の星宿</p></a></div>
 ${nakChips()}${ad('mid')}
-<div class="tbl"><table style="min-width:620px"><thead><tr><th>#</th><th>星宿</th><th>宿曜</th><th>範囲</th><th>支配星</th><th>ガナ</th></tr></thead><tbody>${NAK.map(n=>`<tr><td class="num">${n.id}</td><td><a href="/nakshatra/${n.slug}/">${n.name}</a></td><td>${n.sukuyo}</td><td>${n.span}</td><td>${n.lord}</td><td>${n.gana}</td></tr>`).join('')}</tbody></table></div>`});
-const RTYPES=[['命','同じ星宿','分身のように似た二人。強い共感で結ばれ、同じ弱点も分かち合います。'],['栄親','栄・親','互いを引き立て、豊かにし合う、穏やかで発展的な関係。一緒にいるほど運が育ちます。'],['友衰','友・衰','気楽で心地よい友情の関係。なれ合いになると、どちらかが疲れやすい面も。'],['安壊','安・壊','強く惹かれ合い、互いを大きく動かす関係。「安」の側は安らぎを、「壊」の側は変化をもたらします。'],['危成','危・成','違いから学び合う関係。最初はすれ違っても、互いを成長させます。'],['業胎','業・胎','前世からの約束を感じさせる、宿命的な縁。']];
-const relTable=i=>{const rows=RTYPES.map(([t,lab,desc])=>{const L=[];for(let j=0;j<27;j++){if(t==='命'&&j!==i)continue;const r=JY.relation(i,j);if(r.type!==t)continue;L.push(`<li><a href="/nakshatra/${NAK[j].slug}/">${NAK[j].name}</a>${t==='命'?'':`<small>相手は${r.aSees}・あなたは${r.bSees}</small>`}</li>`);}
-  return `<div class="rel"><h3><span class="rt t-${t}">${t}</span>${lab}</h3><p class="note" style="margin:2px 0 8px">${desc}</p><ul class="chips rl">${L.join('')}</ul></div>`;}).join('');
-  return `<section><div class="sec-head"><h2>${NAK[i].name}と、ほかの星宿との関係</h2><p>インドの星宿を、宿曜の「三九の秘法」と同じ数え方で並べた関係です（インドでは、この9つの巡りを「ターラ」として相性や吉日選びに使います）。宿曜の本命宿どうしの相性を見るときは、<a href="/aisho/">相性占い</a>で旧暦から出した本命宿で見られます。「相手は栄」は、${NAK[i].name}のあなたから見て相手が「栄」にあたるという意味です。<a href="/wheel/">円盤で見る →</a></p></div>${rows}</section>`;};
+<div class="tbl"><table style="min-width:620px"><thead><tr><th>#</th><th>星宿</th><th>範囲</th><th>支配星</th><th>ガナ</th></tr></thead><tbody>${NAK.map(n=>`<tr><td class="num">${n.id}</td><td><a href="/nakshatra/${n.slug}/">${n.name}</a></td><td>${n.span}</td><td>${n.lord}</td><td>${n.gana}</td></tr>`).join('')}</tbody></table></div>`});
+const TGOOD=[0,1,0,1,0,1,0,1,1],TDESC=['自分自身の星宿と同じ巡り。心と体を整える日。','実りと豊かさの日。','つまずきやすい日。確認をていねいに。','穏やかに満ちる日。','障害にあいやすい日。無理をしない。','願いが形になる日。','休息を大切にする日。大きな決断は控えめに。','人の縁に恵まれる日。','最良の縁の日。'];
+const relTable=i=>{const T=[['ジャンマ',0],['サンパット',1],['ヴィパット',2],['クシェーマ',3],['プラティヤク',4],['サーダナ',5],['ナイダナ',6],['ミトラ',7],['パラマ・ミトラ',8]];
+  const rows=T.map(([nm,k])=>{const L=[];for(let j=0;j<27;j++){if(JY.tara(i,j)===k)L.push(`<li><a href="/nakshatra/${NAK[j].slug}/">${NAK[j].name}</a></li>`);}
+    return `<div class="rel"><h3><span class="rt ${TGOOD[k]?'t-g':k===0?'t-n':'t-b'}">${k+1}</span>${nm}</h3><p class="note" style="margin:2px 0 8px">${TDESC[k]}</p><ul class="chips rl">${L.join('')}</ul></div>`;}).join('');
+  return `<section><div class="sec-head"><h2>${NAK[i].name}の人の、日ごとの運勢（ターラ）</h2><p>${NAK[i].name}生まれの人にとって、その日の月がどの星宿にあるとよい日になるかの一覧です。インドでは、今日の運勢や、大切な日を選ぶときに使います。<a href="/articles/tara/">ターラのしくみ →</a></p></div>${rows}</section>`;};
 const famousOf=i=>{const L=FAM.filter(f=>f.n===i||f.n2===i);if(!L.length)return '';return `<section><div class="sec-head"><h2>${NAK[i].name}の有名人</h2><p>生年月日から計算した月の星宿です。<a href="/famous/">有名人の星宿一覧 →</a></p></div><ul class="chips">${L.map(f=>`<li>${esc(f.name)}${f.n2!==null?'<small>（切り替わりの日）</small>':''}</li>`).join('')}</ul></section>`;};
 NAK.forEach((n,i)=>{const prev=NAK[(i+26)%27],next=NAK[(i+1)%27],P=a=>(a||[]).map(x=>`<p>${esc(x)}</p>`).join('');
-page(`/nakshatra/${n.slug}/`,{title:`${n.name}（${n.sukuyo}）の性格・恋愛・仕事`,desc:`インド占星術の27星宿「${n.name}」（宿曜の${n.sukuyo}）。${(n.summary||'').slice(0,70)}`,scripts:['nakwidget.js'],crumb:`<a href="/nakshatra/">27星宿</a> › ${n.name}`,
-ld:{"@context":"https://schema.org","@type":"Article","headline":`${n.name}（${n.sukuyo}）の性格・恋愛・仕事`,"inLanguage":"ja"},
+page(`/nakshatra/${n.slug}/`,{title:`${n.name}の性格・恋愛・仕事｜インド占星術の27星宿`,desc:`インド占星術の27星宿「${n.name}」。${(n.summary||'').slice(0,70)}`,scripts:['nakwidget.js'],crumb:`<a href="/nakshatra/">27星宿</a> › ${n.name}`,
+ld:{"@context":"https://schema.org","@type":"Article","headline":`${n.name}の性格・恋愛・仕事`,"inLanguage":"ja"},
 body:`<div class="hero"><span class="eyebrow">Nakshatra ${n.id} / 27</span><h1>${n.name}</h1><p class="lead"><b>${esc(n.catch)}</b></p><p class="lead">${esc(n.summary)}</p></div>
-<div class="facts"><div><span>宿曜で同じ星にあたる宿</span><b>${n.sukuyo}</b></div><div><span>範囲（サイデリアル）</span><b>${n.span}</b></div><div><span>支配星</span><b>${n.lord}</b></div><div><span>神格</span><b>${n.deity}</b></div><div><span>シンボル</span><b>${n.symbol}</b></div><div><span>ガナ（気質）</span><b>${n.gana}</b></div><div><span>ヨーニ（動物）</span><b>${n.yoni}</b></div></div>
-<p class="note">「宿曜で同じ星にあたる宿」は、星としての対応です。日本の宿曜占星術でのあなたの本命宿は旧暦の生年月日から出すため、インドの月の星宿とは違う宿になることがあります。両方とも<a href="/">生年月日だけで調べる</a>でわかります。</p>
+<div class="facts"><div><span>範囲（サイデリアル）</span><b>${n.span}</b></div><div><span>支配星</span><b>${n.lord}</b></div><div><span>神格</span><b>${n.deity}</b></div><div><span>シンボル</span><b>${n.symbol}</b></div><div><span>ガナ（気質）</span><b>${n.gana}</b></div><div><span>ヨーニ（動物）</span><b>${n.yoni}</b></div></div>
 <div class="card now" id="nk-today" data-i="${i}"></div>
 <section class="prose"><h2>性格</h2>${P(n.personality)}</section>
 ${ad('mid')}
@@ -154,7 +154,7 @@ ${ad('mid')}
 <section class="prose"><h2>神話とシンボル</h2><p>${esc(n.myth)}</p><h2>${n.name}のあなたへ</h2><p>${esc(n.advice)}</p></section>
 ${relTable(i)}${famousOf(i)}
 <p class="note">月がどの星宿にあるかは、生まれた時刻によって変わります。<a href="/chart/">魂の星図</a>で確かめられます。相性は<a href="/aisho/">相性占い</a>へ。</p>
-${shareS(n.name+'（宿曜の'+n.sukuyo+'）の性格・恋愛・仕事｜インド占星術の27星宿','/nakshatra/'+n.slug+'/')}
+${shareS(n.name+'の性格・恋愛・仕事｜インド占星術の27星宿','/nakshatra/'+n.slug+'/')}
 <div class="grid"><a class="card tool" href="/nakshatra/${prev.slug}/"><span class="k">← 前の星宿</span><b>${prev.name}</b></a><a class="card tool" href="/nakshatra/${next.slug}/"><span class="k">次の星宿 →</span><b>${next.name}</b></a></div>
 ${cta}`});});
 
@@ -184,15 +184,13 @@ ${ad('bottom')}
 
 /* ---------- はじめての方へ ---------- */
 const ORDER_ART=['what-is-jyotish','nakshatra','planets','rashi','houses','dasha','divisional-charts','atmakaraka','ashtakavarga','sade-sati','gochara','compatibility','mangal-dosha','tara','panchang','choghadiya','muhurta'];
-page('/jyotish/',{title:'インド占星術（ジョーティッシュ）とは｜はじめての方へ',desc:'インド占星術（ジョーティッシュ）とは何か。西洋占星術との違い、27星宿と日本の宿曜とのつながり、このサイトでできること、学ぶ順番をまとめた入門ガイドです。',crumb:'はじめての方へ',
+page('/jyotish/',{title:'インド占星術（ジョーティッシュ）とは｜はじめての方へ',desc:'インド占星術（ジョーティッシュ）とは何か。西洋占星術との違い、27星宿、このサイトでできること、学ぶ順番をまとめた入門ガイドです。',crumb:'はじめての方へ',
 ld:{"@context":"https://schema.org","@type":"Article","headline":"インド占星術（ジョーティッシュ）とは","inLanguage":"ja"},
 body:`<div class="hero"><span class="eyebrow">Beginner's Guide</span><h1>インド占星術（ジョーティッシュ）とは</h1><p class="lead">ジョーティッシュは、サンスクリット語で「光の学問」。数千年の伝統を持つインドの占星術で、今もインドでは、結婚や仕事、家を建てる日取りまで、暮らしの大切な場面で使われています。</p></div>
 <section class="prose"><h2>西洋占星術との3つの違い</h2>
 <p><b>1. 星座の基準が違う</b><br>西洋占星術は、季節（春分点）を基準に星座を決めます。インド占星術は、夜空の実際の星の位置を基準にします（サイデリアル方式）。この差は今、約24度。そのため、西洋で牡牛座の人が、インドでは牡羊座になることがよくあります。</p>
 <p><b>2. 太陽より「月」を重んじる</b><br>西洋の星占いは太陽の星座が主役ですが、インド占星術では、生まれたときの月がどこにあったかを最も大切にします。月の通り道を27に分けた「ナクシャトラ（星宿）」が、その人の心のかたちを表します。</p>
 <p><b>3. 「いつ」を読む技術がある</b><br>ヴィムショッタリ・ダシャーという時期の読み方で、人生をいくつもの時期に区切り、「いつ何が起きやすいか」を具体的に読みます。土星の7年半（サディサティ）のように、時期のサイクルを細かく見られるのが大きな特徴です。</p>
-<h2>日本の宿曜とのつながり</h2>
-<p>インドの星宿の体系は、仏教とともに中国へ伝わり、平安時代に空海が持ち帰った『宿曜経』として日本に根づきました。宿曜の27宿は、インドの27のナクシャトラがルーツです。今日の運勢の「命・栄・衰・安・危・成・壊・友・親」という巡りも、インドのターラ（星の巡り）と同じしくみです。インド占星術は、宿曜の「ふるさと」とも言えます。</p>
 <h2>このサイトの方式</h2>
 <p>パラーシャラ式（インド占星術の根本経典の流れ）、アヤナムシャ（星座のずれの補正値）はラーヒリー、ハウスはホールサインで計算しています。インドで最も広く使われている、標準的な方式です。</p></section>
 ${ad('mid')}
@@ -211,7 +209,7 @@ ${cta}`});
 
 /* ---------- 吉日カレンダー ---------- */
 page('/calendar/',{title:'吉日カレンダー｜インド占星術の暦で見る吉日・満月・新月',desc:'インド占星術の暦（パンチャーンガ）で見る月ごとの吉日カレンダー。毎日の月の星宿、グル・プシュヤ、アムリタ・シッディ、エーカーダシー、満月・新月、あなたの星宿にとっての好調日がわかります。',scripts:['calendar.js'],crumb:'吉日カレンダー',
-body:`<div class="hero"><span class="eyebrow">Auspicious Days</span><h1>吉日カレンダー</h1><p class="lead">インドの暦で、毎日の月の星宿と吉日を一覧にしました。あなたの星宿を選ぶと、あなたにとっての好調日（栄・成・親など）が色でわかります。</p></div>
+body:`<div class="hero"><span class="eyebrow">Auspicious Days</span><h1>吉日カレンダー</h1><p class="lead">インドの暦で、毎日の月の星宿と吉日を一覧にしました。あなたの星宿を選ぶと、あなたにとっての好調日が色でわかります。</p></div>
 <div class="calbar"><button type="button" class="ghost" id="prev" aria-label="前の月">◀</button><h2 id="mtitle" style="margin:0"></h2><button type="button" class="ghost" id="next" aria-label="次の月">▶</button><label for="mynk" class="inline" style="margin-left:auto">あなたの星宿 <select id="mynk"></select></label></div>
 <div id="cal"></div>
 <p class="note">色の見方：<span class="pill g">吉日</span>は暦の吉日、<span class="pill s">暦の節目</span>は満月・新月など。あなたの星宿を選ぶと、好調日は緑、注意日はオレンジの枠になります。星宿は日の出（東京）の時点のものです。星宿がわからない方は<a href="/">生年月日だけで調べる</a>へ。</p>
@@ -221,9 +219,9 @@ body:`<div class="hero"><span class="eyebrow">Auspicious Days</span><h1>吉日�
 <div id="shr"></div>
 ${ad('mid')}
 <section><div class="sec-head"><h2>吉日の意味</h2></div><div class="prose">
-<p><b>グル・プシュヤ</b>　木曜日（木星の日）に、月がプシュヤ（鬼宿）にある日。プシュヤは27星宿で最も吉祥とされる星宿で、木星の日と重なるこの日は、インドで金や宝飾品を買い、学びや事業を始める大吉日として知られています。日本の宿曜で「鬼宿日」を大吉日とするのも、同じルーツです。</p>
+<p><b>グル・プシュヤ</b>　木曜日（木星の日）に、月がプシュヤにある日。プシュヤは27星宿で最も吉祥とされる星宿で、木星の日と重なるこの日は、インドで金や宝飾品を買い、学びや事業を始める大吉日として知られています。</p>
 <p><b>ラヴィ・プシュヤ</b>　日曜日（太陽の日）に、月がプシュヤにある日。健康や名誉に関わる始めごとによいとされます。</p>
-<p><b>アムリタ・シッディ・ヨーガ</b>　曜日と月の星宿が、特によい組み合わせになる日です（日曜×ハスタ、月曜×ムリガシラー、火曜×アシュヴィニー、水曜×アヌラーダー、木曜×プシュヤ、金曜×レーヴァティー、土曜×ローヒニー）。宿曜の「甘露日」にあたります。</p>
+<p><b>アムリタ・シッディ・ヨーガ</b>　曜日と月の星宿が、特によい組み合わせになる日です（日曜×ハスタ、月曜×ムリガシラー、火曜×アシュヴィニー、水曜×アヌラーダー、木曜×プシュヤ、金曜×レーヴァティー、土曜×ローヒニー）。</p>
 <p><b>エーカーダシー</b>　満ちていく月・欠けていく月の、それぞれ11日目。ヴィシュヌ神に捧げる日で、断食をして心身を清める習慣があります。</p>
 <p><b>満月・新月</b>　カレンダーの日付は、日の出の時点のティティ（月齢日）で決めています。満月・新月の正確な瞬間は、一覧の時刻をご覧ください。</p>
 <p><b>サンクラーンティ</b>　太陽がインド式の次の星座に移る日。1月中旬の山羊座入り（マカラ・サンクラーンティ）は、インドの大きなお祭りです。</p>
@@ -252,24 +250,24 @@ ${ad('mid')}
 ${cta}`});});
 
 /* ---------- 星宿の円盤 ---------- */
-page('/wheel/',{title:'星宿の円盤｜27星宿の関係を回して見る',desc:'27星宿（ナクシャトラ）の円盤を回して、星宿どうしの関係（命・栄親・友衰・安壊・危成・業胎）を色で見られます。今日の月と星の位置も表示。',scripts:['wheel.js'],crumb:'星宿の円盤',
-body:`<div class="hero"><span class="eyebrow">Nakshatra Wheel</span><h1>星宿の円盤</h1><p class="lead">27の星宿を円にならべた円盤です。上に来た星宿から見て、ほかの星宿との関係が色でわかります。円盤をドラッグして回したり、星宿を押したりしてみてください。内側の丸は、今の星の位置です。</p></div>
+page('/wheel/',{title:'星宿の円盤｜27星宿とターラを回して見る',desc:'27星宿（ナクシャトラ）の円盤を回して、あなたの星宿から見た9つのターラ（星の巡り）を色で見られます。今日の月と星の位置も表示。',scripts:['wheel.js'],crumb:'星宿の円盤',
+body:`<div class="hero"><span class="eyebrow">Nakshatra Wheel</span><h1>星宿の円盤</h1><p class="lead">27の星宿を円にならべた円盤です。上に来た星宿から数えて、ほかの星宿が9つのターラ（星の巡り）のどれにあたるかが色でわかります。円盤をドラッグして回したり、星宿を押したりしてみてください。内側の丸は、今の星の位置です。</p></div>
 <div class="wctl"><button type="button" class="ghost" id="wprev" aria-label="前の星宿">◀</button><select id="wsel" aria-label="基準の星宿"></select><button type="button" class="ghost" id="wnext" aria-label="次の星宿">▶</button><button type="button" class="ghost" id="wtoday">今日の月</button></div>
 <div class="wbox"><svg id="wheel" role="img" aria-label="27星宿の円盤"></svg></div>
-<div class="wleg"><span><i style="background:var(--accent)"></i>命</span><span><i style="background:#3E9B6B"></i>栄親</span><span><i style="background:#4C86C6"></i>友衰</span><span><i style="background:#C9584A"></i>安壊</span><span><i style="background:#D9913A"></i>危成</span><span><i style="background:#8B6FC9"></i>業胎</span></div>
+<div class="wleg"><span><i style="background:var(--accent)"></i>ジャンマ（自分の星宿）</span><span><i style="background:#3E9B6B"></i>よい巡り</span><span><i style="background:#C9584A"></i>注意の巡り</span></div>
 <div id="winfo"></div><div id="shr"></div>
 ${ad('mid')}
-<section><div class="sec-head"><h2>円盤の見方</h2></div><div class="prose"><p>星宿は、9つごとに同じ性質の巡り（命・栄・衰・安・危・成・壊・友・親）を3回繰り返します。宿曜の「三九の秘法」と同じしくみです。外側の文字はその星宿の名前、内側の小さな文字は「相手から見たあなた」の関係です。</p><p>星宿の「前」「後」は、プールヴァ（前の）・ウッタラ（後の）の略です。いちばん外の輪は、インド式の12星座です。</p><p>二人の相性をくわしく知りたいときは<a href="/aisho/">相性占い</a>、グループなら<a href="/group/">グループ相性占い</a>へ。</p></div></section>
+<section><div class="sec-head"><h2>円盤の見方</h2></div><div class="prose"><p>自分の星宿を1番目（ジャンマ）として数えると、ほかの星宿は、サンパット（実り）、ヴィパット（つまずき）、クシェーマ（安らぎ）、プラティヤク（障害）、サーダナ（達成）、ナイダナ（休息）、ミトラ（友）、パラマ・ミトラ（最良の縁）の9つの巡りのどれかにあたります。27星宿なので、この巡りが3回繰り返されます。</p><p>今日の月がどの色の星宿にあるかを見ると、今日があなたにとってどんな日かがわかります。外側の文字は星宿の名前、内側の小さな数字は巡りの番号です。星宿の「前」「後」は、プールヴァ（前の）・ウッタラ（後の）の略です。いちばん外の輪は、インド式の12星座です。</p><p>二人の相性をくわしく知りたいときは<a href="/aisho/">相性占い</a>へ。</p></div></section>
 ${cta}`});
 
 /* ---------- 有名人の星宿 ---------- */
 const CATS=[...new Set(FAM.map(f=>f.cat))];
-page('/famous/',{title:'有名人の星宿｜インド占星術で見る有名人の月のナクシャトラ',desc:`大谷翔平、宇多田ヒカル、スティーブ・ジョブズなど、有名人${FAM.length}人の月の星宿（ナクシャトラ）と宿曜の宿を、生年月日から計算しました。あなたと同じ星宿の有名人は？`,crumb:'有名人の星宿',
+page('/famous/',{title:'有名人の星宿｜インド占星術で見る有名人の月のナクシャトラ',desc:`大谷翔平、宇多田ヒカル、スティーブ・ジョブズなど、有名人${FAM.length}人の月の星宿（ナクシャトラ）を、生年月日から計算しました。あなたと同じ星宿の有名人は？`,crumb:'有名人の星宿',
 body:`<div class="hero"><span class="eyebrow">Famous People</span><h1>有名人の星宿</h1><p class="lead">有名人${FAM.length}人の、生まれたときの月の星宿を生年月日から計算しました。あなたと同じ星宿の人はいますか？</p></div>
-<p class="note">生まれた時刻は公表されていないため、生まれた日の月の星宿を出しています。その日のうちに月が次の星宿へ移った人は、二つの星宿を並べています。生年月日は公開されている情報（Wikipedia）にもとづきます。宿曜の本命宿は、日本の宿曜占星術と同じく旧暦の日付から出しているため、インドの月の星宿とは違う宿になることがあります。海外の方は、生まれた国の時間で計算しています。</p>
+<p class="note">生まれた時刻は公表されていないため、生まれた日の月の星宿を出しています。その日のうちに月が次の星宿へ移った人は、二つの星宿を並べています。生年月日は公開されている情報（Wikipedia）にもとづきます。海外の方は、生まれた国の時間で計算しています。</p>
 <nav aria-label="分類"><ul class="chips">${CATS.map((c,k)=>`<li><a href="#c${k}" style="text-decoration:none;color:inherit">${c}</a></li>`).join('')}<li><a href="#bynak" style="text-decoration:none;color:inherit">星宿別</a></li></ul></nav>
-${CATS.map((c,k)=>`<section id="c${k}"><div class="sec-head"><h2>${c}</h2></div><div class="tbl"><table style="min-width:460px"><thead><tr><th>名前</th><th>生年月日</th><th>月の星宿（インド）</th><th>本命宿（宿曜）</th></tr></thead><tbody>${FAM.filter(f=>f.cat===c).map(f=>`<tr><td><b>${esc(f.name)}</b></td><td class="num">${f.y}年${f.m}月${f.d}日</td><td><a href="/nakshatra/${NAK[f.n].slug}/">${NAK[f.n].name}</a>${f.n2!==null?` か <a href="/nakshatra/${NAK[f.n2].slug}/">${NAK[f.n2].name}</a>`:''}</td><td>${f.hm}</td></tr>`).join('')}</tbody></table></div></section>${k===1?ad('mid'):''}`).join('')}
-<section id="bynak"><div class="sec-head"><h2>星宿別の有名人</h2></div><div class="list">${NAK.map((n,i)=>{const L=FAM.filter(f=>f.n===i||f.n2===i);return L.length?`<a href="/nakshatra/${n.slug}/"><b>${n.name}（${n.sukuyo}）</b><span>${L.map(f=>esc(f.name)).join('、')}</span></a>`:'';}).join('')}</div></section>
+${CATS.map((c,k)=>`<section id="c${k}"><div class="sec-head"><h2>${c}</h2></div><div class="tbl"><table style="min-width:460px"><thead><tr><th>名前</th><th>生年月日</th><th>月の星宿</th><th>支配星</th></tr></thead><tbody>${FAM.filter(f=>f.cat===c).map(f=>`<tr><td><b>${esc(f.name)}</b></td><td class="num">${f.y}年${f.m}月${f.d}日</td><td><a href="/nakshatra/${NAK[f.n].slug}/">${NAK[f.n].name}</a>${f.n2!==null?` か <a href="/nakshatra/${NAK[f.n2].slug}/">${NAK[f.n2].name}</a>`:''}</td><td>${NAK[f.n].lord}</td></tr>`).join('')}</tbody></table></div></section>${k===1?ad('mid'):''}`).join('')}
+<section id="bynak"><div class="sec-head"><h2>星宿別の有名人</h2></div><div class="list">${NAK.map((n,i)=>{const L=FAM.filter(f=>f.n===i||f.n2===i);return L.length?`<a href="/nakshatra/${n.slug}/"><b>${n.name}</b><span>${L.map(f=>esc(f.name)).join('、')}</span></a>`:'';}).join('')}</div></section>
 ${shareS('有名人の月の星宿を、インド占星術で調べました。あなたと同じ星宿は？','/famous/')}
 <a class="card tool" href="/"><span class="k">無料で調べる</span><b>あなたの星宿を調べる</b><p>生年月日だけでわかります</p></a>${cta}`});
 
@@ -281,15 +279,15 @@ body:`<div class="hero"><span class="eyebrow">Muhurta</span><h1>吉日選び（�
 ${ad('mid')}
 <section><div class="sec-head"><h2>このページの吉日の選び方</h2></div><div class="prose">
 <p>ムフールタでは、その日の月の星宿、ティティ（月齢日）、曜日の3つを組み合わせて、目的に合う日を選びます。このページでは、次の条件をすべて満たす日を出しています。</p>
-<ul><li>月の星宿が、目的ごとに伝統的に選ばれる星宿であること</li><li>ティティが吉日（2・3・5・7・10・11・12・13日目）であること。4・9・14日目（リクタ）と新月・満月は避けます</li><li>火曜日・土曜日を避けること（旅行は日曜日も可）</li><li>あなたの星宿を選んだ場合は、あなたから見て「命・衰・危・壊」にあたる日を除くこと</li></ul>
-<p>「特におすすめ」は、満ちていく月の日、あなたにとって「栄・成・親」の日、グル・プシュヤなどが重なる日です。</p>
+<ul><li>月の星宿が、目的ごとに伝統的に選ばれる星宿であること</li><li>ティティが吉日（2・3・5・7・10・11・12・13日目）であること。4・9・14日目（リクタ）と新月・満月は避けます</li><li>火曜日・土曜日を避けること（旅行は日曜日も可）</li><li>あなたの星宿を選んだ場合は、あなたの星宿から数えたターラが、ジャンマ・ヴィパット・プラティヤク・ナイダナ（自分の星宿・すれ違い・障害・破壊）にあたる日を除くこと</li></ul>
+<p>「特におすすめ」は、満ちていく月の日、あなたにとってサンパット・サーダナ・パラマ・ミトラ（実り・達成・最良の縁）の日、グル・プシュヤなどが重なる日です。</p>
 <p>本格的なムフールタでは、その日の中でもよい時間帯（ラグナ）まで選び、本人の出生図の時期も重ねます。このページは日を選ぶための簡易版です。当日の時間帯は<a href="/today/">今日の吉凶の時間帯（チョーガディヤ）</a>で見られます。</p></div></section>
 ${cta}`});
 
 /* ---------- 固定ページ ---------- */
 page('/about/',{title:'運営者情報',desc:`${C.siteName}の運営者情報とサイトの方針。`,crumb:'運営者情報',body:`<div class="hero"><h1>運営者情報</h1></div><div class="prose">
 <p><b>サイト名：</b>${C.siteName}（${C.siteSub}）<br><b>運営：</b>${C.operator}</p>
-<h2>このサイトについて</h2><p>${C.siteName}は、インド占星術（ジョーティッシュ）を、日本語でわかりやすく、無料で楽しんでいただくためのサイトです。宿曜や東洋の占術にも長く親しんできた占い師が、伝統的な読み方にもとづいて運営しています。</p>
+<h2>このサイトについて</h2><p>${C.siteName}は、インド占星術（ジョーティッシュ）を、日本語でわかりやすく、無料で楽しんでいただくためのサイトです。東洋の占術にも長く親しんできた占い師が、伝統的な読み方にもとづいて運営しています。</p>
 <h2>計算方法</h2><p>天体の位置は、オープンソースの天文計算ライブラリ Astronomy Engine（MIT License）で計算しています。インド占星術の方式は、パラーシャラ式、アヤナムシャはラーヒリー、ハウスはホールサイン、ラーフ・ケートゥは平均位置、ダシャーは1年＝365.25日です。ほかのサイトやソフトと、日付が数日ずれることがあります。</p>
 <h2>占いの結果について</h2><p>占いの結果は、伝統的な読み方にもとづく一つの視点です。健康・法律・お金など重要な判断は、専門家への相談とご自身の判断でお願いします。</p></div>`});
 page('/privacy/',{title:'プライバシーポリシー',desc:`${C.siteName}のプライバシーポリシー（個人情報・Cookie・広告配信について）。`,crumb:'プライバシーポリシー',body:`<div class="hero"><h1>プライバシーポリシー</h1></div><div class="prose">

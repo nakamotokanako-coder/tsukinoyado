@@ -8,7 +8,7 @@ function read(){return Array.prototype.map.call($('rows').children,function(d){v
 function save(){try{localStorage.setItem('tsuki-group',JSON.stringify(read()));}catch(e){}}
 function colr(v){return v>=24?'g':v<18?'b':'r';}
 function run(){var ppl=read().filter(function(x){return x.d;}),st=$('status');if(ppl.length<2){st.textContent='2人以上の生年月日を入力してください。';return false;}
- ppl.forEach(function(x,i){var a=x.d.split('-').map(Number),t=(x.t||'12:00').split(':').map(Number),pl=TK.PLACES[+x.p]||TK.PLACES[12];x.ms=Date.UTC(a[0],a[1]-1,a[2],t[0],t[1])-9*36e5;x.lon=JY.moonSid(x.ms);x.nk=JY.nak(x.lon);x.hm=JY.honmei(a[0],a[1],a[2]);x.name=x.n||('メンバー'+(i+1));
+ ppl.forEach(function(x,i){var a=x.d.split('-').map(Number),t=(x.t||'12:00').split(':').map(Number),pl=TK.PLACES[+x.p]||TK.PLACES[12];x.ms=Date.UTC(a[0],a[1]-1,a[2],t[0],t[1])-9*36e5;x.lon=JY.moonSid(x.ms);x.nk=JY.nak(x.lon);x.name=x.n||('メンバー'+(i+1));
   if(!x.t){var ds=Date.UTC(a[0],a[1]-1,a[2])-9*36e5,s=Math.floor(JY.moonSid(ds)/(40/3)),e=Math.floor(JY.moonSid(ds+864e5-6e4)/(40/3));x.amb=s!==e;}});
  var N=ppl.length,M=[],pairs=[];for(var i=0;i<N;i++){M.push([]);for(var j=0;j<N;j++){if(i===j){M[i].push(null);continue;}var v=(JY.koota(ppl[i].lon,ppl[j].lon).total+JY.koota(ppl[j].lon,ppl[i].lon).total)/2;M[i].push(v);if(i<j)pairs.push({a:i,b:j,v:v});}}
  pairs.sort(function(x,y){return y.v-x.v;});
@@ -19,7 +19,7 @@ function run(){var ppl=read().filter(function(x){return x.d;}),st=$('status');if
   '<div class="card"><span class="eyebrow">グループの気質（ガナ）</span><b style="font-size:18px">神'+gc[0]+'・人'+gc[1]+'・羅刹'+gc[2]+'</b><p class="note" style="color:inherit">'+(gc[0]>=gc[1]&&gc[0]>=gc[2]?'穏やかで品のある「神」タイプが中心。和やかにまとまりやすいグループです。':gc[2]>=gc[0]&&gc[2]>=gc[1]?'情熱的で行動力のある「羅刹」タイプが中心。勢いと突破力のあるグループです。':'現実的でバランスのいい「人」タイプが中心。地に足のついたグループです。')+'</p></div></div>';
  h+='<div class="tbl"><table style="min-width:'+(120+N*70)+'px"><thead><tr><th></th>'+ppl.map(function(x){return '<th>'+x.name.replace(/</g,'&lt;')+'</th>';}).join('')+'</tr></thead><tbody>'+
   ppl.map(function(x,i){return '<tr><td><b>'+x.name.replace(/</g,'&lt;')+'</b><br><a class="note" href="/nakshatra/'+x.nk.slug+'/">'+x.nk.name+'</a>'+(x.amb?'<br><span class="warn">星宿が未確定</span>':'')+'</td>'+M[i].map(function(v){return v===null?'<td class="mut">—</td>':'<td class="num"><span class="pill '+colr(v)+'">'+(Math.round(v*10)/10)+'</span></td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>';
- h+='<div class="card"><h3>相性ランキング</h3><ol style="margin:0;padding-left:1.4em">'+pairs.map(function(p){var rl=JY.relation(ppl[p.a].hm.i,ppl[p.b].hm.i);return '<li>'+ppl[p.a].name.replace(/</g,'&lt;')+' × '+ppl[p.b].name.replace(/</g,'&lt;')+'　<span class="num">'+(Math.round(p.v*10)/10)+'点</span>　<span class="pill r">'+rl.type+'</span></li>';}).join('')+'</ol><p class="note">点数は、インド式の相性占い「アシュタクータ」（36点満点）を、性別を問わず両方向で計算した平均です。18点以上がひとつの目安です。右の印は星宿の関係（命・業胎・栄親・友衰・安壊・危成）です。</p></div>';
+ h+='<div class="card"><h3>相性ランキング</h3><ol style="margin:0;padding-left:1.4em">'+pairs.map(function(p){return '<li>'+ppl[p.a].name.replace(/</g,'&lt;')+' × '+ppl[p.b].name.replace(/</g,'&lt;')+'　<span class="num">'+(Math.round(p.v*10)/10)+'点</span></li>';}).join('')+'</ol><p class="note">点数は、インド式の相性占い「アシュタクータ」（36点満点）を、性別を問わず両方向で計算した平均です。18点以上がひとつの目安です。</p></div>';
  if(ppl.some(function(x){return x.amb;}))h+='<p class="warn">「星宿が未確定」の人は、生まれた日に月の星宿が切り替わっています。時刻を入れると確定します。</p>';
  h+=TK.shareHTML(N+'人のグループ相性を、インド占星術で占いました。 #月の宿 #インド占星術',location.origin+'/group/');
  $('res').innerHTML=h;st.textContent=N+'人の相性を表示しています';return true;}
