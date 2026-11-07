@@ -710,7 +710,6 @@ form input[type=time]::-webkit-date-and-time-value{text-align:left}
 .nks{display:block}.nks h2{margin:4px 0 12px}
 /* 日本語の改行 */
 body{line-break:strict}
-p,li,dd,figcaption,.note,.lead{text-wrap:pretty}
 .seg{display:inline-block}
 .sr-catch{font-size:16px}
 .sr-char{margin:0;text-align:left;font-size:14.5px;line-height:1.9;align-self:stretch}
@@ -718,3 +717,4 @@ p,li,dd,figcaption,.note,.lead{text-wrap:pretty}
 .sr-say{margin:2px 0 0;font-family:var(--f-display);font-size:16px}
 .sr-mark{margin:0}
 .nmlist{line-height:1.7}
+.sr-char,.sr-weak{text-align:center!important;text-wrap:pretty}.sr-weak{align-self:stretch}
