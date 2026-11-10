@@ -45,5 +45,5 @@ export function interior(p,body) {
   body=body.slice(0,hero.start)+`<div class="${hero.classes} page-hero${simple?' page-hero-simple':''}">`+content+'</div>'+extra+body.slice(hero.end);
   const sectionNav=`<nav class="section-nav" aria-label="${meta.label}のメニュー"><span class="section-nav-label">${meta.label}</span><div>${meta.links.map(([href,label])=>`<a href="${href}"${p===href?' aria-current="page"':p.startsWith(href)?' data-current-section="true"':''}>${label}</a>`).join('')}</div></nav>`;
   const related=`<aside class="continue-journey" aria-label="関連するページ"><div class="continue-heading"><span class="eyebrow">YOUR NEXT CHAPTER</span><h2>星の旅を、もう少し。</h2></div><div>${nextLinks[family].filter(([href])=>href!==p).map(([href,desc,label])=>`<a href="${href}"><small>${desc}</small><span>${label}<i aria-hidden="true">↗</i></span></a>`).join('')}</div></aside>`;
-  return {body,classes:`inner-page family-${family} page-${key}${p.split('/').filter(Boolean).length>1?' detail-page':''}`,before:sectionNav,after:related};
+  return {body,classes:`inner-page family-${family} page-${key.replace(/[^a-z0-9-]/g,'-')}${p.split('/').filter(Boolean).length>1?' detail-page':''}`,before:sectionNav,after:related};
 }

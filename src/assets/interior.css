@@ -10,7 +10,7 @@
 .section-nav a[aria-current]{box-shadow:inset 0 -2px var(--gold)}
 
 /* A night-sky opening, followed by light, comfortably spaced reading surfaces. */
-.inner-page .page-hero{position:relative;isolation:isolate;overflow:hidden;margin:0;padding:44px 46px;border:1px solid #4a4459;border-radius:14px;background:radial-gradient(ellipse at 88% 20%,#77647942,transparent 62%),#232235;color:#f9f3e7;box-shadow:0 12px 32px #2520390a}
+.inner-page .page-hero{--ink:#f9f3e7;--muted:#d0c9d9;--accent:#ead5ad;--surface:#2d293f;--gold:#d8c195;--gold-soft:#3a3243;position:relative;isolation:isolate;overflow:hidden;margin:0;padding:44px 46px 46px;border:1px solid #4a4459;border-radius:14px;background:radial-gradient(ellipse at 88% 20%,#77647942,transparent 62%),#232235;color:#f9f3e7;box-shadow:0 12px 32px #2520390a}
 .page-hero::after{content:"";position:absolute;z-index:-1;inset:9px;border:1px solid #d3bd8c26;border-radius:7px;pointer-events:none}
 .page-hero-simple{display:grid;grid-template-columns:minmax(0,1fr) 235px;gap:34px;align-items:center;text-align:left;min-height:300px}
 .page-hero-copy{min-width:0}
@@ -135,7 +135,7 @@
  .page-aisho form#f .actions{grid-column:1/-1}
  .inner-page form.cform fieldset{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 30px}
  .inner-page form.cform label,.inner-page form.cform .tgroup{grid-column:auto}
- .inner-page form.cform .tgroup{grid-column:2;grid-row:2/4}
+ .inner-page form.cform .tgroup{grid-column:2;grid-row:1/4}
  .inner-page form.cform .tgroup label{grid-column:1/-1}
  .inner-page form.cform .dsel{max-width:440px}
  .family-reading.detail-page .main{max-width:1050px}
@@ -167,7 +167,7 @@
  .inner-page .page-hero h1{font-size:28px;line-height:1.7;letter-spacing:.035em;margin-bottom:14px}
  .page-hero .eyebrow{font-size:8px;letter-spacing:.16em;margin-bottom:12px}
  .page-hero :is(.lead,.ak-sub){font-size:14px;line-height:2}
- .page-hero h1 :is(.seg,.nobr){display:inline;white-space:normal;overflow-wrap:anywhere}
+ .page-hero h1 :is(.seg,.nobr){display:inline-block;white-space:normal;overflow-wrap:anywhere;max-width:100%}
  .inner-page .chero.page-hero{grid-template-columns:minmax(0,1fr);gap:22px;padding:30px 24px}
  .chero.page-hero .chero-im{grid-column:1;grid-row:2}
  .chero.page-hero .chero-im img{height:170px}
