@@ -1,4 +1,5 @@
 import {home} from './src/home.mjs';
+import {interior} from './src/interior.mjs';
 import fs from 'node:fs'; import path from 'node:path'; import vm from 'node:vm'; import {createRequire} from 'node:module'; const C=JSON.parse(fs.readFileSync('site.config.json','utf8'));
 const OUT='dist'; fs.rmSync(OUT,{recursive:true,force:true}); fs.mkdirSync(OUT+'/assets',{recursive:true});
 const rd=f=>fs.existsSync(f)?JSON.parse(fs.readFileSync(f,'utf8')):[];
@@ -31,6 +32,7 @@ const shareS=(text,p)=>{const url=C.siteUrl+p,e=encodeURIComponent,u=e(url),t=e(
 const quickForm=`<section id="quick"><div class="sec-head"><h2><span class="nobr">生年月日だけで、</span><span class="nobr">あなたの星宿を調べる</span></h2><p>生まれた時刻がわからなくても大丈夫。日本で生まれた方向けに、日本時間で計算します。</p></div><form class="f quick" id="qf" novalidate><label for="qbd">生年月日<input id="qbd" type="date" value="1990-05-15" min="1900-01-01" max="2099-12-31"></label><div class="actions"><button type="submit">私の星宿を調べる</button></div></form><div id="qres" aria-live="polite"></div></section>`;
 const NKINL=()=>`window.NKSUM=${JSON.stringify(NAK.map(n=>n.summary||''))};window.NKSU=${JSON.stringify(NAK.map(n=>n.sukuyo))};window.NKCATCH=${JSON.stringify(NAK.map(n=>n.catch||''))};window.NKLAB=${JSON.stringify(NAK.map(n=>n.label))};`;
 function page(p,{title,desc,body,scripts=[],inline='',ld=null,crumb=null,og=null}){
+  const view=interior(p,body);
   const full=p==='/'?`${C.siteName}｜${C.siteSub}`:`${title}｜${C.siteName}`;
   const url=C.siteUrl+p;
   const html=`<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -39,12 +41,13 @@ function page(p,{title,desc,body,scripts=[],inline='',ld=null,crumb=null,og=null
 <meta name="theme-color" content="#FBF6EE"><link rel="icon" href="/assets/icon.svg" type="image/svg+xml"><link rel="icon" href="/assets/logo-192.png" sizes="192x192" type="image/png"><link rel="apple-touch-icon" href="/assets/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="/assets/style.css?v=${V}"><link rel="stylesheet" href="/assets/moonlight.css?v=${V}">
+${p!=='/'?`<link rel="stylesheet" href="/assets/interior.css?v=${V}">`:''}${p==='/404.html'?'<meta name="robots" content="noindex">':''}
 ${C.adsenseClient?`<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${C.adsenseClient}" crossorigin="anonymous"></script>`:''}
 ${ld?`<script type="application/ld+json">${JSON.stringify(ld)}</script>`:''}
-</head><body class="${p==='/'?'home':'inner-page'}">
+</head><body class="${view.classes}">
 <a class="skip-link" href="#main">本文へ移動</a>
 <header class="bar"><div class="bar-in"><a class="logo" href="/" aria-label="${C.siteName}"><img src="/assets/logo-s.webp" alt="" width="40" height="40"><span class="lt"><small>インド占星術 · 月の宿</small>ナヴァラトナ</span></a><button type="button" class="menu-btn" aria-expanded="false" aria-controls="gnav"><span class="mi" aria-hidden="true"></span>メニュー</button><nav id="gnav" aria-label="メイン"><ul class="gn">${GNAV.map(g=>g.items?`<li class="dd${g.items.some(([h])=>h!=='/#quick'&&p.startsWith(h))?' cur':''}"><button type="button" class="dd-b" aria-expanded="false">${g.label}</button><ul class="dd-p">${g.items.map(([h,l,d])=>`<li><a href="${h}"${h!=='/#quick'&&p===h?' aria-current="page"':''}><b>${l}</b>${d?`<small>${d}</small>`:''}</a></li>`).join('')}</ul></li>`:`<li><a class="top-a" href="${g.href}"${p.startsWith(g.href)?' aria-current="page"':''}>${g.label}</a></li>`).join('')}<li><a class="nav-diagnose" href="/#quick">無料で星を調べる <span aria-hidden="true">↗</span></a></li></ul></nav></div></header>
-<main class="main" id="main" tabindex="-1">${crumb?`<p class="crumb"><a href="/">トップ</a> › ${crumb}</p>`:''}${body}</main>
+<main class="main" id="main" tabindex="-1">${crumb?`<p class="crumb"><a href="/">トップ</a> › ${crumb}</p>`:''}${view.before}${view.body}${view.after}</main>
 <script>(function(){var mb=document.querySelector('.menu-btn'),nv=document.getElementById('gnav');function closeAll(ex){document.querySelectorAll('.dd-b[aria-expanded=true]').forEach(function(b){if(b!==ex)b.setAttribute('aria-expanded','false');});}
 if(mb)mb.addEventListener('click',function(){var o=mb.getAttribute('aria-expanded')!=='true';mb.setAttribute('aria-expanded',o);nv.classList.toggle('open',o);});
 document.querySelectorAll('.dd-b').forEach(function(b){b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')!=='true';closeAll(b);b.setAttribute('aria-expanded',o);});});
@@ -57,6 +60,7 @@ ${scripts.length?`<script src="/assets/astronomy.min.js"></script><script src="/
 <nav class="mobile-dock" aria-label="モバイルの主要メニュー"><a href="/#quick"><span aria-hidden="true">✧</span>無料診断</a><a href="/today/"${p==='/today/'?' aria-current="page"':''}><span aria-hidden="true">☾</span>今日の運勢</a><a href="/chart/"${p==='/chart/'?' aria-current="page"':''}><span aria-hidden="true">◇</span>魂の星図</a><a href="/calendar/"${p==='/calendar/'?' aria-current="page"':''}><span aria-hidden="true">◷</span>吉日暦</a></nav>
 <script src="/assets/navigation.js?v=${V}" defer></script>
 </body></html>`;
+  if(p==='/404.html'){fs.writeFileSync(OUT+'/404.html',html);return;}
   const dir=path.join(OUT,p); fs.mkdirSync(dir,{recursive:true}); fs.writeFileSync(path.join(dir,'index.html'),html); pages.push(p);
 }
 const birthForm=(px,legend,{name=false,gender=false,def={},blank=false}={})=>`<fieldset><legend>${legend}</legend>
@@ -623,7 +627,7 @@ body:`<div class="phd"><span class="eyebrow">Personal Reading</span><h1>個人�
 page('/contact/',{title:'お問い合わせ',desc:`${C.siteName}へのお問い合わせ方法。`,crumb:'お問い合わせ',body:`<div class="hero"><h1>お問い合わせ</h1></div><div class="prose"><p>${esc(C.contactText)}</p><p>占い結果の個別のご相談にはお答えしていません。個人鑑定をご希望の方は、<a href="/kantei/">個人鑑定のご案内</a>をご覧ください。</p></div>`});
 
 /* ---------- 404・sitemap・robots・icon ---------- */
-fs.writeFileSync(OUT+'/404.html',fs.readFileSync(OUT+'/contact/index.html','utf8').replace(/<main class="main">[\s\S]*<\/main>/,'<main class="main"><div class="hero"><h1>ページが見つかりません</h1><p class="lead"><a href="/">トップへ戻る</a></p></div></main>').replace(/<title>[^<]*<\/title>/,`<title>ページが見つかりません｜${C.siteName}</title>`));
+page('/404.html',{title:'ページが見つかりません',desc:'お探しのページが見つかりませんでした。ナヴァラトナのトップページからお探しください。',body:'<div class="hero"><span class="eyebrow">404 · LOST AMONG THE STARS</span><h1>お探しの星が、<br>見つかりませんでした。</h1><p class="lead">ページの場所が変わったか、URLが間違っているようです。トップページから、もう一度お探しください。</p><a class="btn" href="/">トップページへ戻る →</a></div>'});
 const today=new Date().toISOString().slice(0,10);
 fs.writeFileSync(OUT+'/sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map(p=>`<url><loc>${C.siteUrl}${p}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`);
 fs.writeFileSync(OUT+'/robots.txt',`User-agent: *\nAllow: /\nSitemap: ${C.siteUrl}/sitemap.xml\n`);
