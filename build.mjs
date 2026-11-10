@@ -1,3 +1,4 @@
+import {home} from './src/home.mjs';
 import fs from 'node:fs'; import path from 'node:path'; import vm from 'node:vm'; import {createRequire} from 'node:module'; const C=JSON.parse(fs.readFileSync('site.config.json','utf8'));
 const OUT='dist'; fs.rmSync(OUT,{recursive:true,force:true}); fs.mkdirSync(OUT+'/assets',{recursive:true});
 const rd=f=>fs.existsSync(f)?JSON.parse(fs.readFileSync(f,'utf8')):[];
@@ -37,12 +38,13 @@ function page(p,{title,desc,body,scripts=[],inline='',ld=null,crumb=null,og=null
 <meta property="og:title" content="${esc(full)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="${p==='/'?'website':'article'}"><meta property="og:url" content="${url}"><meta property="og:site_name" content="${C.siteName}"><meta property="og:image" content="${C.siteUrl}${og||'/assets/og.png'}"><meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#FBF6EE"><link rel="icon" href="/assets/icon.svg" type="image/svg+xml"><link rel="icon" href="/assets/logo-192.png" sizes="192x192" type="image/png"><link rel="apple-touch-icon" href="/assets/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="/assets/style.css?v=${V}">
+<link rel="stylesheet" href="/assets/style.css?v=${V}"><link rel="stylesheet" href="/assets/moonlight.css?v=${V}">
 ${C.adsenseClient?`<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${C.adsenseClient}" crossorigin="anonymous"></script>`:''}
 ${ld?`<script type="application/ld+json">${JSON.stringify(ld)}</script>`:''}
-</head><body>
-<header class="bar"><div class="bar-in"><a class="logo" href="/" aria-label="${C.siteName}"><img src="/assets/logo-s.webp" alt="" width="40" height="40"><span class="lt"><small>インド占星術</small>ナヴァラトナ</span></a><button type="button" class="menu-btn" aria-expanded="false" aria-controls="gnav"><span class="mi" aria-hidden="true"></span>メニュー</button><nav id="gnav" aria-label="メイン"><ul class="gn">${GNAV.map(g=>g.items?`<li class="dd${g.items.some(([h])=>h!=='/#quick'&&p.startsWith(h))?' cur':''}"><button type="button" class="dd-b" aria-expanded="false">${g.label}</button><ul class="dd-p">${g.items.map(([h,l,d])=>`<li><a href="${h}"${h!=='/#quick'&&p===h?' aria-current="page"':''}><b>${l}</b>${d?`<small>${d}</small>`:''}</a></li>`).join('')}</ul></li>`:`<li><a class="top-a" href="${g.href}"${p.startsWith(g.href)?' aria-current="page"':''}>${g.label}</a></li>`).join('')}</ul></nav></div></header>
-<main class="main">${crumb?`<p class="crumb"><a href="/">トップ</a> › ${crumb}</p>`:''}${body}</main>
+</head><body class="${p==='/'?'home':'inner-page'}">
+<a class="skip-link" href="#main">本文へ移動</a>
+<header class="bar"><div class="bar-in"><a class="logo" href="/" aria-label="${C.siteName}"><img src="/assets/logo-s.webp" alt="" width="40" height="40"><span class="lt"><small>インド占星術 · 月の宿</small>ナヴァラトナ</span></a><button type="button" class="menu-btn" aria-expanded="false" aria-controls="gnav"><span class="mi" aria-hidden="true"></span>メニュー</button><nav id="gnav" aria-label="メイン"><ul class="gn">${GNAV.map(g=>g.items?`<li class="dd${g.items.some(([h])=>h!=='/#quick'&&p.startsWith(h))?' cur':''}"><button type="button" class="dd-b" aria-expanded="false">${g.label}</button><ul class="dd-p">${g.items.map(([h,l,d])=>`<li><a href="${h}"${h!=='/#quick'&&p===h?' aria-current="page"':''}><b>${l}</b>${d?`<small>${d}</small>`:''}</a></li>`).join('')}</ul></li>`:`<li><a class="top-a" href="${g.href}"${p.startsWith(g.href)?' aria-current="page"':''}>${g.label}</a></li>`).join('')}<li><a class="nav-diagnose" href="/#quick">無料で星を調べる <span aria-hidden="true">↗</span></a></li></ul></nav></div></header>
+<main class="main" id="main" tabindex="-1">${crumb?`<p class="crumb"><a href="/">トップ</a> › ${crumb}</p>`:''}${body}</main>
 <script>(function(){var mb=document.querySelector('.menu-btn'),nv=document.getElementById('gnav');function closeAll(ex){document.querySelectorAll('.dd-b[aria-expanded=true]').forEach(function(b){if(b!==ex)b.setAttribute('aria-expanded','false');});}
 if(mb)mb.addEventListener('click',function(){var o=mb.getAttribute('aria-expanded')!=='true';mb.setAttribute('aria-expanded',o);nv.classList.toggle('open',o);});
 document.querySelectorAll('.dd-b').forEach(function(b){b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')!=='true';closeAll(b);b.setAttribute('aria-expanded',o);});});
@@ -52,6 +54,8 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAll();
 <footer class="foot"><div class="foot-in"><ul><li><a href="/about/">運営者情報</a></li><li><a href="/privacy/">プライバシーポリシー</a></li><li><a href="/contact/">お問い合わせ</a></li><li><a href="/shop/">鑑定書のご購入</a></li><li><a href="/tokushoho/">特定商取引法に基づく表記</a></li><li><a href="/articles/">読みもの</a></li><li><a href="/nakshatra/">27星宿一覧</a></li></ul>
 <p>当サイトの占いは、インド占星術（パラーシャラ式・ラーヒリー）の伝統的な読み方にもとづく一つの視点です。重要な決断は、ご自身の判断でお願いします。無料の占いで入力された生年月日は、お使いの端末の中だけで計算され、送信・保存されません（鑑定書のご注文フォームを除く）。</p><p>© ${new Date().getFullYear()} ${C.siteName}</p></div></footer>
 ${scripts.length?`<script src="/assets/astronomy.min.js"></script><script src="/assets/calc.js?v=${V}"></script><script src="/assets/common.js?v=${V}"></script>`:`<script src="/assets/common.js?v=${V}" defer></script>`}${inline?`<script>${inline}</script>`:''}${scripts.map(s=>`<script src="/assets/${s}?v=${V}"></script>`).join('')}
+<nav class="mobile-dock" aria-label="モバイルの主要メニュー"><a href="/#quick"><span aria-hidden="true">✧</span>無料診断</a><a href="/today/"${p==='/today/'?' aria-current="page"':''}><span aria-hidden="true">☾</span>今日の運勢</a><a href="/chart/"${p==='/chart/'?' aria-current="page"':''}><span aria-hidden="true">◇</span>魂の星図</a><a href="/calendar/"${p==='/calendar/'?' aria-current="page"':''}><span aria-hidden="true">◷</span>吉日暦</a></nav>
+<script src="/assets/navigation.js?v=${V}" defer></script>
 </body></html>`;
   const dir=path.join(OUT,p); fs.mkdirSync(dir,{recursive:true}); fs.writeFileSync(path.join(dir,'index.html'),html); pages.push(p);
 }
@@ -73,23 +77,7 @@ const TARA_ROWS=[['1','ジャンマ','命','自分を整える'],['2','サンパ
 
 /* ---------- トップ ---------- */
 page('/',{title:'トップ',desc:'生年月日だけで、あなたを守る宝石の精霊と魂の星（アートマカラカ）がわかるインド占星術の無料占い。ホロスコープ作成、魂の星図、今日の運勢、相性占い、吉日カレンダーも無料で。',scripts:['seirei.js','ak.js','today.js','quick.js'],inline:NKINL(),
-body:`<div id="qback" class="qback-top" hidden></div>
-<section class="hero hero-top" id="quick"><span class="eyebrow">Jyotish · Vedic Astrology</span><h1><span class="seg">あなたの魂の星と、</span><span class="seg">宝石の精霊</span></h1><p class="lead"><span class="seg">生まれた日の星から、</span><span class="seg">あなたを守る宝石の精霊と、</span><span class="seg">人生を通して育てていく</span><br><span class="seg">「魂の星」を読み解きます。</span></p>
-<form class="f quick hq" id="qf" novalidate><label for="qbd">生年月日<input id="qbd" type="date" value="1990-05-15" min="1900-01-01" max="2099-12-31"></label><div class="actions"><button type="submit" class="big-btn">無料で調べる</button></div></form>
-<p class="note">生年月日だけでわかります。出生時刻がわかる方は<a href="/horoscope/">ホロスコープ（チャート）作成</a>で、本格的なチャートもすぐ作れます。計算はこの端末の中だけで行います。インド占星術がはじめての方は<a href="/jyotish/">はじめての方へ</a></p></section>
-<section class="sr-sec" aria-label="ナヴァラトナ 9つの宝石の精霊"><div class="sr-line" data-tap>${SR.L.map(x=>`<button type="button" data-id="${x.id}" aria-expanded="false" aria-controls="srd"><span class="sr-im"><img src="${SR.img(x.id,true)}" alt="" width="128" height="128"></span><span class="sr-nm">${x.name}</span><span class="sr-gm">${x.gem}</span></button>`).join('')}</div>
-<div class="srd" id="srd" hidden aria-live="polite"></div>
-<p class="note" style="text-align:center"><b>ナヴァラトナ　9つの宝石の精霊</b>が、27の星宿を3つずつ守っています。精霊を押すと紹介が出ます。<a href="/seirei/">9人の紹介 →</a></p></section>
-<section aria-label="診断結果"><div id="qres" aria-live="polite"></div><div id="qwelcome"></div></section>
-<section id="today"><div class="sec-head"><h2>今日の運勢 <span id="today-date" class="note"></span></h2><p>生まれた星宿と、今日の月の星宿の巡り（ターラ）から読む毎日の運勢です。</p></div>
-<div class="card now" id="mine"></div><div class="grid" id="pick"></div><div class="card" id="nowslot"></div><p class="note"><a href="/today/">27星宿すべての今日の運勢と時間帯を見る →</a></p></section>
-${ad('top')}
-<section><div class="sec-head"><h2>もっと占う</h2><p>生年月日と時刻、出生地を入れるだけ。計算はすべてあなたの端末の中で行います。</p></div>${toolCards(['chart','horoscope','aisho','muhurta','calendar','fortune','group','sadesati'])}</section>
-<section><div class="sec-head"><h2>今日の暦（パンチャーンガ）</h2><p>インドの暦で見る、今日という日の性質。</p></div><div class="facts" id="pc"></div></section>
-<section><div class="sec-head"><h2>27星宿（ナクシャトラ）</h2><p>月の通り道を27に分けた「月の宿」。生まれたときの月の星宿が、あなたの心のかたちを表します。</p></div>${nakChips()}</section>
-${ad('mid')}
-<section><div class="sec-head"><h2>読みもの</h2><p>はじめてのインド占星術。</p></div>${artList(ARTS.slice(0,6))}<p class="note"><a href="/articles/">すべての読みもの →</a></p></section>
-${shareS('インド占星術の無料占いサイト「ナヴァラトナ」。生年月日だけで、あなたの星宿と守ってくれる宝石の精霊がわかります。','/')}${cta}`});
+body:home({SR,ad,nakChips,artList,ARTS,shareS,cta})});
 
 /* ---------- 今日の運勢 ---------- */
 page('/today/',{title:'今日の運勢（27星宿別）と今日の吉凶の時間帯',desc:'インド占星術の27星宿（ナクシャトラ）別に、今日の運勢を毎日自動で更新。いまの時間帯（チョーガディヤ）、次によい時間、今日の暦もひと目でわかります。',scripts:['seirei.js','today-page.js'],crumb:'今日の運勢',

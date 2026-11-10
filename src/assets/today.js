@@ -16,6 +16,7 @@ function draw(){var now=Date.now(),p=JY.panchang(now,35.69,139.69,9),today=p.nak
   if($('today-date')){var d=new Date(now+9*36e5);$('today-date').textContent=d.getUTCFullYear()+'年'+(d.getUTCMonth()+1)+'月'+d.getUTCDate()+'日（'+p.vara[0].charAt(0)+'）';}
 }
 TK.ready(function(){try{draw();}catch(e){}});
+window.addEventListener('navaratna:nak-saved',function(){try{draw();}catch(e){}});
 })();
 /* チョーガディヤとホーラー（東京） */
 (function(){var $=TK.$,HM={太陽:'公的な用事、目上の人との面会',月:'人に会う、家族や家のこと',火星:'体を動かす、決断する',水星:'勉強、連絡、書類や契約の確認',木星:'学び、相談、お祈り、大事な始めごと',金星:'恋愛、買いもの、美容、楽しみ',土星:'片づけ、地道な作業'};
@@ -25,7 +26,7 @@ function draw(){var now=Date.now(),d=new Date(now+9*36e5),ds=Date.UTC(d.getUTCFu
   var c=T.cho.filter(function(x){return x.start<=now&&now<x.end;})[0],h=T.hora.filter(function(x){return x.start<=now&&now<x.end;})[0],cls=['b','','g'];
   var nowHtml=(c?'<span class="eyebrow">いまの時間帯（東京）</span><span class="big">'+c.name+'<small style="font-size:.5em">（'+c.mean+'）</small></span><p style="margin:0">'+hm(c.start)+'〜'+hm(c.end)+'。'+(c.q===2?'物事を始めるのによい時間です。':c.q===1?'移動や外出によい、ふつうの時間です。':'大事な始めごとは、次のよい時間を待つのがおすすめです。')+'</p>':'')+
    (h?'<p class="note" style="color:inherit">いまは<b>'+h.lord+'のホーラー</b>（'+hm(h.start)+'〜'+hm(h.end)+'）：'+HM[h.lord]+'に向く時間。</p>':'');
-  if($('nowslot'))$('nowslot').innerHTML=nowHtml+'<p class="note"><a href="/today/#cho">今日の時間帯をすべて見る →</a></p>';
+  if($('nowslot'))$('nowslot').innerHTML=nowHtml+'<p class="note"><a href="/today/#tnow">今日の時間帯をすべて見る →</a></p>';
   if($('cho')){function row(x){var on=x.start<=now&&now<x.end;return '<tr'+(on?' class="cur"':'')+'><td class="num">'+hm(x.start)+'〜'+hm(x.end)+'</td><td><span class="pill '+cls[x.q]+'">'+x.name+'</span> <small class="mut">'+x.mean+'</small></td></tr>';}
     function hrow(x){var on=x.start<=now&&now<x.end;return '<tr'+(on?' class="cur"':'')+'><td class="num">'+hm(x.start)+'〜'+hm(x.end)+'</td><td><b>'+x.lord+'</b></td><td>'+HM[x.lord]+'</td></tr>';}
     $('cho').innerHTML='<div class="card now">'+nowHtml+'</div>'+

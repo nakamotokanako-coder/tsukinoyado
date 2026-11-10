@@ -36,7 +36,7 @@ var TARA_T=[
  {r:'g',tag:'人の縁に恵まれる日',all:'友人や仲間からの助けが入りやすい日です。人と会う予定が運を運んできます。',love:'紹介や、思いがけない出会いに期待できます。',work:'チームで動くと成果が上がります。'},
  {r:'g',tag:'最良の縁の日',all:'信頼できる人との絆が深まり、物事がなめらかに進む日です。大切な人に連絡してみて。',love:'関係が一段深まるチャンスです。',work:'協力者を得て、大きく前進できます。'}];
 var DT={ケートゥ:'手放しと内省の時期。執着を切り、精神性が深まります。',金星:'愛・豊かさ・美の時期。人間関係や楽しみが広がります。',太陽:'自立と名誉の時期。自分の軸を立て、表に出ていきます。',月:'心と人とのつながりの時期。家庭や感情が中心になります。',火星:'行動と挑戦の時期。エネルギーが高く、勝負に出られます。',ラーフ:'変化と拡大の時期。新しい世界や、予想外の展開が訪れます。',木星:'知恵と幸運の時期。学び、成長し、守られます。',土星:'忍耐と構築の時期。時間をかけて、確かな土台を築きます。',水星:'知性と発信の時期。学び、言葉、商いが動きます。'};
-function saveNak(i){try{localStorage.setItem('tsuki-nak',String(i));}catch(e){}}
+function saveNak(i){try{localStorage.setItem('tsuki-nak',String(i));window.dispatchEvent(new Event('navaratna:nak-saved'));}catch(e){}}
 function loadNak(){try{var v=localStorage.getItem('tsuki-nak');return v===null?null:+v;}catch(e){return null;}}
 function shareHTML(text,url){url=url||location.href.split('#')[0];var e=encodeURIComponent,u=e(url),t=e(text);
   return '<div class="share"><span class="share-l">シェアする</span>'+
@@ -54,6 +54,7 @@ function enhanceDates(root){(root||document).querySelectorAll('input[type=date]'
   var thisY=new Date().getFullYear();
   w.innerHTML=sel('-y','年',1900,thisY,a[0],true)+sel('-m','月',1,12,a[1])+sel('-d','日',1,31,a[2]);
   inp.type='hidden';inp.parentNode.insertBefore(w,inp.nextSibling);
+  if(inp.getAttribute('aria-describedby'))w.querySelectorAll('select').forEach(function(s){s.setAttribute('aria-describedby',inp.getAttribute('aria-describedby'));});
   var lab=document.querySelector('label[for="'+id+'"]');if(lab)lab.setAttribute('for',id+'-y');
   var Y=w.children[0],M=w.children[2],D=w.children[4];
   function sync(){var y=+Y.value,m=+M.value,n=y&&m?new Date(y,m,0).getDate():31;
